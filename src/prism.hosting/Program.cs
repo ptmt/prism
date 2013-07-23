@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
 using Owin;
+using System.Reflection;
 
 namespace OwinHostingSample
 {
@@ -15,6 +16,8 @@ namespace OwinHostingSample
                 ServerFactory = "NowinWebServer",
                 Port = 8080
             };
+
+            Assembly assembly = Assembly.Load("NowinWebServer");
 
             using (WebApp.Start<Startup>(options))
             {
