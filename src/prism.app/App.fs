@@ -6,18 +6,9 @@ open System.Web.Http
 
 type public Startup()  = class
     member public x.Configuration (app:IAppBuilder) =       
-       
-        app.UseHandlerAsync (StartupExtensions.OwinHandlerAsync(
-                                    fun req res -> res.WriteAsync("Hello, world!")
-        )) |> ignore        
+               
 
-
-//        // Allow directory browsing from a specific dir.
-//        builder.UseFileServer(options =>
-//        {
-//            options.WithRequestPath("/browse");
-//            options.WithPhysicalPath("public");
-//            options.WithDirectoryBrowsing();
-//        });
+        app.UseErrorPage().UseFileServer("/", "/public") |> ignore
+        
       
 end

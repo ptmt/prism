@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
 using Owin;
 using System.Reflection;
+using NowinWebServer;
 
 namespace OwinHostingSample
 {
@@ -13,27 +14,16 @@ namespace OwinHostingSample
             
             var options = new StartOptions
             {
-                ServerFactory = "NowinWebServer",
+                ServerFactory = "NowinWebServer.OwinServerFactory",
                 Port = 8080
             };
+                        
 
-            Assembly assembly = Assembly.Load("NowinWebServer");
-
-            using (WebApp.Start<Startup>(options))
+            using (WebApp.Start<Prism.App.Configuration.Startup>(options))
             {
                 Console.WriteLine("Running a http server on port 8080");
                 Console.ReadKey();
             }
         }
     }
-
-    public class Startup
-    {
-        public void Configuration(IAppBuilder app)
-        {
-            app.UseWelcomePage();
-        }
-    }
-
-    
 }
