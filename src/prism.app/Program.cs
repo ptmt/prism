@@ -5,7 +5,7 @@ using Owin;
 using System.Reflection;
 using NowinWebServer;
 
-namespace OwinHostingSample
+namespace Prism.App
 {
     static class Program
     {
@@ -19,7 +19,7 @@ namespace OwinHostingSample
             };
                         
 
-            using (WebApp.Start<Prism.App.Configuration.Startup>(options))
+            using (WebApp.Start<Startup>(options))
             {
                 Console.WriteLine("Running a http server on port 8080");
                 Console.ReadKey();

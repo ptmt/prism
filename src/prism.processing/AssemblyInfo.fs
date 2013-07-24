@@ -1,9 +1,9 @@
-module Prism.App.AssemblyInfo
+module Prism.Processing.AssemblyInfo
 open System.Reflection
 open System.Runtime.CompilerServices
 
 
-[<assembly: AssemblyTitle("Prism.App")>]
+[<assembly: AssemblyTitle("Prism.Processing")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
