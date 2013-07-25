@@ -1,13 +1,24 @@
 ﻿using Owin;
 using Microsoft.Owin.Security.Forms;
 using Microsoft.Owin.Security.OAuth;
+using System.Web.Http;
 
 namespace Prism.App
 {
     public class Startup
     {        
         public void Configuration(IAppBuilder app)
-        {                      
+        {
+
+            HttpConfiguration config = new HttpConfiguration();
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+            app.UseWebApi(config); 
+
             app.UseFileServer(options =>
             {
                 options.WithRequestPath("/");
