@@ -22,5 +22,27 @@ namespace Prism.App.Config
         public static ISecureDataHandler<ClaimsIdentity> ExternalIdentityHandler { get; set; }
 
         public static OAuthBearerAuthenticationOptions Bearer { get { return new OAuthBearerAuthenticationOptions(); } }
+
+        public static async Task<ClaimsIdentity> GetExternalIdentity(HttpContextBase context)
+        {
+            ClaimsIdentity identity = await context.GetExternalIdentity();
+
+            if (identity == null)
+            {
+                return null;
+            }
+
+            // Change authentication type back to issuer
+            Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (providerKeyClaim != null && !String.IsNullOrEmpty(providerKeyClaim.Issuer))
+            {
+                identity = new ClaimsIdentity(identity.Claims, providerKeyClaim.Issuer, identity.NameClaimType, identity.RoleClaimType);
+            }
+
+            DeleteExternalCookie(context.Response);
+
+            return identity;
+        }
     }
 }

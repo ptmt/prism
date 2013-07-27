@@ -5,7 +5,9 @@ VisualStudioVersion = 12.0.20617.1 PREVIEW
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CCABC0D0-B4C3-47D1-9A73-CFB470754F04}"
 	ProjectSection(SolutionItems) = preProject
+		..\bootstrap.sh = ..\bootstrap.sh
 		..\build.fsx = ..\build.fsx
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NowinWebServer", "..\..\Nowin\NowinWebServer\NowinWebServer.csproj", "{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}"
