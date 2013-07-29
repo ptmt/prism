@@ -14,10 +14,12 @@ namespace Prism.App
             
             var options = new StartOptions
             {
-                ServerFactory = "NowinWebServer.OwinServerFactory",
+                ServerFactory = "NowinWebServer.OwinServerFactory",               
                 Port = 8080
             };
-                        
+
+            options.Urls.Add("localhost");
+            options.Urls.Add("devprism.phinitive.com:8080");
 
             using (WebApp.Start<Startup>(options))
             {

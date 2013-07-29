@@ -21,7 +21,7 @@ namespace Prism.App
             app.UseFileServer(options =>
             {
                 options.WithRequestPath("/");
-                options.WithPhysicalPath("../src/assets");               
+                options.WithPhysicalPath("../src/public");               
             });
 
             app.UseDiagnosticsPage();
