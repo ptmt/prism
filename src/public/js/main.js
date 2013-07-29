@@ -62,41 +62,7 @@
             parts.unshift(providerName);
         });
 
-        var embedLink = document.getElementById("embed-toggle"),
-            embedToggle;
-        if (embedLink) {
-            var embed = document.getElementById("embed-content"),
-                textarea = document.getElementById("embed-code"),
-                template = textarea.value;
-            embedToggle = createToggle(embedLink, embed, function (showing) {
-                if (showing) {
-                    var url = location.href.split("#");
-                    url.splice(1, 0, "embed#");
-                    textarea.value = template.replace("{url}", url.join(""));
-                    textarea.focus();
-                    textarea.select();
-                } else {
-                }
-            });
-        }
-
-        var imgLink = document.getElementById("make-image");
-        if (imgLink) {
-            var round = function (n) {
-                return Math.ceil(n / 500) * 500;
-            };
-            MM.addEvent(imgLink, "mouseover", function () {
-                var hash = location.hash.substr(1),
-                    width = round(main.dimensions.x),
-                    height = round(main.dimensions.y);
-                this.href = [
-                    "http://maps.stamen.com/m2i/",
-                    "#" + providerName, "/",
-                    width, ":", height, "/",
-                    hash
-                ].join("");
-            });
-        }
+        
 
         var feedback = setupFeedbackForm();
         MM.addEvent(main.parent, "mousedown", feedback.hide);
