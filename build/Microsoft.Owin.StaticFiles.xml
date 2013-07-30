@@ -99,7 +99,7 @@
             </summary>
             <param name="sharedOptions"></param>
         </member>
-        <member name="M:Microsoft.Owin.StaticFiles.DefaultFilesOptions.WithDefaultFileNames(System.String[])">
+        <member name="M:Microsoft.Owin.StaticFiles.DefaultFilesOptions.WithDefaultFileNames(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Specifies the file names to serve by default
             </summary>
@@ -183,7 +183,7 @@
             <param name="defaultContentType"></param>
             <returns>this</returns>
         </member>
-        <member name="M:Microsoft.Owin.StaticFiles.FileServerOptions.WithDefaultFileNames(System.String[])">
+        <member name="M:Microsoft.Owin.StaticFiles.FileServerOptions.WithDefaultFileNames(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Specifies the file names to serve by default
             </summary>
@@ -306,7 +306,7 @@
             <param name="directory">The physical file system directory</param>
             <returns></returns>
         </member>
-        <member name="M:Owin.DefaultFilesExtensions.UseDefaultFiles(Owin.IAppBuilder,System.String,System.String,System.String[])">
+        <member name="M:Owin.DefaultFilesExtensions.UseDefaultFiles(Owin.IAppBuilder,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Serves the given file names by default for the given path from the given directory
             </summary>

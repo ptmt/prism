@@ -9,9 +9,7 @@ namespace Prism.App
     public class Startup
     {        
         public void Configuration(IAppBuilder app)
-        {
-
-            
+        {  
 
             HttpConfiguration config = new HttpConfiguration();
             config.Routes.MapHttpRoute(
@@ -19,6 +17,7 @@ namespace Prism.App
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.MessageHandlers.Add(new SessionIdHandler());
          
             app.UseWebApi(config);
 

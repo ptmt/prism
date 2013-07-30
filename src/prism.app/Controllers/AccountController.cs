@@ -1,9 +1,15 @@
 ﻿using OAuth2;
 using OAuth2.Client;
 using OAuth2.Models;
+using Prism.App;
 using Prism.App.Models;
+using Prism.App.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 
@@ -14,15 +20,13 @@ namespace WebApplication1.Controllers
 {
     public class AccountController : ApiController
     {
-
         private readonly AuthorizationRoot authorizationRoot;
-
-        private const string ProviderNameKey = "providerName";
-        private string ProviderName { get; set; }
+        private readonly ISessionStore sessionStore;
 
         public AccountController()
         {          
             this.authorizationRoot = new AuthorizationRoot();
+            this.sessionStore = new InMemorySessionStore(this.Request);
         }
 
         [HttpGet]
@@ -38,31 +42,62 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public UserInfo Auth()
+        public HttpResponseMessage Auth()
         {         
             var info = GetFoursquareClient().GetUserInfo(
                  HttpUtility.ParseQueryString(this.Request.RequestUri.Query));
+
+            var resp = new HttpResponseMessage();
+
+            var cookie = new CookieHeaderValue("session-id", "12345");
+            cookie.Expires = DateTimeOffset.Now.AddDays(1);
+            cookie.Domain = Request.RequestUri.Host;
+            cookie.Path = "/";
+
+            resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+            resp.Headers.Add("location:", "/");
+            return resp;
+
             //TODO: save key in cookie
             // save userinfo into session
             // redirect
-            return info;
+           // return info;
         }
 
         [HttpGet]
-        public FqStep NextPoint()
+        public string TestAuth()
         {
-           // get json from memory cache + current checkin int
-                // if empty then parse .json from mockdata or from server and place to store
-           // get new checkin object
-           // run functions processing
+         //   var resp = new HttpResponseMessage();
 
-            // calculationFunc.ForEach (c=> c (checkin, total))
-            // return new FgStep { CurrentCheckin = checkin, Total = total } 
+            string sessionId = Request.Properties[SessionIdHandler.SessionIdToken] as string;
+         //   resp.StatusCode = HttpStatusCode.Moved;
+         //   resp.Headers.Add("Location", "/");
+         //   return resp;
+            
+            
+            return sessionId;
+       
         }
+
+        //[HttpGet]
+        //public FqStep NextPoint()
+        //{
+        //    HttpContext.Current.Session["a"];
+        //   // get json from memory cache + current checkin int
+        //        // if empty then parse .json from mockdata or from server and place to store
+        //   // get new checkin object
+        //   // run functions processing
+
+        //    // calculationFunc.ForEach (c=> c (checkin, total))
+        //    // return new FgStep { CurrentCheckin = checkin, Total = total } 
+        //}
+
         
         private IClient GetFoursquareClient() {
             return authorizationRoot.Clients.First();
         }
+
+        
 
        
     }
