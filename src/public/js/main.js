@@ -1,8 +1,6 @@
-    function init() {
+    function initMap() {
 
-        addBrowserClasses(document.body);
-
-       
+        addBrowserClasses(document.body);      
 
         var mapInDom = $(".map-container"),
             size = getSize(),
@@ -12,9 +10,7 @@
         var doc = document.documentElement;
         function getSize() {
             return new MM.Point(mapInDom.width(), mapInDom.height());
-        }
-
-        // setupProviderSelector(providerName, "../");
+        }        
 
         function resize() {
             try {
@@ -28,46 +24,22 @@
 
         // our mapObject map
         var mapObject = new MM.Map(mapInDom[0], provider, size,
-            [new MM.DragHandler(), new MM.DoubleClickHandler(), new MM.TouchHandler()]);
-        //mapInDom[0].style.position = "absolute";
+            [new MM.DragHandler(), new MM.DoubleClickHandler(), new MM.TouchHandler()]);        
         mapObject.autoSize = false;
-
-        //if (provider.attribution) {
-        //    var attribution = mapInDom[0].querySelector(".attribution") || mapInDom[0].appendChild(document.createElement("p"));
-        //    attribution.className = "attribution";
-        //    attribution.innerHTML = provider.attribution;
-        //}
-
+        
         var didSetLimits = provider.setCoordLimits(mapObject);
-
-        // set the initial map position
+                
         mapObject.setCenterZoom(new MM.Location(55.0398, 82.902), 12);
 
-       
-
-        //syncMapLinks(mapObject, [document.getElementById("home-link")], function (parts) {
-        //    parts.unshift(providerName);
-        //});
-
-        
-
-        //var feedback = setupFeedbackForm();
-        //MM.addEvent(mapObject.mapInDom, "mousedown", feedback.hide);
-        //mapObject.addCallback("zoomed", feedback.hide);
-
-        var hasher = new MM.Hash(mapObject);
-
-        // set up form element references
-        
-
-        //exports.MAP = mapObject;
+        var hasher = new MM.Hash(mapObject);        
     }
 
-
-
-
+    function initSignIn() {
+        $.get('/api/account/login').success(function (signinlink) { $('.signin-button').attr('href', signinlink); });        
+    }
 
 $(function () {
-    init();   
+    initMap();
+    initSignIn();
     
 });

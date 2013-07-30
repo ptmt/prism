@@ -1,6 +1,7 @@
 ﻿using OAuth2;
 using OAuth2.Client;
 using OAuth2.Models;
+using Prism.App.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,13 +18,10 @@ namespace WebApplication1.Controllers
         private readonly AuthorizationRoot authorizationRoot;
 
         private const string ProviderNameKey = "providerName";
-
-
         private string ProviderName { get; set; }
 
         public AccountController()
-        {
-            //var config = new OAuth2.Configuration.ConfigurationManager();
+        {          
             this.authorizationRoot = new AuthorizationRoot();
         }
 
@@ -44,7 +42,22 @@ namespace WebApplication1.Controllers
         {         
             var info = GetFoursquareClient().GetUserInfo(
                  HttpUtility.ParseQueryString(this.Request.RequestUri.Query));
+            //TODO: save key in cookie
+            // save userinfo into session
+            // redirect
             return info;
+        }
+
+        [HttpGet]
+        public FqStep NextPoint()
+        {
+           // get json from memory cache + current checkin int
+                // if empty then parse .json from mockdata or from server and place to store
+           // get new checkin object
+           // run functions processing
+
+            // calculationFunc.ForEach (c=> c (checkin, total))
+            // return new FgStep { CurrentCheckin = checkin, Total = total } 
         }
         
         private IClient GetFoursquareClient() {
