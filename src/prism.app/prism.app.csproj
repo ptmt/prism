@@ -50,10 +50,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Hosting.1.1.0-beta2\lib\net40\Microsoft.Owin.Hosting.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.StaticFiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Owin.StaticFiles.0.20-alpha-20220-88\lib\net40\Microsoft.Owin.StaticFiles.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -111,6 +107,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\katanaproject\src\Microsoft.Owin.StaticFiles\Microsoft.Owin.StaticFiles.csproj">
+      <Project>{f31a42db-2f57-4dac-b2bc-106f2d6f3c82}</Project>
+      <Name>Microsoft.Owin.StaticFiles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Nowin\NowinWebServer\NowinWebServer.csproj">
       <Project>{eff3b76f-e9e4-4da6-b46d-e2dea456545e}</Project>
       <Name>NowinWebServer</Name>

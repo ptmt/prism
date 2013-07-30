@@ -1,5 +1,7 @@
 ﻿using Owin;
-
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Prism.App
@@ -9,6 +11,8 @@ namespace Prism.App
         public void Configuration(IAppBuilder app)
         {
 
+            
+
             HttpConfiguration config = new HttpConfiguration();
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -16,20 +20,40 @@ namespace Prism.App
                 defaults: new { id = RouteParameter.Optional }
             );
          
-            app.UseWebApi(config); 
+            app.UseWebApi(config);
 
             app.UseFileServer(options =>
             {
-                options.WithRequestPath("/");
-                options.WithPhysicalPath("../src/public");               
+                options.WithRequestPath("").WithPhysicalPath("../src/public");
             });
 
-            app.UseDiagnosticsPage();
-
-            app.CreateLogger("some");
-
-         
+            app.UseSendFileFallback();
             
+            app.UseDiagnosticsPage("/diag.html");
+
+            app.UseErrorPage();
+
+            app.Use(typeof(LoggerMiddleware));                      
+      
+            
+        }
+    }
+
+    public class LoggerMiddleware
+    {
+        private readonly Func<IDictionary<string, object>, Task> _next;
+        
+
+        public LoggerMiddleware(Func<IDictionary<string, object>, Task> next)
+        {
+            _next = next;          
+        }
+
+        public Task Invoke(IDictionary<string, object> env)
+        {
+            System.Diagnostics.Trace.WriteLine(string.Format("path nof found: {0}", env["owin.RequestPath"]));
+            env["owin.ResponseStatus"] = 404;
+            return _next(env);
         }
     }
 

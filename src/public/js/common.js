@@ -11,25 +11,6 @@ function preventDoubleClick(el) {
     });
 }
 
-// set up zoom controls for the given map (assumed one per page,
-// with in and out buttons having ids "zoom-in" and "zoom-out", respectively
-function setupZoomControls(map) {
-    var zoomIn = document.getElementById("zoom-in"),
-        zoomOut = document.getElementById("zoom-out");
-
-    preventDoubleClick(zoomIn);
-    MM.addEvent(zoomIn, "click", function(e) {
-        try { map.zoomIn(); } catch (err) { }
-        return MM.cancelEvent(e);
-    });
-    preventDoubleClick(zoomOut);
-    MM.addEvent(zoomOut, "click", function(e) {
-        try { map.zoomOut(); } catch (err) { }
-        return MM.cancelEvent(e);
-    });
-
-}
-
 function syncMapLinks(map, links, modifyHashParts) {
     var len = links.length,
         timeout,
@@ -102,54 +83,6 @@ function createToggle(link, target, callback) {
     return toggler;
 }
 
-function setupFeedbackForm() {
-    var feedbackLink = document.getElementById("toggle-feedback");
-    if (feedbackLink) {
-        var feedback = document.getElementById("feedback"),
-            styleInput = document.getElementById("feedback-style"),
-            centerInput = document.getElementById("feedback-center");
-
-        var recaptchaScript = document.createElement("script");
-        recaptchaScript.src = "http://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
-        feedback.appendChild(recaptchaScript);
-
-        var toggle = createToggle(feedbackLink, feedback, function(showing) {
-            if (showing) {
-                Recaptcha.create("6LeG99cSAAAAABiijTMo4wvz2nrO3PNWb88CQl6v", "recaptcha");
-
-                // update the center
-                var hash = location.hash.substr(1),
-                    parts = hash.split("/");
-                if (parts.length === 4) {
-                    var provider = parts.shift();
-                    // update the style bit in the form action
-                    if (styleInput) {
-                        styleInput.value = provider;
-                    }
-                }
-                // updat the center input
-                centerInput.value = parts.join("/");
-
-                var offset = getOffset(feedbackLink);
-                // console.log("offset:", [offset.left, offset.top]);
-                feedback.style.left = (offset.left - 9) + "px";
-            } else {
-            }
-        });
-
-        MM.addEvent(window, "keyup", function(e) {
-            if (e.keyCode === 27) {
-                toggle.hide();
-            }
-        });
-        return toggle;
-    } else {
-        var form = {};
-        form.show = function() {};
-        form.hide = function() {};
-        return form;
-    }
-}
 
 // add browser-specific classes to the given element
 var addBrowserClasses = (function() {
@@ -177,78 +110,6 @@ var addBrowserClasses = (function() {
     };
 })();
 
-// a simple Yahoo! Place Search API
-var YahooPlaceSearch = {
-    appid: "1DiQEyLV34HbAVHyl0iWC5tAZ8wpLMPzIeFE9QsTukhx6H.Cn9bM70c_5dYgh7cR8w--",
-    url: "http://where.yahooapis.com/v1/places.q({q});count=1?callback=?",
-    geocode: function(query, success, error) {
-        var data = {};
-        data.appid = YahooPlaceSearch.appid;
-        data.select = "long";
-        data.format = "json";
-        return reqwest({
-            url: YahooPlaceSearch.url.replace("{q}", encodeURIComponent(query)),
-            type: "jsonp",
-            jsonpCallback: "callback",
-            data: data,
-            success: function(response) {
-                var results = response.places;
-                if (results) {
-                    success.call(null, results);
-                } else {
-                    error.call(null, "No results", response);
-                }
-            },
-            error: error
-        });
-    }
-};
-
-var MapQuestSearch = {
-    key: "Fmjtd%7Cluub2q61n5%2Crx%3Do5-9610g6",
-    url: "http://www.mapquestapi.com/geocoding/v1/address?location={q}&maxResults=1&key={k}",
-    geocode: function(query, success, error) {
-        // adding key this way, to avoid in encoding problems (sc)
-        var sendUrl = MapQuestSearch.url.replace("{q}", encodeURIComponent(query)).replace("{k}",MapQuestSearch.key);
-        //furl = furl.replace("{k}",MapQuestSearch.key);
-        var data = {};
-        data.outFormat = "json";
-        return reqwest({
-            url: sendUrl,
-            type: "jsonp",
-            jsonpCallback: "callback",
-            data: data,
-            success: function(response) {
-                var results = response.results;
-                if (results) {
-                    success.call(null, results);
-                } else {
-                    error.call(null, "No results", response);
-                }
-            },
-            error: error
-        });
-    }
-};
-
-var StamenSearch = {
-    url: "http://q.maps.stamen.com/?q={q}&w={w}&h={h}",
-    // url: "http://localhost:8080/?q={q}&w={w}&h={h}",
-    geocode: function(query, callback) {
-        var url = this.url.replace("{q}", encodeURIComponent(query.q))
-                          .replace("{w}", query.w)
-                          .replace("{h}", query.h);
-
-        return reqwest({
-            url: url,
-            type: "jsonp",
-            success: function(response) {
-                return callback(null, response);
-            },
-            error: callback
-        });
-    }
-};
 
 var QueryString = function(params) {
     if (params) {
@@ -439,16 +300,3 @@ ProviderHash.prototype = {
 
 MM.extend(ProviderHash, MM.Hash);
 
-var _gaq;
-// Google Analytics tracking
-function track() {
-  _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-32986126-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-}
