@@ -9,8 +9,8 @@ namespace Prism.App.Data
     interface ISessionStore
     {
         void Add(string key, object value);        
-        Task<object> Get(string key);
-        Task<bool> Update(string userName, string newSecret);
+        Task<object> GetAsync(string key);
+        Task<bool> UpdateAsync(string key, string value);
         object this[string name] { get; set; }
     }
 }

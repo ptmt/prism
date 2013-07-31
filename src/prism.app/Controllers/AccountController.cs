@@ -15,6 +15,7 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 
 
@@ -24,7 +25,7 @@ namespace WebApplication1.Controllers
     public class AccountController : ApiController
     {
         private readonly AuthorizationRoot authorizationRoot;
-        private readonly ISessionStore sessionStore;
+        //private readonly ISessionStore sessionStore;
 
         public AccountController()
         {          
@@ -82,13 +83,18 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public string Test()
         {
+            ISessionStore sessionStore = new InMemorySessionStore(this.Request);
+            int i = (int)sessionStore["i"];
+                        
             string jsonText = File.ReadAllText(@"..\src\mockdata\checkins.json");
 
             JObject foursquareCheckins = JObject.Parse(jsonText);
 
             JArray checkins = (JArray)foursquareCheckins["response"]["checkins"]["items"];
 
-            return (string)checkins[0]["id"];
+            i++;
+            sessionStore["i"] = i;
+            return (string)checkins[i]["id"];
         }
 
         //[HttpGet]
