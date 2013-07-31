@@ -12,6 +12,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 
 
@@ -26,7 +29,7 @@ namespace WebApplication1.Controllers
         public AccountController()
         {          
             this.authorizationRoot = new AuthorizationRoot();
-            this.sessionStore = new InMemorySessionStore(this.Request);
+           // this.sessionStore = new InMemorySessionStore(this.Request);
         }
 
         [HttpGet]
@@ -73,10 +76,19 @@ namespace WebApplication1.Controllers
          //   resp.StatusCode = HttpStatusCode.Moved;
          //   resp.Headers.Add("Location", "/");
          //   return resp;
-            
-            
-            return sessionId;
-       
+            return sessionId;       
+        }
+
+        [HttpGet]
+        public string Test()
+        {
+            string jsonText = File.ReadAllText(@"..\src\mockdata\checkins.json");
+
+            JObject foursquareCheckins = JObject.Parse(jsonText);
+
+            JArray checkins = (JArray)foursquareCheckins["response"]["checkins"]["items"];
+
+            return (string)checkins[0]["id"];
         }
 
         //[HttpGet]

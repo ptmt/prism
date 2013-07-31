@@ -109,6 +109,7 @@
     <Compile Include="Helpers\FoursquareClientExtensions.cs" />
     <Compile Include="Helpers\SessionIdHandler.cs" />
     <Compile Include="Models\FqStep.cs" />
+    <Compile Include="Models\SourceCheckin.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
