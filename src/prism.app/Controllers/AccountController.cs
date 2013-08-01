@@ -26,10 +26,12 @@ namespace WebApplication1.Controllers
     {
         private readonly AuthorizationRoot authorizationRoot;
         //private readonly ISessionStore sessionStore;
+        private readonly FoursquareProcessing foursquareProcessing;
 
         public AccountController()
         {          
             this.authorizationRoot = new AuthorizationRoot();
+            this.foursquareProcessing = new FoursquareProcessing();
            // this.sessionStore = new InMemorySessionStore(this.Request);
         }
 
@@ -69,47 +71,47 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public string TestAuth()
-        {
-         //   var resp = new HttpResponseMessage();
-
-            string sessionId = Request.Properties[SessionIdHandler.SessionIdToken] as string;
-         //   resp.StatusCode = HttpStatusCode.Moved;
-         //   resp.Headers.Add("Location", "/");
-         //   return resp;
-            return sessionId;       
-        }
-
-        [HttpGet]
-        public string Test()
+        public FqStep NextStep()
         {
             ISessionStore sessionStore = new InMemorySessionStore(this.Request);
-            int i = (int)sessionStore["i"];
-                        
+            if (sessionStore["checkins"] == null)
+            {
+                ParseMockCheckinsIntoMemory();
+            }            
+            var totalStats = (TotalStats)sessionStore["stats"];
+            JArray checkins = (JArray)sessionStore["checkins"];
+            if (totalStats.Offset < checkins.Count) 
+            {
+                JObject jcheckin = (JObject)checkins[totalStats.Offset];
+                var currentChecking = new Checkin
+                {
+                    LocationLat = (float)jcheckin["venue"]["location"]["lat"],
+                    LocationLng = (float)jcheckin["venue"]["location"]["lng"],
+                    VenueName = (string)jcheckin["venue"]["name"],
+                    ID = (string)jcheckin["id"]
+
+                };                
+               
+                foursquareProcessing.CalculationFunctions.ForEach(c => c(currentChecking, totalStats));
+                totalStats.Offset++;
+                return new FqStep { CurrentCheckin = currentChecking, Total = totalStats };
+            }
+            else
+                return null;
+        }
+
+        private void ParseMockCheckinsIntoMemory()
+        {
+            ISessionStore sessionStore = new InMemorySessionStore(this.Request);
             string jsonText = File.ReadAllText(@"..\src\mockdata\checkins.json");
 
             JObject foursquareCheckins = JObject.Parse(jsonText);
 
             JArray checkins = (JArray)foursquareCheckins["response"]["checkins"]["items"];
-
-            i++;
-            sessionStore["i"] = i;
-            return (string)checkins[i]["id"];
+            
+            sessionStore["checkins"] = checkins;            
+            sessionStore["stats"] = new TotalStats { TotalCheckins = 0, TotalDistance = 0, Offset = 0 };
         }
-
-        //[HttpGet]
-        //public FqStep NextPoint()
-        //{
-        //    HttpContext.Current.Session["a"];
-        //   // get json from memory cache + current checkin int
-        //        // if empty then parse .json from mockdata or from server and place to store
-        //   // get new checkin object
-        //   // run functions processing
-
-        //    // calculationFunc.ForEach (c=> c (checkin, total))
-        //    // return new FgStep { CurrentCheckin = checkin, Total = total } 
-        //}
-
         
         private IClient GetFoursquareClient() {
             return authorizationRoot.Clients.First();

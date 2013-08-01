@@ -32,7 +32,7 @@ namespace Prism.App
 
             app.UseErrorPage();
 
-            app.UseSessions();
+         //   app.UseSessions();
 
             app.Use(typeof(LoggerMiddleware));                      
       

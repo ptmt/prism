@@ -20,7 +20,7 @@ namespace Prism.App.Data
 	    }
         public void Add(string key, object value)
         {
-            cache.Add(key, value, new CacheItemPolicy().AbsoluteExpiration.AddYears(1));            
+            cache.Add(key, value, DateTime.Now.AddDays(30));            
         }
 
         public Task<object> GetAsync(string key)
