@@ -36,6 +36,10 @@ namespace Prism.App.Data
             throw new NotImplementedException();
         }
 
+        public void Remove(string key)
+        {
+            cache.Remove(key);
+        }
         public object this[string key]
         {
             get

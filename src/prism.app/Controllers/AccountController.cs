@@ -78,9 +78,9 @@ namespace WebApplication1.Controllers
             {
                 ParseMockCheckinsIntoMemory();
             }            
-            var totalStats = (TotalStats)sessionStore["stats"];
+            var totalStats = (Stats)sessionStore["stats"];
             JArray checkins = (JArray)sessionStore["checkins"];
-            if (totalStats.Offset < checkins.Count) 
+            if (totalStats.Offset < checkins.Count)
             {
                 JObject jcheckin = (JObject)checkins[totalStats.Offset];
                 var currentChecking = new Checkin
@@ -90,14 +90,18 @@ namespace WebApplication1.Controllers
                     VenueName = (string)jcheckin["venue"]["name"],
                     ID = (string)jcheckin["id"]
 
-                };                
-               
+                };
+
                 foursquareProcessing.CalculationFunctions.ForEach(c => c(currentChecking, totalStats));
                 totalStats.Offset++;
                 return new FqStep { CurrentCheckin = currentChecking, Total = totalStats };
             }
             else
+            {
+                sessionStore.Remove("stats");
+                sessionStore.Remove("checkins");
                 return null;
+            }
         }
 
         private void ParseMockCheckinsIntoMemory()
@@ -110,7 +114,7 @@ namespace WebApplication1.Controllers
             JArray checkins = (JArray)foursquareCheckins["response"]["checkins"]["items"];
             
             sessionStore["checkins"] = checkins;            
-            sessionStore["stats"] = new TotalStats { TotalCheckins = 0, TotalDistance = 0, Offset = 0 };
+            sessionStore["stats"] = new Stats { TotalCheckins = 0, TotalDistance = 0, Offset = 0 };
         }
         
         private IClient GetFoursquareClient() {

@@ -15,8 +15,12 @@ namespace Prism.App.Models
         public float LocationLng { get; set; }
     }
 
-    public class TotalStats
+    public class Stats
     {
+        public Checkin PreviousCheckin { get; set; }
+        public double LastDistance { get; set; }
+
+
         public double TotalDistance { get; set; }
         public int TotalCheckins { get; set; }
 
@@ -24,8 +28,9 @@ namespace Prism.App.Models
     }
     public class FqStep
     {
+        
         public Checkin CurrentCheckin { get; set; }
-        public TotalStats Total { get; set; }
+        public Stats Total { get; set; }
 
        
     }

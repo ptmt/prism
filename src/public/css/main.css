@@ -60,6 +60,16 @@ a:hover {color:black}
 .hope-you-die { display:none; }
 .ie .container {display:none;}
 .ie .hope-you-die {display:block; }
+/*-webkit-linear-gradient(red, yellow, orange, green, blue, purple);*/
+.stats-container { background: #ede9e9;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
+.stats-container h2 { margin: 0; padding: 2px; font-size: 3em;font-weight:normal}
+
+.col1 { float: left; max-width: 15%;   margin:10px;}
+.col1 h2 {background:#7c0c50; color:white}
+.col1 span {text-align:right;}
+
+.col2 { float:left; max-width:20%;}
+.col3 { overflow-y:scroll; width:50%;height:100px;font-size:10px;padding:10px}
 
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;}
 
@@ -73,9 +83,7 @@ a:hover {color:black}
 
 .btn { padding: 4px 12px;line-height: 20px;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);background-color: whiteSmoke;border: 1px solid #BBB;border-radius: 4px;}
 
-.stats-container { position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9}
-.content { background:#E3E3E3; text-align:left; }
-.content h2 { margin: 0; font-size: 3em;padding-left:40px}
+
 .content h3 { margin-top: 20px; font-size: 1.5em;}
 .content a { color:black}
 

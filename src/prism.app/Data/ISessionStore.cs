@@ -12,5 +12,6 @@ namespace Prism.App.Data
         Task<object> GetAsync(string key);
         Task<bool> UpdateAsync(string key, string value);
         object this[string name] { get; set; }
+        void Remove(string key);
     }
 }

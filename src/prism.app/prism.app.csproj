@@ -105,7 +105,7 @@
     <Compile Include="Helpers\SessionIdHandler.cs" />
     <Compile Include="Middleware\SessionsExtensions.cs" />
     <Compile Include="Middleware\SessionsMiddleware.cs" />
-    <Compile Include="Models\FoursquareProcessing.cs" />
+    <Compile Include="Processing\FoursquareProcessing.cs" />
     <Compile Include="Models\FqStep.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
