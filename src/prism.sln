@@ -8,10 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\bootstrap.sh = ..\bootstrap.sh
 		..\build.fsx = ..\build.fsx
 		mockdata\checkins.json = mockdata\checkins.json
-		public\js\common.js = public\js\common.js
 		public\index.html = public\index.html
 		public\css\main.css = public\css\main.css
-		public\js\main.js = public\js\main.js
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -22,6 +20,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth2", "..\..\_temporary\OAuth2\OAuth2\OAuth2.csproj", "{C95637CD-25E5-483E-9C74-89FE3ADB999B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Owin.StaticFiles", "..\..\katanaproject\src\Microsoft.Owin.StaticFiles\Microsoft.Owin.StaticFiles.csproj", "{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{6E4422BB-B3E4-4480-97E6-BBF094767B0C}"
+	ProjectSection(SolutionItems) = preProject
+		public\js\common.js = public\js\common.js
+		public\js\main.js = public\js\main.js
+		public\js\spotlight.js = public\js\spotlight.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +81,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6E4422BB-B3E4-4480-97E6-BBF094767B0C} = {CCABC0D0-B4C3-47D1-9A73-CFB470754F04}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = prism.server.fsproj

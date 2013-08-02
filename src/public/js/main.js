@@ -10,22 +10,19 @@ function initMap() {
         provider = new MM.StamenTileLayer(providerName);
 
     layer = new SpotlightLayer();
-    layer.spotlight.radius = 40;
-   
+    layer.spotlight.radius = 30;  
 
     var doc = document.documentElement;
-    function getSize() {
-        return new MM.Point(mapInDom.width(), mapInDom.height());
+    function getSize() {        
+        return new MM.Point(window.innerWidth, window.innerHeight);
     }        
 
     function resize() {
         try {
             size = getSize();
             if (mapObject) mapObject.setSize(size);
-        } catch (e) {
-          console.log("resize:", [size.x, size.y], e);
-        }
-      
+        } catch (e) {          
+        }      
     }
     MM.addEvent(window, "resize", resize);
         
@@ -53,7 +50,7 @@ function startProcessing() {
 function nextStep() {
     $.get('/api/account/nextstep').success(function (data) {
         if (data) {
-            console.log(data);            
+           // console.log(data);            
             $('.total-distance').html(number_format_default(data.Total.TotalDistance) + ' km');
             $('.total-checkins').html(number_format_default(data.Total.TotalCheckins));
             layer.addLocation(new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng))

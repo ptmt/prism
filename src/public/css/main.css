@@ -64,7 +64,7 @@ a:hover {color:black}
 .stats-container { background: #ede9e9;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
 .stats-container h2 { margin: 0; padding: 2px; font-size: 3em;font-weight:normal}
 
-.col1 { float: left; max-width: 15%;   margin:10px;}
+.col1 { float: left; max-width: 20%;   margin:10px;}
 .col1 h2 {background:#7c0c50; color:white}
 .col1 span {text-align:right;}
 
