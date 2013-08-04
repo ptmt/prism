@@ -101,6 +101,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Data\ISessionStore.cs" />
     <Compile Include="Data\InMemorySessionStore.cs" />
+    <Compile Include="Helpers\Epoch.cs" />
     <Compile Include="Helpers\FoursquareClientExtensions.cs" />
     <Compile Include="Helpers\SessionIdHandler.cs" />
     <Compile Include="Middleware\SessionsExtensions.cs" />

@@ -57,8 +57,15 @@ function nextStep() {
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
-            layer.addLocation(new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng))
+            layer.addLocation(new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng));
+            console.log(data.Live.KeyValue.timeline);
+            $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, { type: 'bar', barColor: 'green' });
             nextStep();
+        }
+        else
+        {
+            // final step 
+           
         }
     });
 }

@@ -62,12 +62,36 @@ namespace Prism.App.Models
               //  stats.KeyValue["TopClient"] = topClients.Max(c => c.Value);
             });
 
+            /// Checkins timeline
+            CalculationFunctions.Add((currentCheckin, stats) =>
+            {
+                if (!stats.Temporary.ContainsKey("CheckinsTimeline"))
+                {
+                    stats.Temporary.Add("CheckinsTimeline", new Dictionary<string, int>());                    
+                }
+                var checkinsTimeline = (Dictionary<string, int>)stats.Temporary["CheckinsTimeline"];
+                string timeKey = currentCheckin.CreatedAt.Year.ToString() + currentCheckin.CreatedAt.Month.ToString() + currentCheckin.CreatedAt.Day.ToString();
+                if (checkinsTimeline.ContainsKey(timeKey))
+                    checkinsTimeline[timeKey]++;
+                else
+                    checkinsTimeline.Add(timeKey, 1);               
+            });
+
             CalculationFunctions.Add((checkin, stats) =>
             {
                 stats.PreviousCheckin = checkin;
             });
 
            
+        }
+
+        public void Finalize(Checkin checkin, LiveStats liveStats)
+        {
+            var checkinsTimeline = (Dictionary<string, int>)liveStats.Temporary["CheckinsTimeline"];
+            if (liveStats.KeyValue.ContainsKey("timeline"))
+                liveStats.KeyValue["timeline"] = checkinsTimeline.Select(c => c.Value);
+            else
+                liveStats.KeyValue.Add("timeline", checkinsTimeline.Select(c => c.Value));
         }
 
         private double CaclulateDistanceBeetweenTwoPoints(Checkin previous, Checkin current)

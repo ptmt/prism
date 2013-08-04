@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Prism.App.Models
     public class Checkin
     {
         public string ID { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public string ClientName { get; set; }
         public string VenueName { get; set; }
@@ -40,6 +42,10 @@ namespace Prism.App.Models
         public Checkin MyTopCheckin { get; set; }
 
         public Dictionary<string, object> KeyValue { get; set; }
+
+        [JsonIgnore]
+        public Dictionary<string, object> Temporary { get; set; }
+       
     }
     public class FqStep
     {

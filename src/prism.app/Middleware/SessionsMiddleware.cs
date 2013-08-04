@@ -42,7 +42,7 @@ namespace Prism.App
             }
            
             string sessionIdToken = SessionIdHandler.SessionIdToken;
-            string sessionId;
+           // string sessionId;
 
             Dictionary<string, string[]> headers =  (Dictionary<string, string[]>)environment["owin.RequestHeaders"];
 

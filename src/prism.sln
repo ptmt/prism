@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{6E4422BB-B3E4-
 	ProjectSection(SolutionItems) = preProject
 		public\js\common.js = public\js\common.js
 		public\js\main.js = public\js\main.js
+		public\js\path.js = public\js\path.js
 		public\js\spotlight.js = public\js\spotlight.js
 	EndProjectSection
 EndProject

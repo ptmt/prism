@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 
 
 
-
 namespace WebApplication1.Controllers
 {
     public class AccountController : ApiController
@@ -49,25 +48,16 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         public HttpResponseMessage Auth()
-        {         
-            var info = GetFoursquareClient().GetUserInfo(
-                 HttpUtility.ParseQueryString(this.Request.RequestUri.Query));
-
+        {
+            ISessionStore sessionStore = new InMemorySessionStore(this.Request);
+            if (sessionStore["userinfo"] == null) { 
+                var info = GetFoursquareClient().GetUserInfo(
+                     HttpUtility.ParseQueryString(this.Request.RequestUri.Query));
+                sessionStore.Add("username", info);
+            }
             var resp = new HttpResponseMessage();
-
-            var cookie = new CookieHeaderValue("session-id", "12345");
-            cookie.Expires = DateTimeOffset.Now.AddDays(1);
-            cookie.Domain = Request.RequestUri.Host;
-            cookie.Path = "/";
-
-            resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
             resp.Headers.Add("location:", "/");
-            return resp;
-
-            //TODO: save key in cookie
-            // save userinfo into session
-            // redirect
-           // return info;
+            return resp;          
         }
 
         [HttpGet]
@@ -80,6 +70,7 @@ namespace WebApplication1.Controllers
             }            
             var liveStats = (LiveStats)sessionStore["livestats"];
             JArray checkins = (JArray)sessionStore["checkins"];
+            
             if (liveStats.Offset < checkins.Count)
             {
                 JObject jcheckin = (JObject)checkins[liveStats.Offset];
@@ -90,6 +81,7 @@ namespace WebApplication1.Controllers
                     ClientName = (string)jcheckin["source"]["name"],
                     VenueName = (string)jcheckin["venue"]["name"],
                     ID = (string)jcheckin["id"],
+                    CreatedAt = ((int)jcheckin["createdAt"]).FromUnix(),
                     LikesCount = (int)jcheckin["likes"]["count"],      
                     MyVenueCheckins = (int)jcheckin["venue"]["beenHere"]["count"],                    
                     TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"]
@@ -99,6 +91,7 @@ namespace WebApplication1.Controllers
 
 
                 foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));
+                foursquareProcessing.Finalize(currentCheckin, liveStats);
                 liveStats.Offset++;
                 return new FqStep { CurrentCheckin = currentCheckin, Live = liveStats };
             }
@@ -120,7 +113,13 @@ namespace WebApplication1.Controllers
             JArray checkins = (JArray)foursquareCheckins["response"]["checkins"]["items"];
             
             sessionStore["checkins"] = checkins;
-            sessionStore["livestats"] = new LiveStats { TotalCheckins = 0, TotalDistance = 0, Offset = 0, KeyValue = new Dictionary<string,object>() };
+            sessionStore["livestats"] = new LiveStats { 
+                TotalCheckins = 0,
+                TotalDistance = 0,
+                Offset = 0,
+                KeyValue = new Dictionary<string,object>(),
+                Temporary = new Dictionary<string,object>()
+            };
         }
         
         private IClient GetFoursquareClient() {
