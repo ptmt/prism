@@ -4,7 +4,7 @@
  * canvas fillStyle (presumably, any CSS color string, e.g. "rgba(0,0,0,.5)"
  * for 50% transparent black).
  */
-var Spotlight = function(canvas, fillStyle) {
+var Spotlight = function (canvas, fillStyle) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.clear();
@@ -18,14 +18,14 @@ Spotlight.prototype = {
     radius: 30,
 
     // clearing resets the canvas and fills it with the fillStyle
-    clear: function() {
+    clear: function () {
         this.canvas.width = this.canvas.width;
         this.ctx.globalCompositeOperation = "source-over";
         this.fill();
     },
 
     // fill the canvas with the color defined by fillStyle
-    fill: function() {
+    fill: function () {
         this.ctx.fillStyle = this.fillStyle;
         this.ctx.beginPath();
         this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
@@ -36,7 +36,7 @@ Spotlight.prototype = {
      * Draw an array of points ({x, y}) as white circles. Each circle may
      * define its own radius, or we fall back on the value radius argument.
      */
-    drawPoints: function(points) {
+    drawPoints: function (points) {
         this.ctx.fillStyle = "rgba(10,10,10,.1)";
         var TWO_PI = Math.PI * 2,
             radius = this.radius;
@@ -52,7 +52,7 @@ Spotlight.prototype = {
                     : radius;
             this.ctx.beginPath();
             this.ctx.arc(p.x, p.y, r, 0, TWO_PI, true);
-          //  this.ctx.closePath();
+            //  this.ctx.closePath();
             this.ctx.fill();
         }
     },
@@ -61,7 +61,7 @@ Spotlight.prototype = {
      * Draw an array of points ({x, y}) as circles "punched out" from the fill
      * color. This produces the "spotlight" effect.
      */
-    punchout: function(points) {
+    punchout: function (points) {
         var time = +new Date();
         this.clear();
 
@@ -71,7 +71,7 @@ Spotlight.prototype = {
     }
 };
 
-var SpotlightLayer = function(canvas, fillStyle) {
+var SpotlightLayer = function (canvas, fillStyle) {
     this.parent = canvas || document.createElement("canvas");
     this.parent.style.position = "absolute";
     this.spotlight = new Spotlight(this.parent, fillStyle);
@@ -80,9 +80,9 @@ var SpotlightLayer = function(canvas, fillStyle) {
 
 SpotlightLayer.prototype = {
     positioned: false,
-    locations:  null,
+    locations: null,
 
-    addLocation: function(loc) {
+    addLocation: function (loc) {
         if (this.map) {
             loc.coord = this.map.locationCoordinate(loc);
         }
@@ -90,7 +90,7 @@ SpotlightLayer.prototype = {
         this.draw();
     },
 
-    removeLocation: function(loc) {
+    removeLocation: function (loc) {
         var len = this.locations.length,
             removed = false;
         for (var i = 0; i < len; i++) {
@@ -105,7 +105,7 @@ SpotlightLayer.prototype = {
         }
     },
 
-    addLocations: function(locs) {
+    addLocations: function (locs) {
         var len = locs.length;
         if (this.map) {
             for (var i = 0; i < len; i++) {
@@ -118,12 +118,12 @@ SpotlightLayer.prototype = {
         this.draw();
     },
 
-    removeAllLocations: function() {
+    removeAllLocations: function () {
         this.locations = [];
         this.draw();
     },
 
-    draw: function() {
+    draw: function () {
         var map = this.map,
             canvas = this.parent;
 
@@ -135,7 +135,7 @@ SpotlightLayer.prototype = {
         canvas.height = map.dimensions.y;
 
         if (this.locations && this.locations.length) {
-            var points = this.locations.map(function(loc) {
+            var points = this.locations.map(function (loc) {
                 var coord = loc.coord || (loc.coord = map.locationCoordinate(loc)),
                     point = map.coordinatePoint(coord);
                 if ("radius" in loc) point.radius = loc.radius;

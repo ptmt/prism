@@ -62,14 +62,15 @@ a:hover {color:black}
 .ie .hope-you-die {display:block; }
 /*-webkit-linear-gradient(red, yellow, orange, green, blue, purple);*/
 .stats-container { background: #ede9e9;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
-.stats-container h2 { margin: 0; padding: 2px; font-size: 3em;font-weight:normal}
+.stats-container h2, h3 { margin: 0; padding: 2px; font-weight:normal}
 
-.col1 { float: left; max-width: 20%;   margin:10px;}
-.col1 h2 {background:#7c0c50; color:white}
+.col1 { float: left; max-width: 30%;   margin:10px;}
+.col1 h2 {background:#7c0c50; color:white;font-size: 3em;text-align:right}
 .col1 span {text-align:right;}
 
-.col2 { float:left; max-width:20%;}
-.col3 { overflow-y:scroll; width:50%;height:100px;font-size:10px;padding:10px}
+.col2 { float:left; max-width:20%;margin:10px}
+.col2 h3{background:#fffb25;margin:0px;color:black}
+.col3 { overflow-y:scroll; width:20%;height:100px;font-size:10px;padding:10px}
 
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;}
 

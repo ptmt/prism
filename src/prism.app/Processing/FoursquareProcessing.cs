@@ -8,17 +8,58 @@ namespace Prism.App.Models
 {
     public class FoursquareProcessing
     {
-        public List<Action<Checkin, Stats>> CalculationFunctions; // todo replace with Task<>
+        public List<Action<Checkin, LiveStats>> CalculationFunctions; // todo replace with Task<>
 
         public FoursquareProcessing()
         {
-            CalculationFunctions = new List<Action<Checkin, Stats>>();
+            CalculationFunctions = new List<Action<Checkin, LiveStats>>();
 
             CalculationFunctions.Add((currentCheckin, stats) =>
             {                
                 stats.TotalCheckins++;
                 stats.LastDistance = CaclulateDistanceBeetweenTwoPoints(stats.PreviousCheckin, currentCheckin);
                 stats.TotalDistance+= stats.LastDistance;
+            });
+
+
+            /// MOST LIKED & MOST POPULAR
+            CalculationFunctions.Add((currentCheckin, stats) =>
+            {
+                if (stats.MostLikedCheckin == null) stats.MostLikedCheckin = currentCheckin;
+                if (stats.MostPopularCheckin == null) stats.MostPopularCheckin = currentCheckin;
+                if (stats.MostLikedCheckin.LikesCount < currentCheckin.LikesCount) stats.MostLikedCheckin = currentCheckin;
+                if (stats.MostPopularCheckin.TotalVenueCheckins < currentCheckin.TotalVenueCheckins) stats.MostPopularCheckin = currentCheckin;
+            });
+
+            /// MY TOP PLACE 
+            CalculationFunctions.Add((currentCheckin, stats) =>
+            {
+                // for example:
+                // 30 my checkins 10000 total 1000 my checkins total = 0.03 * 10000 = 300
+                // 50 my checkins 100 total checkins 1000 my checkins total = 0.05 * 100 = 5
+                // 1 my checking 10000 total 10 my checkins total
+                // rate = my_checkins * total_in_venue
+                // TODO: calibrate it
+                currentCheckin.T1Rate = currentCheckin.MyVenueCheckins * currentCheckin.TotalVenueCheckins;
+                if (stats.MyTopCheckin == null) stats.MyTopCheckin = currentCheckin;
+                if (stats.MyTopCheckin.T1Rate < currentCheckin.T1Rate) stats.MyTopCheckin = currentCheckin;
+            });
+            /// MY TOP CLIENT
+            CalculationFunctions.Add((currentCheckin, stats) =>
+            {
+                if (!stats.KeyValue.ContainsKey("TopClient"))
+                {
+                    stats.KeyValue.Add("TopClients", new Dictionary<string, int>());
+                    stats.KeyValue.Add("TopClient", String.Empty);
+                }
+                var topClients = (Dictionary<string, int>)stats.KeyValue["TopClients"];
+                if (topClients.ContainsKey(currentCheckin.ClientName))
+                    topClients[currentCheckin.ClientName]++;
+                else
+                    topClients.Add(currentCheckin.ClientName, 1);
+
+                stats.KeyValue["TopClient"] = topClients.Select(c => c.Key).Aggregate((acc, x) => acc + ", " + x);
+              //  stats.KeyValue["TopClient"] = topClients.Max(c => c.Value);
             });
 
             CalculationFunctions.Add((checkin, stats) =>

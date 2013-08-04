@@ -10,7 +10,7 @@ function initMap() {
         provider = new MM.StamenTileLayer(providerName);
 
     layer = new SpotlightLayer();
-    layer.spotlight.radius = 30;  
+    layer.spotlight.radius = 40;  
 
     var doc = document.documentElement;
     function getSize() {        
@@ -27,7 +27,7 @@ function initMap() {
     MM.addEvent(window, "resize", resize);
         
     var mapObject = new MM.Map(mapInDom[0], provider, size,
-        [new MM.DragHandler(), new MM.DoubleClickHandler(), new MM.TouchHandler()]);        
+        [new MM.DragHandler(), new MM.DoubleClickHandler(), new MM.TouchHandler(), new MM.MouseWheelHandler()]);
     mapObject.autoSize = true;
 
     mapObject.addLayer(layer);    
@@ -51,8 +51,12 @@ function nextStep() {
     $.get('/api/account/nextstep').success(function (data) {
         if (data) {
            // console.log(data);            
-            $('.total-distance').html(number_format_default(data.Total.TotalDistance) + ' km');
-            $('.total-checkins').html(number_format_default(data.Total.TotalCheckins));
+            $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
+            $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
+            $('.most-likes').html(data.Live.MostLikedCheckin.LikesCount + ' for ' + data.Live.MostLikedCheckin.VenueName);
+            $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
+            $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
+            $('.my-top-client').html(data.Live.KeyValue.TopClient);
             layer.addLocation(new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng))
             nextStep();
         }

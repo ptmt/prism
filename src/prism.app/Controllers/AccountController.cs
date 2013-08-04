@@ -78,27 +78,33 @@ namespace WebApplication1.Controllers
             {
                 ParseMockCheckinsIntoMemory();
             }            
-            var totalStats = (Stats)sessionStore["stats"];
+            var liveStats = (LiveStats)sessionStore["livestats"];
             JArray checkins = (JArray)sessionStore["checkins"];
-            if (totalStats.Offset < checkins.Count)
+            if (liveStats.Offset < checkins.Count)
             {
-                JObject jcheckin = (JObject)checkins[totalStats.Offset];
-                var currentChecking = new Checkin
+                JObject jcheckin = (JObject)checkins[liveStats.Offset];
+                var currentCheckin = new Checkin
                 {
                     LocationLat = (float)jcheckin["venue"]["location"]["lat"],
                     LocationLng = (float)jcheckin["venue"]["location"]["lng"],
+                    ClientName = (string)jcheckin["source"]["name"],
                     VenueName = (string)jcheckin["venue"]["name"],
-                    ID = (string)jcheckin["id"]
-
+                    ID = (string)jcheckin["id"],
+                    LikesCount = (int)jcheckin["likes"]["count"],      
+                    MyVenueCheckins = (int)jcheckin["venue"]["beenHere"]["count"],                    
+                    TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"]
                 };
 
-                foursquareProcessing.CalculationFunctions.ForEach(c => c(currentChecking, totalStats));
-                totalStats.Offset++;
-                return new FqStep { CurrentCheckin = currentChecking, Total = totalStats };
+                currentCheckin.LikesSummary = currentCheckin.LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;
+
+
+                foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));
+                liveStats.Offset++;
+                return new FqStep { CurrentCheckin = currentCheckin, Live = liveStats };
             }
             else
             {
-                sessionStore.Remove("stats");
+                sessionStore.Remove("livestats");
                 sessionStore.Remove("checkins");
                 return null;
             }
@@ -113,8 +119,8 @@ namespace WebApplication1.Controllers
 
             JArray checkins = (JArray)foursquareCheckins["response"]["checkins"]["items"];
             
-            sessionStore["checkins"] = checkins;            
-            sessionStore["stats"] = new Stats { TotalCheckins = 0, TotalDistance = 0, Offset = 0 };
+            sessionStore["checkins"] = checkins;
+            sessionStore["livestats"] = new LiveStats { TotalCheckins = 0, TotalDistance = 0, Offset = 0, KeyValue = new Dictionary<string,object>() };
         }
         
         private IClient GetFoursquareClient() {
