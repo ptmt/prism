@@ -13,13 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NowinWebServer", "..\..\Nowin\NowinWebServer\NowinWebServer.csproj", "{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prism.app", "prism.app\prism.app.csproj", "{F94CD73D-F902-4A36-BF6E-DF9233D60397}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth2", "..\..\_temporary\OAuth2\OAuth2\OAuth2.csproj", "{C95637CD-25E5-483E-9C74-89FE3ADB999B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Owin.StaticFiles", "..\..\katanaproject\src\Microsoft.Owin.StaticFiles\Microsoft.Owin.StaticFiles.csproj", "{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{6E4422BB-B3E4-4480-97E6-BBF094767B0C}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,16 +33,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{EFF3B76F-E9E4-4DA6-B46D-E2DEA456545E}.Release|x86.ActiveCfg = Release|Any CPU
 		{F94CD73D-F902-4A36-BF6E-DF9233D60397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F94CD73D-F902-4A36-BF6E-DF9233D60397}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F94CD73D-F902-4A36-BF6E-DF9233D60397}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -59,26 +43,6 @@ Global
 		{F94CD73D-F902-4A36-BF6E-DF9233D60397}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F94CD73D-F902-4A36-BF6E-DF9233D60397}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F94CD73D-F902-4A36-BF6E-DF9233D60397}.Release|x86.ActiveCfg = Release|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|x86.ActiveCfg = Release|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F31A42DB-2F57-4DAC-B2BC-106F2D6F3C82}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

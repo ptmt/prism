@@ -50,8 +50,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Hosting.1.1.0-beta2\lib\net40\Microsoft.Owin.Hosting.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin.StaticFiles, Version=0.23.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.StaticFiles.0.20-alpha-20220-88\lib\net40\Microsoft.Owin.StaticFiles.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NowinWebServer, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NowinWebServer.dll</HintPath>
+    </Reference>
+    <Reference Include="OAuth2, Version=0.8.2.37851, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\OAuth2.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -114,20 +126,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\katanaproject\src\Microsoft.Owin.StaticFiles\Microsoft.Owin.StaticFiles.csproj">
-      <Project>{f31a42db-2f57-4dac-b2bc-106f2d6f3c82}</Project>
-      <Name>Microsoft.Owin.StaticFiles</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Nowin\NowinWebServer\NowinWebServer.csproj">
-      <Project>{eff3b76f-e9e4-4da6-b46d-e2dea456545e}</Project>
-      <Name>NowinWebServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\_temporary\OAuth2\OAuth2\OAuth2.csproj">
-      <Project>{c95637cd-25e5-483e-9c74-89fe3adb999b}</Project>
-      <Name>OAuth2</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />
