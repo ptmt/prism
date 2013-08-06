@@ -9,7 +9,7 @@ $vagrant up
 $vagrant ssh
 ````
 
-then just run build `start.sh`:
+then just run `start.sh`:
 
 ````
 $./start.sh

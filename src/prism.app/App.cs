@@ -23,7 +23,7 @@ namespace Prism.App
             
             app.UseFileServer(options =>
             {
-                options.WithRequestPath("").WithPhysicalPath("../src/public");
+                options.WithRequestPath("").WithPhysicalPath("public");
             });
 
             app.UseSendFileFallback();
