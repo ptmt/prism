@@ -91,7 +91,7 @@ namespace WebApplication1.Controllers
 
 
                 foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));
-                foursquareProcessing.Finalize(currentCheckin, liveStats);
+                
                 liveStats.Offset++;
                 return new FqStep { CurrentCheckin = currentCheckin, Live = liveStats };
             }
@@ -99,7 +99,8 @@ namespace WebApplication1.Controllers
             {
                 sessionStore.Remove("livestats");
                 sessionStore.Remove("checkins");
-                return null;
+                foursquareProcessing.Finalize(liveStats);
+                return new FqStep { Live = liveStats, CurrentCheckin = null };
             }
         }
 
@@ -120,6 +121,8 @@ namespace WebApplication1.Controllers
                 KeyValue = new Dictionary<string,object>(),
                 Temporary = new Dictionary<string,object>()
             };
+
+            foursquareProcessing.InitFunctions.ForEach(c => c((LiveStats)sessionStore["livestats"]));
         }
         
         private IClient GetFoursquareClient() {

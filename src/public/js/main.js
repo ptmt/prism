@@ -1,9 +1,7 @@
 var layer;
 
-function initMap() {
-
-    //addBrowserClasses(document.body);      
-
+function initMap()
+{
     var mapInDom = $(".map-container"),
         size = getSize(),
         providerName = mapInDom.data("provider"),
@@ -49,7 +47,7 @@ function startProcessing() {
 }
 function nextStep() {
     $.get('/api/account/nextstep').success(function (data) {
-        if (data) {
+        if (data.CurrentCheckin) {
            // console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
@@ -58,14 +56,13 @@ function nextStep() {
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
             layer.addLocation(new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng));
-            console.log(data.Live.KeyValue.timeline);
-            $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, { type: 'bar', barColor: 'green' });
+            $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, { type: 'line', xvalues: data.Live.KeyValue.timelineX });
             nextStep();
         }
         else
         {
             // final step 
-           
+            
         }
     });
 }

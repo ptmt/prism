@@ -69,8 +69,9 @@ a:hover {color:black}
 .col1 span {text-align:right;}
 
 .col2 { float:left; max-width:20%;margin:10px}
-.col2 h3{background:#fffb25;margin:0px;color:black}
-.col3 { overflow-y:scroll; width:20%;height:100px;font-size:10px;padding:10px}
+.col2 h3 {background:#fffb25;margin:0px;color:black;font-size:1em}
+.col2 span, .col3 span {font-size:10px;text-align:right}
+.col3 { overflow-x:scroll; width:20%;height:100px;padding:10px}
 
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;}
 
