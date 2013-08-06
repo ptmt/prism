@@ -20,7 +20,7 @@ namespace Prism.App
             config.MessageHandlers.Add(new SessionIdHandler());
          
             app.UseWebApi(config);
-
+            
             app.UseFileServer(options =>
             {
                 options.WithRequestPath("").WithPhysicalPath("../src/public");
@@ -31,8 +31,6 @@ namespace Prism.App
             app.UseDiagnosticsPage("/diag.html");
 
             app.UseErrorPage();
-
-         //   app.UseSessions();
 
             app.Use(typeof(LoggerMiddleware));                      
       

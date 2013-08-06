@@ -11,7 +11,7 @@ namespace Prism.App
     {
         static void Main(string[] args)
         {            
-            string env = args.GetLength(1) > 0 ? args[0] : "dev";
+            string env = args.Length > 0 ? args[0] : "dev";
             var options = new StartOptions
             {
                 ServerFactory = "NowinWebServer.OwinServerFactory",               
@@ -24,6 +24,7 @@ namespace Prism.App
             }
             options.Urls.Add("localhost");
             options.Urls.Add("prism.phinitive.com");
+            options.Settings.Add("env", env);
 
             using (WebApp.Start<Startup>(options))
             {
