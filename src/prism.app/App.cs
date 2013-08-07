@@ -19,42 +19,16 @@ namespace Prism.App
             );
             config.MessageHandlers.Add(new SessionIdHandler());
          
-            app.UseWebApi(config);
-            
-            app.UseFileServer(options =>
-            {
-                options.WithRequestPath("").WithPhysicalPath("public");
-            });
-
-            app.UseSendFileFallback();
-            
-            app.UseDiagnosticsPage("/diag.html");
-
-            app.UseErrorPage();
-
-            app.Use(typeof(LoggerMiddleware));                      
-      
+            app.UseWebApi(config)
+               .UseFileServer(options =>
+                {
+                    options.WithRequestPath("").WithPhysicalPath("public");
+                })
+               .UseSendFileFallback()
+               .UseDiagnosticsPage("/diag.html")
+               .UseErrorPage();
             
         }
     }
-
-    public class LoggerMiddleware
-    {
-        private readonly Func<IDictionary<string, object>, Task> _next;
-        
-
-        public LoggerMiddleware(Func<IDictionary<string, object>, Task> next)
-        {
-            _next = next;          
-        }
-
-        public Task Invoke(IDictionary<string, object> env)
-        {
-            System.Diagnostics.Trace.WriteLine(string.Format("path nof found: {0}", env["owin.RequestPath"]));
-            env["owin.ResponseStatus"] = 404;
-            return _next(env);
-        }
-    }
-
 
 }

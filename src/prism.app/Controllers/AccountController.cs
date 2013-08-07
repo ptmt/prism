@@ -88,10 +88,8 @@ namespace WebApplication1.Controllers
                     IsMayor = (bool?)jcheckin["isMayor"]
                 };
 
-                currentCheckin.LikesSummary = currentCheckin.LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;
-                
-                foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));
-                
+                currentCheckin.LikesSummary = currentCheckin.LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;                
+                foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));                
                 liveStats.Offset++;
                 return new FqStep { CurrentCheckin = currentCheckin, Live = liveStats };
             }
