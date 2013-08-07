@@ -70,8 +70,10 @@ a:hover {color:black}
 
 .col2 { float:left; max-width:20%;margin:10px}
 .col2 h3 {background:#fffb25;margin:0px;color:black;font-size:1em}
-.col2 span, .col3 span {font-size:10px;text-align:right}
-.col3 { overflow-x:scroll; width:20%;height:100px;padding:10px}
+.col3 h3 {background:#b3d4fc;margin:0px;color:black;font-size:1em}
+.col2 span, .col3 .row1 span {font-size:10px;text-align:right}
+.verdict { font-size:1em !important}
+.col3 .row1 { overflow-x:scroll;padding:10px;}
 
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;}
 

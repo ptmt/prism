@@ -13,6 +13,8 @@ namespace Prism.App.Models
         public string ID { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public bool? IsMayor { get; set; }
+
         public string ClientName { get; set; }
         public string VenueName { get; set; }
         public float LocationLat { get; set; }

@@ -84,12 +84,12 @@ namespace WebApplication1.Controllers
                     CreatedAt = ((int)jcheckin["createdAt"]).FromUnix(),
                     LikesCount = (int)jcheckin["likes"]["count"],      
                     MyVenueCheckins = (int)jcheckin["venue"]["beenHere"]["count"],                    
-                    TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"]
+                    TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"],
+                    IsMayor = (bool?)jcheckin["IsMayor"]
                 };
 
                 currentCheckin.LikesSummary = currentCheckin.LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;
-
-
+                
                 foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));
                 
                 liveStats.Offset++;

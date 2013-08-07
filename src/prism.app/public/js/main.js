@@ -1,73 +1,84 @@
-var layer;
+var spotlayer;
+var pathlayer;
 
-function initMap()
-{
+function initMap() {
     var mapInDom = $(".map-container"),
         size = getSize(),
         providerName = mapInDom.data("provider"),
         provider = new MM.StamenTileLayer(providerName);
 
-    layer = new SpotlightLayer();
-    layer.spotlight.radius = 40;  
+    spotlayer = new SpotlightLayer();
+    pathlayer = new PathLayer();
 
     var doc = document.documentElement;
-    function getSize() {        
+    function getSize() {
         return new MM.Point(window.innerWidth, window.innerHeight);
-    }        
+    }
 
     function resize() {
         try {
             size = getSize();
             if (mapObject) mapObject.setSize(size);
-        } catch (e) {          
-        }      
+        } catch (e) {
+        }
     }
     MM.addEvent(window, "resize", resize);
-        
+
     var mapObject = new MM.Map(mapInDom[0], provider, size,
         [new MM.DragHandler(), new MM.DoubleClickHandler(), new MM.TouchHandler(), new MM.MouseWheelHandler()]);
     mapObject.autoSize = true;
 
-    mapObject.addLayer(layer);    
-        
+    mapObject.addLayer(spotlayer);
+    mapObject.addLayer(pathlayer);
+
     var didSetLimits = provider.setCoordLimits(mapObject);
-                
+
     mapObject.setCenterZoom(new MM.Location(55.0398, 82.902), 12);
 
-    var hasher = new MM.Hash(mapObject);        
+    var hasher = new MM.Hash(mapObject);
 }
 
 function initSignIn() {
-    $.get('/api/account/login').success(function (signinlink) { $('.signin-button').attr('href', signinlink); });        
+    $.get('/api/account/login').success(function (signinlink) { $('.signin-button').attr('href', signinlink); });
 }
 
 function startProcessing() {
-    $('.invite-form').hide();    
+    $('.invite-form').hide();
     nextStep();
+}
+function tooltipCheckinFormatter(sparkline, options, fields) {
+    return "checkins";
 }
 function nextStep() {
     $.get('/api/account/nextstep').success(function (data) {
         if (data.CurrentCheckin) {
-           // console.log(data);            
+            // console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
             $('.most-likes').html(data.Live.MostLikedCheckin.LikesCount + ' for ' + data.Live.MostLikedCheckin.VenueName);
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
-            layer.addLocation(new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng));
-            $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, { type: 'line', xvalues: data.Live.KeyValue.timelineX });
+            var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
+            loc.isMayor = data.CurrentCheckin.IsMayor;
+            spotlayer.addLocation(loc);
+            pathlayer.addLocation(loc);
+            $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, {
+                type: 'line',
+                tooltipFormatter: function tooltipCheckinFormatter(sparkline, options, fields) {
+                    return fields.y + " checkins per day at " + data.Live.KeyValue.timelineX[fields.x];
+                }
+            });
             nextStep();
         }
-        else
-        {
+        else {
             // final step 
-            
+
         }
     });
 }
 function number_format_default(number) { return number_format(number, 0, ',', ' '); }
-function number_format(number, decimals, dec_point, thousands_sep) {   
+function number_format(number, decimals, dec_point, thousands_sep) {
     var n = !isFinite(+number) ? 0 : +number,
         prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
         sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
@@ -91,10 +102,9 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
 $(function () {
     var isDebug = true;
-    if (isDebug)
-    {
+    if (isDebug) {
         startProcessing();
     }
     initMap();
-    initSignIn();    
+    initSignIn();
 });
