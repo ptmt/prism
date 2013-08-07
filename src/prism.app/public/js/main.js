@@ -62,6 +62,7 @@ function nextStep() {
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
             loc.createdat = data.CurrentCheckin.CreatedAt;
+            loc.radius = loc.isMayor ? 50 : 25;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);
             $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, {

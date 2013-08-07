@@ -11,7 +11,7 @@ Path.prototype = {
     // clearing resets the canvas and fills it with the fillStyle
     clear: function () {
         this.canvas.width = this.canvas.width;
-        this.ctx.globalCompositeOperation = "source-over";
+        this.ctx.globalCompositeOperation = "destination-atop";
         //  this.fill();
     },
 
@@ -35,9 +35,7 @@ Path.prototype = {
         if (green > 255) green = 255;
         var blue = Math.round(this.getColor(timeCode) - 510);
         if (blue < 0) blue = 0;
-        if (blue > 255) blue = 255;
-        console.log('rgb(' + red + ',' + green + ',' + blue + ')');
-
+        if (blue > 255) blue = 255;       
         this.ctx.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
         this.ctx.stroke();
     },
