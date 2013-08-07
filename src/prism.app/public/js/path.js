@@ -1,6 +1,8 @@
 var Path = function (canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
+    this.startDate = Date.parse("2013-01-01T10:51:52");
+    this.endDate = new Date();
 };
 
 Path.prototype = {
@@ -12,17 +14,43 @@ Path.prototype = {
         this.ctx.globalCompositeOperation = "source-over";
         //  this.fill();
     },
-    /**
-     * Draw an array of points ({x, y}) as white circles. Each circle may
-     * define its own radius, or we fall back on the value radius argument.
-     */
-    drawPoints: function (points) {
-        for (var i = 0; i < points.length; i++) {
-            var p = points[i];
-            this.ctx.beginPath();
-            this.ctx.line()
-            this.ctx.closePath();
 
+    getColor: function (currentDate) {
+        return (765 / (this.endDate - this.startDate) * (currentDate - this.startDate));
+    },
+
+    drawPoint: function (point, prevpoint, map) {
+        var p1 = map.coordinatePoint(point.coord);
+        var p2 = map.coordinatePoint(prevpoint.coord);
+        this.ctx.beginPath();
+        this.ctx.moveTo(p2.x, p2.y);
+        this.ctx.lineTo(p1.x, p1.y);
+        this.ctx.lineWidth = 1;
+        timeCode = Date.parse(point.createdat);
+
+        var red = Math.round(this.getColor(timeCode));
+        if (red > 255) red = 255;
+        var green = Math.round(this.getColor(timeCode) - 255);
+        if (green < 0) green = 0;
+        if (green > 255) green = 255;
+        var blue = Math.round(this.getColor(timeCode) - 510);
+        if (blue < 0) blue = 0;
+        if (blue > 255) blue = 255;
+        console.log('rgb(' + red + ',' + green + ',' + blue + ')');
+
+        this.ctx.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
+        this.ctx.stroke();
+    },
+
+    drawPoints: function (points, map) {
+        if (points.length > 1) {
+            for (var i = 1; i < points.length; i++) {
+                var p = points[i];
+                this.ctx.beginPath();
+                this.ctx.moveTo(points[i - 1].x, points[i - 1].y);
+                this.ctx.lineTo(p.x, p.y);
+                this.drawPoint(points[i], points[i - 1], map);
+            }
         }
     },
 
@@ -45,7 +73,7 @@ PathLayer.prototype = {
             loc.coord = this.map.locationCoordinate(loc);
         }
         this.locations.push(loc);
-        this.draw();
+        this.drawlast();
     },
 
     removeLocation: function (loc) {
@@ -68,6 +96,17 @@ PathLayer.prototype = {
         this.draw();
     },
 
+    drawlast: function () {
+        var map = this.map,
+            canvas = this.parent;
+        if (this.locations.length > 1)
+            this.path.drawPoint(
+        		this.locations[this.locations.length - 1]
+        		, this.locations[this.locations.length - 2]
+        		, map
+        		);
+    },
+
     draw: function () {
         var map = this.map,
             canvas = this.parent;
@@ -80,13 +119,7 @@ PathLayer.prototype = {
         canvas.height = map.dimensions.y;
 
         if (this.locations && this.locations.length) {
-            var points = this.locations.map(function (loc) {
-                var coord = loc.coord || (loc.coord = map.locationCoordinate(loc)),
-                    point = map.coordinatePoint(coord);
-                if ("radius" in loc) point.radius = loc.radius;
-                return point;
-            });
-            this.path.drawPoints(points);
+            this.path.drawPoints(this.locations, map);
         } else {
             this.path.clear();
         }

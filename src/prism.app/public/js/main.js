@@ -61,6 +61,7 @@ function nextStep() {
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
+            loc.createdat = data.CurrentCheckin.CreatedAt;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);
             $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, {
