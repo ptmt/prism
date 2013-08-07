@@ -4,7 +4,7 @@ prism
 Jenkins Build Status: http://jenkins.phinitive.com/buildStatus/icon?job=PRISM 
 
 
-For build make sure you have installed mono 3.2+
+For building solution under Linux make sure you have installed mono 3.2+
 
 or use vagrantup:
 ````
@@ -18,3 +18,4 @@ then run `build.sh` and start:
 $ ./build.sh
 $ mono build/Prism.App.exe &
 ````
+

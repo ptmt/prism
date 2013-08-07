@@ -131,7 +131,10 @@
     <Compile Include="Helpers\Epoch.cs" />
     <Compile Include="Helpers\FoursquareClientExtensions.cs" />
     <Compile Include="Helpers\SessionIdHandler.cs" />
+    <Compile Include="Middleware\Logger.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Modules\AccountModule.cs" />
+    <Compile Include="OwinConstants.cs" />
     <Compile Include="Processing\FoursquareProcessing.cs" />
     <Compile Include="Models\FqStep.cs" />
     <Compile Include="Program.cs" />
@@ -140,6 +143,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="runmono.sh" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />
@@ -204,6 +208,16 @@
     <Content Include="public\js\vendor\tile.stamen.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Nancy\src\Nancy.Owin\Nancy.Owin.csproj">
+      <Project>{d6b2480c-2a52-4d02-9477-d387d7a486e5}</Project>
+      <Name>Nancy.Owin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Nancy\src\Nancy\Nancy.csproj">
+      <Project>{34576216-0dca-4b0f-a0dc-9075e75a676f}</Project>
+      <Name>Nancy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.8\tools\Microsoft.Bcl.Build.targets" />

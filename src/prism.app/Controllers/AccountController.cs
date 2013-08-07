@@ -28,10 +28,16 @@ namespace WebApplication1.Controllers
         private readonly FoursquareProcessing foursquareProcessing;
 
         public AccountController()
-        {          
-            this.authorizationRoot = new AuthorizationRoot();
-            this.foursquareProcessing = new FoursquareProcessing();
-           // this.sessionStore = new InMemorySessionStore(this.Request);
+        {
+            try 
+            { 
+                this.authorizationRoot = new AuthorizationRoot();
+                this.foursquareProcessing = new FoursquareProcessing();
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message, ee.StackTrace);
+            }           
         }
 
         [HttpGet]
@@ -63,42 +69,49 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public FqStep NextStep()
         {
-            ISessionStore sessionStore = new InMemorySessionStore(this.Request);
-            if (sessionStore["checkins"] == null)
-            {
-                ParseMockCheckinsIntoMemory();
-            }            
-            var liveStats = (LiveStats)sessionStore["livestats"];
-            JArray checkins = (JArray)sessionStore["checkins"];
-            
-            if (liveStats.Offset < checkins.Count)
-            {
-                JObject jcheckin = (JObject)checkins[liveStats.Offset];
-                var currentCheckin = new Checkin
+            try { 
+                ISessionStore sessionStore = new InMemorySessionStore(this.Request);
+                if (sessionStore["checkins"] == null)
                 {
-                    LocationLat = (float)jcheckin["venue"]["location"]["lat"],
-                    LocationLng = (float)jcheckin["venue"]["location"]["lng"],
-                    ClientName = (string)jcheckin["source"]["name"],
-                    VenueName = (string)jcheckin["venue"]["name"],
-                    ID = (string)jcheckin["id"],
-                    CreatedAt = ((int)jcheckin["createdAt"]).FromUnix(),
-                    LikesCount = (int)jcheckin["likes"]["count"],      
-                    MyVenueCheckins = (int)jcheckin["venue"]["beenHere"]["count"],                    
-                    TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"],
-                    IsMayor = (bool?)jcheckin["isMayor"]
-                };
+                    ParseMockCheckinsIntoMemory();
+                }            
+                var liveStats = (LiveStats)sessionStore["livestats"];
+                JArray checkins = (JArray)sessionStore["checkins"];
+            
+                if (liveStats.Offset < checkins.Count)
+                {
+                    JObject jcheckin = (JObject)checkins[liveStats.Offset];
+                    var currentCheckin = new Checkin
+                    {
+                        LocationLat = (float)jcheckin["venue"]["location"]["lat"],
+                        LocationLng = (float)jcheckin["venue"]["location"]["lng"],
+                        ClientName = (string)jcheckin["source"]["name"],
+                        VenueName = (string)jcheckin["venue"]["name"],
+                        ID = (string)jcheckin["id"],
+                        CreatedAt = ((int)jcheckin["createdAt"]).FromUnix(),
+                        LikesCount = (int)jcheckin["likes"]["count"],      
+                        MyVenueCheckins = (int)jcheckin["venue"]["beenHere"]["count"],                    
+                        TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"],
+                        IsMayor = (bool?)jcheckin["isMayor"]
+                    };
 
-                currentCheckin.LikesSummary = currentCheckin.LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;                
-                foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));                
-                liveStats.Offset++;
-                return new FqStep { CurrentCheckin = currentCheckin, Live = liveStats };
-            }
-            else
+                    currentCheckin.LikesSummary = currentCheckin.LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;                
+                    foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats));                
+                    liveStats.Offset++;
+                    return new FqStep { CurrentCheckin = currentCheckin, Live = liveStats };
+                }
+                else
+                {
+                    sessionStore.Remove("livestats");
+                    sessionStore.Remove("checkins");
+                    foursquareProcessing.Finalize(liveStats);
+                    return new FqStep { Live = liveStats, CurrentCheckin = null };
+                }
+             }
+            catch (Exception ee)
             {
-                sessionStore.Remove("livestats");
-                sessionStore.Remove("checkins");
-                foursquareProcessing.Finalize(liveStats);
-                return new FqStep { Live = liveStats, CurrentCheckin = null };
+                Console.Write(ee.Message, ee.StackTrace);
+                return null;
             }
         }
 

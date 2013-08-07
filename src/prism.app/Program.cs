@@ -29,7 +29,7 @@ namespace Prism.App
             using (WebApp.Start<Startup>(options))
             {
                 Console.WriteLine("Running a http server on port 8888");
-                Console.ReadKey();
+                while (true) { }
             }
         }
     }
