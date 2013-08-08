@@ -49,8 +49,9 @@ namespace Prism.App.Modules
                 ISessionStore sessionStore = new InMemorySessionStore(this.Request);
                 if (sessionStore["checkins"] == null)
                 {
-                    InitSocialPlayer();
-                    ParseMockCheckinsIntoMemory();
+                    InitSocialPlayer(sessionStore);
+                    ParseMockCheckinsIntoMemory(sessionStore);
+                    foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
                 }
                 var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
                 var socialPlayer = (SocialPlayer)sessionStore["socialplayer"];
@@ -83,16 +84,22 @@ namespace Prism.App.Modules
             return authorizationRoot.Clients.First();
         }
 
-        private void InitSocialPlayer()
-        {
-            ISessionStore sessionStore = new InMemorySessionStore(this.Request);
+        public static void InitSocialPlayer(ISessionStore sessionStore)
+        {            
             sessionStore["socialplayer"] = new SocialPlayer();
         }
-         private void ParseMockCheckinsIntoMemory()
+
+        public static string GetCheckinsFilename()
         {
-            ISessionStore sessionStore = new InMemorySessionStore(this.Request);
             char s = System.IO.Path.DirectorySeparatorChar;
-            string jsonText = File.ReadAllText(".." + s + "src" + s + "mockdata" + s + "checkins.json");
+            return "mockdata" + s + "checkins.json";
+        }
+
+        public static void ParseMockCheckinsIntoMemory(ISessionStore sessionStore)
+        {
+
+
+            string jsonText = File.ReadAllText(GetCheckinsFilename());
 
             JObject foursquareCheckins = JObject.Parse(jsonText);
 
@@ -108,7 +115,7 @@ namespace Prism.App.Modules
                 Temporary = new Dictionary<string, object>()
             };            
 
-            foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
+           
         }
         
     }

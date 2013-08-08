@@ -14,10 +14,14 @@ namespace Prism.App.Data
         private string sessionId;
         private ObjectCache cache;
 
+        public InMemorySessionStore()
+        {
+            sessionId = Guid.NewGuid().ToString();            
+            cache = MemoryCache.Default;
+        }
         public InMemorySessionStore (Request httpReq)
 	    {
-            sessionId = httpReq.Cookies[SessionIdHandler.SessionIdToken].ToString();
-            //sessionId = httpReq.Properties[SessionIdHandler.SessionIdToken].ToString();
+            sessionId = httpReq.Cookies[SessionIdHandler.SessionIdToken].ToString();            
             cache = MemoryCache.Default;
 	    }
         public void Add(string key, object value)

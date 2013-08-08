@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Prism.App.Data
 {
-    interface ISessionStore
+    public interface ISessionStore
     {
         void Add(string key, object value);        
         Task<object> GetAsync(string key);

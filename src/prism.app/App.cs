@@ -13,26 +13,12 @@ namespace Prism.App
     {        
         public void Configuration(IAppBuilder app)
         {
-            app.Use(typeof(LoggerMiddleware));
-
-            //HttpConfiguration config = new HttpConfiguration();
-            //config.Routes.MapHttpRoute(
-            //    name: "DefaultApi",
-            //    routeTemplate: "api/{controller}/{action}/{id}",
-            //    defaults: new { id = RouteParameter.Optional }
-            //);            
-            //config.MessageHandlers.Add(new SessionIdHandler());
+            app.Use(typeof(LoggerMiddleware));         
 
             app.UseLogger()
-               .UseErrorPage()
-              // .UseStaticFiles("public")
-               .UseNancy()
-                //.UseWebApi(config)
-             
-               
-               //.UseSendFileFallback()
-               .UseDiagnosticsPage("/test.html");
-               
+               .UseErrorPage()          
+               .UseNancy()            
+               .UseDiagnosticsPage("/test.html");               
             
         }
     }
