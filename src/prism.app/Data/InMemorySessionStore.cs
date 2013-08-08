@@ -4,7 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.Caching; 
+using System.Runtime.Caching;
+using Nancy; 
 
 namespace Prism.App.Data
 {
@@ -13,9 +14,10 @@ namespace Prism.App.Data
         private string sessionId;
         private ObjectCache cache;
 
-        public InMemorySessionStore (HttpRequestMessage httpReq)
+        public InMemorySessionStore (Request httpReq)
 	    {
-            sessionId = httpReq.Properties[SessionIdHandler.SessionIdToken].ToString();
+            sessionId = httpReq.Cookies[SessionIdHandler.SessionIdToken].ToString();
+            //sessionId = httpReq.Properties[SessionIdHandler.SessionIdToken].ToString();
             cache = MemoryCache.Default;
 	    }
         public void Add(string key, object value)

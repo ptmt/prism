@@ -39,7 +39,7 @@ function initMap() {
 }
 
 function initSignIn() {
-    $.get('/api/account/login').success(function (signinlink) { $('.signin-button').attr('href', signinlink); });
+    $.get('/api/login').success(function (signinlink) { $('.signin-button').attr('href', signinlink); });
 }
 
 function startProcessing() {
@@ -50,7 +50,7 @@ function tooltipCheckinFormatter(sparkline, options, fields) {
     return "checkins";
 }
 function nextStep() {
-    $.get('/api/account/nextstep').success(function (data) {
+    $.get('/api/nextstep').success(function (data) {
         if (data.CurrentCheckin) {
             // console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');

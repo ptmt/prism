@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nancy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -9,24 +10,23 @@ using System.Threading.Tasks;
 
 namespace Prism.App
 {
-    public class SessionIdHandler : DelegatingHandler
+    public class SessionIdHandler
     {
-        static public string SessionIdToken = "prismid";
+        static public string SessionIdToken = "connect.sid";
 
-        async protected override Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request, CancellationToken cancellationToken)
+        static public Response CookieInject(
+            NancyContext context)
         {
-            string sessionId;
+            string sessionId;           
+            string cookie = String.Empty;
 
-            // Try to get the session ID from the request; otherwise create a new ID.
-            var cookie = request.Headers.GetCookies(SessionIdToken).FirstOrDefault();
-            if (cookie == null)
+            if (context.Request.Cookies.TryGetValue(SessionIdToken, out cookie))
             {
                 sessionId = Guid.NewGuid().ToString();
             }
             else
             {
-                sessionId = cookie[SessionIdToken].Value;
+                sessionId = cookie;
                 try
                 {
                     Guid guid = Guid.Parse(sessionId);
@@ -37,18 +37,18 @@ namespace Prism.App
                     sessionId = Guid.NewGuid().ToString();
                 }
             }            
-            request.Properties[SessionIdToken] = sessionId;            
-            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+            //context.request.Properties[SessionIdToken] = sessionId;            
+            //HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+            //var env = (IDictionary<string, object>)Context.Items[NancyOwinHost.RequestEnvironmentKey];
 
-            var cookieHeader = new CookieHeaderValue(SessionIdToken, sessionId);
-            cookieHeader.Domain = "phinitive.com";
-            cookieHeader.Path = "/";
-            cookieHeader.Expires = DateTimeOffset.Now.AddDays(30);
-            response.Headers.AddCookies(new CookieHeaderValue[] {
-                cookieHeader
+            context.Response.Cookies.Add(new Nancy.Cookies.NancyCookie(SessionIdToken, sessionId)
+            {
+                Domain = "phinitive.com",
+                Path = "/",
+                Expires = new DateTime?(DateTime.Now.AddDays(30))
             });
 
-            return response;
+            return context.Response; ;
         }
 
 

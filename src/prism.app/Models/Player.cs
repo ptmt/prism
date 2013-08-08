@@ -14,7 +14,7 @@ namespace Prism.App.Models
 
         /// <summary>
         /// Experience is a summarization of all your Social Networks activity. 
-        /// For example, each checkin at Foursquare gives you a experience points. Every single photo on a instagram, of course with likes and comments.
+        /// For example, each checkin at Foursquare gives you a experience points. Every single photo on the instagram, of course with likes and comments.
         /// everty tweet and so on.
         /// </summary>
         public long Exp { get; set; }
