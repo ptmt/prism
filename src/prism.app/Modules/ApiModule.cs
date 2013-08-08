@@ -91,7 +91,8 @@ namespace Prism.App.Modules
          private void ParseMockCheckinsIntoMemory()
         {
             ISessionStore sessionStore = new InMemorySessionStore(this.Request);
-            string jsonText = File.ReadAllText(@"..\src\mockdata\checkins.json");
+            char s = System.IO.Path.DirectorySeparatorChar;
+            string jsonText = File.ReadAllText(".." + s + "src" + s + "mockdata" + s + "checkins.json");
 
             JObject foursquareCheckins = JObject.Parse(jsonText);
 
