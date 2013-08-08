@@ -61,7 +61,7 @@ function nextStep() {
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
-            loc.createdat = data.CurrentCheckin.CreatedAt;
+            loc.createdat = data.CurrentCheckin.CreatedAtStr;
             loc.radius = loc.isMayor ? 50 : 25;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);
@@ -71,6 +71,8 @@ function nextStep() {
                     return fields.y + " checkins per day at " + data.Live.KeyValue.timelineX[fields.x];
                 }
             });
+            $('.player-level').html(data.Player.Level);
+            $('.player-level').attr('title', 'exp='+ data.Player.Exp);                
             nextStep();
         }
         else {

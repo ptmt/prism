@@ -121,15 +121,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Data\ISessionStore.cs" />
     <Compile Include="Data\InMemorySessionStore.cs" />
     <Compile Include="Helpers\Epoch.cs" />
     <Compile Include="Helpers\FoursquareClientExtensions.cs" />
     <Compile Include="Helpers\SessionIdHandler.cs" />
     <Compile Include="Middleware\Logger.cs" />
-    <Compile Include="Models\Player.cs" />
-    <Compile Include="Modules\AccountModule.cs" />
+    <Compile Include="Models\FoursquareCheckin.cs" />
+    <Compile Include="Models\FoursquareLiveStats.cs" />
+    <Compile Include="Models\SocialExperienceConstants.cs" />
+    <Compile Include="Models\SocialPlayer.cs" />
+    <Compile Include="Modules\ApiModule.cs" />
     <Compile Include="OwinConstants.cs" />
     <Compile Include="Processing\FoursquareProcessing.cs" />
     <Compile Include="Models\FqStep.cs" />

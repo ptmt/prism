@@ -26,8 +26,8 @@ Path.prototype = {
         this.ctx.moveTo(p2.x, p2.y);
         this.ctx.lineTo(p1.x, p1.y);
         this.ctx.lineWidth = 1;
-        timeCode = Date.parse(point.createdat);
-
+        timeCode = point.createdat;
+        console.log(point.createdat, this.getColor(timeCode));
         var red = Math.round(this.getColor(timeCode));
         if (red > 255) red = 255;
         var green = Math.round(this.getColor(timeCode) - 255);

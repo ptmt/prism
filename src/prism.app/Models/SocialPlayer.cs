@@ -10,14 +10,16 @@ namespace Prism.App.Models
     {
         public int ID { get; set; }
 
-        public int Level { get; set; }
 
         /// <summary>
         /// Experience is a summarization of all your Social Networks activity. 
         /// For example, each checkin at Foursquare gives you a experience points. Every single photo on the instagram, of course with likes and comments.
-        /// everty tweet and so on.
+        /// Everty tweet and so on.
         /// </summary>
-        public long Exp { get; set; }
+        private long exp;
+        public long Exp { get { return exp; } }
+
+        public int Level { get { return (int)Math.Round(Math.Log(Exp + 1, SocialExperienceConstants.LEVELFX_LOGARITHM_BASE)); } }       
 
         /// <summary>
         /// This skill is only about likes and friends you have and related activity.
@@ -31,5 +33,12 @@ namespace Prism.App.Models
         /// Total kilometers and total diffirent places and average kilometers per one place.
         /// </summary>
         public float ExplorerSkill { get; set; }
+
+
+        public void Apply(long points)
+        {
+            if (points > 0)
+                exp += points;
+        }
     }
 }

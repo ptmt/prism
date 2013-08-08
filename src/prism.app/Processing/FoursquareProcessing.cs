@@ -8,17 +8,17 @@ namespace Prism.App.Models
 {
     public class FoursquareProcessing
     {
-        public List<Action<LiveStats>> InitFunctions; // todo replace with Task<>
+        public List<Action<FoursquareLiveStats>> InitFunctions; // todo replace with Task<>
 
-        public List<Action<Checkin, LiveStats>> CalculationFunctions; // todo replace with Task<>
+        public List<Action<FoursquareCheckin, FoursquareLiveStats, SocialPlayer>> CalculationFunctions; // todo replace with Task<>
 
         public FoursquareProcessing()
         {
-            CalculationFunctions = new List<Action<Checkin, LiveStats>>();
-            InitFunctions = new List<Action<LiveStats>>();
+            CalculationFunctions = new List<Action<FoursquareCheckin, FoursquareLiveStats, SocialPlayer>>();
+            InitFunctions = new List<Action<FoursquareLiveStats>>();
 
             /// Common routines
-            CalculationFunctions.Add((currentCheckin, stats) =>
+            CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
             {                
                 stats.TotalCheckins++;
                 stats.LastDistance = CaclulateDistanceBeetweenTwoPoints(stats.PreviousCheckin, currentCheckin);
@@ -27,7 +27,7 @@ namespace Prism.App.Models
 
 
             /// MOST LIKED & MOST POPULAR
-            CalculationFunctions.Add((currentCheckin, stats) =>
+            CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
             {
                 if (stats.MostLikedCheckin == null) stats.MostLikedCheckin = currentCheckin;
                 if (stats.MostPopularCheckin == null) stats.MostPopularCheckin = currentCheckin;
@@ -36,7 +36,7 @@ namespace Prism.App.Models
             });
 
             /// MY TOP PLACE 
-            CalculationFunctions.Add((currentCheckin, stats) =>
+            CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
             {
                 // current 
                 // rate = my_checkins * total_in_venue
@@ -47,7 +47,7 @@ namespace Prism.App.Models
             });
 
             /// MY TOP CLIENT
-            CalculationFunctions.Add((currentCheckin, stats) =>
+            CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
             {
                 if (!stats.KeyValue.ContainsKey("TopClient"))
                 {
@@ -64,8 +64,9 @@ namespace Prism.App.Models
             });
 
             TimelineProcessingTasks();
+            ExperienceAccumulationTasks();
 
-            CalculationFunctions.Add((checkin, stats) =>
+            CalculationFunctions.Add((checkin, stats, socialPlayer) =>
             {
                 stats.PreviousCheckin = checkin;
             });
@@ -89,7 +90,7 @@ namespace Prism.App.Models
             });
 
 
-            CalculationFunctions.Add((currentCheckin, stats) =>
+            CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
             {
                 var timeline = (List<int>)stats.KeyValue["timeline"];
                 var timelineX = (List<string>)stats.KeyValue["timelineX"];
@@ -113,26 +114,18 @@ namespace Prism.App.Models
 
             });
         }
-        public void Finalize(LiveStats liveStats)
-        {
-            //var sourceTimeline = (Dictionary<string, int>)liveStats.Temporary["CheckinsTimeline"];
-            //if (!liveStats.KeyValue.ContainsKey("timeline"))
-            //    liveStats.KeyValue.Add("timeline", new List<int>());
-            //else
-            //    liveStats.KeyValue["timeline"] = new List<int>();
 
-            //var timeline = (List<int>)liveStats.KeyValue["timeline"];
-            
-            //var currentDate = (DateTime)liveStats.Temporary["StartDate"];
-            //while (currentDate < (DateTime)liveStats.Temporary["EndDate"])
-            //{
-            //    string timelineKey = GetTimelineKey(currentDate);
-            //    currentDate.AddDays(1);
-            //    if (sourceTimeline.ContainsKey(timelineKey))
-            //        timeline.Add(sourceTimeline[timelineKey]);
-            //    else
-            //        timeline.Add(0);
-            //}
+        private void ExperienceAccumulationTasks()
+        {
+            CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
+            {
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.BASE_CHECKIN);
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.ONE_KILOMETER * (int)stats.LastDistance);
+                
+            });
+        }
+        public void Finalize(FoursquareLiveStats liveStats)
+        {        
             
             
         }
@@ -142,7 +135,7 @@ namespace Prism.App.Models
             return forDateTime.ToShortDateString();//.Year.ToString() + forDateTime.Month.ToString() + forDateTime.Day.ToString();
         }
 
-        private double CaclulateDistanceBeetweenTwoPoints(Checkin previous, Checkin current)
+        private double CaclulateDistanceBeetweenTwoPoints(FoursquareCheckin previous, FoursquareCheckin current)
         {
             if (previous == null) return 0;
 
