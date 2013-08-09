@@ -19,9 +19,9 @@ namespace Prism.App.Data
             sessionId = Guid.NewGuid().ToString();            
             cache = MemoryCache.Default;
         }
-        public InMemorySessionStore (Request httpReq)
+        public InMemorySessionStore (NancyContext context)
 	    {
-            sessionId = httpReq.Cookies[SessionIdHandler.SessionIdToken].ToString();            
+            sessionId = context.Parameters.SessionId;//httpReq.Cookies[SessionIdHandler.SessionIdToken].ToString();            
             cache = MemoryCache.Default;
 	    }
         public void Add(string key, object value)

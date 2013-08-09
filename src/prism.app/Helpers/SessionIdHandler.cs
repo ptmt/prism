@@ -12,15 +12,15 @@ namespace Prism.App
 {
     public class SessionIdHandler
     {
-        static public string SessionIdToken = "connect.sid";
+        static public string SessionIdToken = "prismid";
 
-        static public Response CookieInject(
+        static public Response SessionIdCreate(
             NancyContext context)
         {
             string sessionId;           
             string cookie = String.Empty;
-
-            if (context.Request.Cookies.TryGetValue(SessionIdToken, out cookie))
+            context.Request.Cookies.TryGetValue(SessionIdToken, out cookie);
+            if (String.IsNullOrEmpty(cookie))
             {
                 sessionId = Guid.NewGuid().ToString();
             }
@@ -41,14 +41,34 @@ namespace Prism.App
             //HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
             //var env = (IDictionary<string, object>)Context.Items[NancyOwinHost.RequestEnvironmentKey];
 
-            context.Response.Cookies.Add(new Nancy.Cookies.NancyCookie(SessionIdToken, sessionId)
-            {
-                Domain = "phinitive.com",
-                Path = "/",
-                Expires = new DateTime?(DateTime.Now.AddDays(30))
-            });
+            //var cookieItem = new Nancy.Cookies.NancyCookie(SessionIdToken, sessionId)
+            //{
+            //    Domain = "phinitive.com",
+            //    Path = "/",
+            //    Expires = new DateTime?(DateTime.Now.AddDays(30))
+            //};
 
-            return context.Response; ;
+            context.Parameters.SessionId = sessionId;
+            
+            return null; 
+        }
+
+        static public void CookieInject(
+            NancyContext context)
+        {
+            if (context.Parameters.SessionId)
+            {
+
+                var cookieItem = new Nancy.Cookies.NancyCookie(SessionIdToken, context.Parameters.SessionId)
+                {
+                    Domain = "phinitive.com",
+                    Path = "/",
+                    Expires = new DateTime?(DateTime.Now.AddDays(30))
+                };
+
+                context.Response.AddCookie(cookieItem);
+            }
+            //return null;
         }
 
 

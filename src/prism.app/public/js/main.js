@@ -71,8 +71,8 @@ function nextStep() {
                     return fields.y + " checkins per day at " + data.Live.KeyValue.timelineX[fields.x];
                 }
             });
-            $('.player-level').html(data.Player.Level);
-            $('.player-level').attr('title', 'exp='+ data.Player.Exp);                
+            $('.player-level').html(data.Player.Level + ' lvl');
+            $('.player-level').append('exp='+ data.Player.Exp);                
             nextStep();
         }
         else {

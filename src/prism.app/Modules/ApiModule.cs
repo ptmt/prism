@@ -25,7 +25,8 @@ namespace Prism.App.Modules
             this.authorizationRoot = new AuthorizationRoot();
             this.foursquareProcessing = new FoursquareProcessing();
 
-           // Before += SessionIdHandler.CookieInject;
+            Before += SessionIdHandler.SessionIdCreate;
+            After += SessionIdHandler.CookieInject;
             
             Get["/login"] = _ =>
             {
@@ -34,7 +35,7 @@ namespace Prism.App.Modules
 
             Get["/auth"] = _ =>
             {
-                ISessionStore sessionStore = new InMemorySessionStore(this.Request);
+                ISessionStore sessionStore = new InMemorySessionStore(this.Context);
                 
                 if (sessionStore["userinfo"] == null) { 
                     var info = GetFoursquareClient().GetUserInfo(
@@ -46,32 +47,41 @@ namespace Prism.App.Modules
 
             Get["/nextstep"] = _ =>
             {
-                ISessionStore sessionStore = new InMemorySessionStore(this.Request);
-                if (sessionStore["checkins"] == null)
+                try
                 {
-                    InitSocialPlayer(sessionStore);
-                    ParseMockCheckinsIntoMemory(sessionStore);
-                    foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
-                }
-                var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
-                var socialPlayer = (SocialPlayer)sessionStore["socialplayer"];
-                JArray checkins = (JArray)sessionStore["checkins"];
 
-                if (liveStats.Offset < checkins.Count)
-                {
-                    JObject jcheckin = (JObject)checkins[liveStats.Offset];
-                    var currentCheckin = new FoursquareCheckin(jcheckin);                    
+                    ISessionStore sessionStore = new InMemorySessionStore(this.Context);
+                    if (sessionStore["checkins"] == null)
+                    {
+                        InitSocialPlayer(sessionStore);
+                        ParseMockCheckinsIntoMemory(sessionStore);
+                        foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
+                    }
+                    var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
+                    var socialPlayer = (SocialPlayer)sessionStore["socialplayer"];
+                    JArray checkins = (JArray)sessionStore["checkins"];
+
+                    if (liveStats.Offset < checkins.Count)
+                    {
+                        JObject jcheckin = (JObject)checkins[liveStats.Offset];
+                        var currentCheckin = new FoursquareCheckin(jcheckin);                    
                     
-                    foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats, socialPlayer));
-                    liveStats.Offset++;
-                    return Response.AsJson(new FqStep { CurrentCheckin = currentCheckin, Live = liveStats, Player = socialPlayer });
+                        foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats, socialPlayer));
+                        liveStats.Offset++;
+                        return Response.AsJson(new FqStep { CurrentCheckin = currentCheckin, Live = liveStats, Player = socialPlayer });
+                    }
+                    else
+                    {
+                        sessionStore.Remove("livestats");
+                        sessionStore.Remove("checkins");
+                        foursquareProcessing.Finalize(liveStats);
+                        return Response.AsJson(new FqStep { Live = liveStats, CurrentCheckin = null });
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    sessionStore.Remove("livestats");
-                    sessionStore.Remove("checkins");
-                    foursquareProcessing.Finalize(liveStats);
-                    return Response.AsJson(new FqStep { Live = liveStats, CurrentCheckin = null });
+                    Console.WriteLine(e.Message);
+                    return Response.AsText(e.Message + e.StackTrace);
                 }
             };
 
