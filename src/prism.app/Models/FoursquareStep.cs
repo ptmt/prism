@@ -9,11 +9,12 @@ namespace Prism.App.Models
 {
    
     
-    public class FqStep
+    public class FoursquareStep
     {        
         public FoursquareCheckin CurrentCheckin { get; set; }
         public FoursquareLiveStats Live { get; set; }
         public SocialPlayer Player { get; set; }
+
        
     }
 }

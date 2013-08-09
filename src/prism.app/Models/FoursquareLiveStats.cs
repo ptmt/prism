@@ -17,6 +17,7 @@ namespace Prism.App.Models
         public int TotalCheckins { get; set; }
 
         public int Offset { get; set; }
+        public int Count { get; set; }
 
         public FoursquareCheckin MostPopularCheckin { get; set; }
         public FoursquareCheckin MostLikedCheckin { get; set; }

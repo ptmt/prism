@@ -121,7 +121,13 @@ namespace Prism.App.Models
             {
                 socialPlayer.Apply(SocialExperienceConstants.Foursquare.BASE_CHECKIN);
                 socialPlayer.Apply(SocialExperienceConstants.Foursquare.ONE_KILOMETER * (int)stats.LastDistance);
-                
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.TotalVenueCheckins > 100);
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.TotalVenueCheckins > 1000);
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_WITH_MORE_THAN_10000_CHECKINS, currentCheckin.TotalVenueCheckins > 10000);
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.ONE_LIKE_TO_CHECKIN * currentCheckin.LikesCount);
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.MAYORSHIP_CHECKIN, currentCheckin.IsMayor.HasValue && currentCheckin.IsMayor.Value);
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.ONE_COMMENT_TO_CHECKIN * currentCheckin.CommentsCount);
+                socialPlayer.Apply(SocialExperienceConstants.Foursquare.CHECKIN_WITH_PHOTO * currentCheckin.PhotosCount);
             });
         }
         public void Finalize(FoursquareLiveStats liveStats)

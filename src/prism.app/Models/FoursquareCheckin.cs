@@ -20,6 +20,10 @@ namespace Prism.App.Models
         public int LikesCount { get; set; }
         public string LikesSummary { get; set; }
 
+        public int CommentsCount { get; set; }
+        public int PhotosCount { get; set; }
+     
+
         public float T1Rate { get; set; }
 
         public FoursquareCheckin()
@@ -39,6 +43,8 @@ namespace Prism.App.Models
             TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"];
             IsMayor = (bool?)jcheckin["isMayor"];
             LikesSummary = LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;
+            CommentsCount = (int)jcheckin["comments"]["count"];
+            PhotosCount = (int)jcheckin["photos"]["count"];
         }
     }
 }

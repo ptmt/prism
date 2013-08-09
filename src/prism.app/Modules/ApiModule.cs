@@ -51,7 +51,7 @@ namespace Prism.App.Modules
                 {
 
                     ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-                    if (sessionStore["checkins"] == null)
+                    if (sessionStore["foursquareResponse"] == null)
                     {
                         InitSocialPlayer(sessionStore);
                         ParseMockCheckinsIntoMemory(sessionStore);
@@ -59,7 +59,7 @@ namespace Prism.App.Modules
                     }
                     var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
                     var socialPlayer = (SocialPlayer)sessionStore["socialplayer"];
-                    JArray checkins = (JArray)sessionStore["checkins"];
+                    JArray checkins = ((FoursquareResponseData)sessionStore["foursquareResponse"]).Checkins;
 
                     if (liveStats.Offset < checkins.Count)
                     {
@@ -68,14 +68,14 @@ namespace Prism.App.Modules
                     
                         foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats, socialPlayer));
                         liveStats.Offset++;
-                        return Response.AsJson(new FqStep { CurrentCheckin = currentCheckin, Live = liveStats, Player = socialPlayer });
+                        return Response.AsJson(new FoursquareStep { CurrentCheckin = currentCheckin, Live = liveStats, Player = socialPlayer });
                     }
                     else
                     {
                         sessionStore.Remove("livestats");
-                        sessionStore.Remove("checkins");
+                        sessionStore.Remove("foursquareResponse");
                         foursquareProcessing.Finalize(liveStats);
-                        return Response.AsJson(new FqStep { Live = liveStats, CurrentCheckin = null });
+                        return Response.AsJson(new FoursquareStep { Live = liveStats, CurrentCheckin = null });
                     }
                 }
                 catch (Exception e)
@@ -111,16 +111,22 @@ namespace Prism.App.Modules
 
             string jsonText = File.ReadAllText(GetCheckinsFilename());
 
-            JObject foursquareCheckins = JObject.Parse(jsonText);
+            JObject foursquareResponseRaw = JObject.Parse(jsonText);
 
-            JArray checkins = (JArray)foursquareCheckins["response"]["checkins"]["items"];
+            JArray checkins = (JArray)foursquareResponseRaw["response"]["checkins"]["items"];
 
-            sessionStore["checkins"] = checkins;
+            int totalCheckinsCount = (int)foursquareResponseRaw["response"]["checkins"]["count"];
+            sessionStore["foursquareResponse"] = new FoursquareResponseData() 
+            {
+                Checkins = checkins,
+                Count = totalCheckinsCount
+            };
             sessionStore["livestats"] = new FoursquareLiveStats
             {
                 TotalCheckins = 0,
                 TotalDistance = 0,
                 Offset = 0,
+                Count = totalCheckinsCount,
                 KeyValue = new Dictionary<string, object>(),
                 Temporary = new Dictionary<string, object>()
             };            

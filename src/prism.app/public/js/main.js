@@ -61,7 +61,7 @@ function nextStep() {
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
-            loc.createdat = data.CurrentCheckin.CreatedAtStr;
+            loc.colorCode = encodeToColor(data.Live.Offset, data.Live.Count);
             loc.radius = loc.isMayor ? 50 : 25;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);
@@ -71,8 +71,8 @@ function nextStep() {
                     return fields.y + " checkins per day at " + data.Live.KeyValue.timelineX[fields.x];
                 }
             });
-            $('.player-level').html(data.Player.Level + ' lvl');
-            $('.player-level').append('exp='+ data.Player.Exp);                
+            $('.player-level').html(data.Player.Level);
+            $('.player-exp').html(data.Player.Exp);                
             nextStep();
         }
         else {
@@ -81,6 +81,10 @@ function nextStep() {
         }
     });
 }
+function encodeToColor (i, total) {
+    return (765 / total * i);
+}
+
 function number_format_default(number) { return number_format(number, 0, ',', ' '); }
 function number_format(number, decimals, dec_point, thousands_sep) {
     var n = !isFinite(+number) ? 0 : +number,

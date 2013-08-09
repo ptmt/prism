@@ -40,5 +40,11 @@ namespace Prism.App.Models
             if (points > 0)
                 exp += points;
         }
+
+        public void Apply(long points, bool predicate)
+        {
+            if (predicate)
+                Apply(points);
+        }
     }
 }

@@ -15,9 +15,7 @@ Path.prototype = {
         //  this.fill();
     },
 
-    getColor: function (currentDate) {
-        return (765 / (this.endDate - this.startDate) * (currentDate - this.startDate));
-    },
+
 
     drawPoint: function (point, prevpoint, map) {
         var p1 = map.coordinatePoint(point.coord);
@@ -26,16 +24,15 @@ Path.prototype = {
         this.ctx.moveTo(p2.x, p2.y);
         this.ctx.lineTo(p1.x, p1.y);
         this.ctx.lineWidth = 1;
-        timeCode = point.createdat;
-        console.log(point.createdat, this.getColor(timeCode));
-        var red = Math.round(this.getColor(timeCode));
+        console.log(this.colorCode);
+        var red = Math.round(this.colorCode);
         if (red > 255) red = 255;
-        var green = Math.round(this.getColor(timeCode) - 255);
+        var green = Math.round(this.colorCode - 255);
         if (green < 0) green = 0;
         if (green > 255) green = 255;
-        var blue = Math.round(this.getColor(timeCode) - 510);
+        var blue = Math.round(this.colorCode - 510);
         if (blue < 0) blue = 0;
-        if (blue > 255) blue = 255;       
+        if (blue > 255) blue = 255;
         this.ctx.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
         this.ctx.stroke();
     },

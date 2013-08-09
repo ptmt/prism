@@ -128,12 +128,13 @@
     <Compile Include="Middleware\Logger.cs" />
     <Compile Include="Models\FoursquareCheckin.cs" />
     <Compile Include="Models\FoursquareLiveStats.cs" />
+    <Compile Include="Models\FoursquareResponseData.cs" />
     <Compile Include="Models\SocialExperienceConstants.cs" />
     <Compile Include="Models\SocialPlayer.cs" />
     <Compile Include="Modules\ApiModule.cs" />
     <Compile Include="OwinConstants.cs" />
     <Compile Include="Processing\FoursquareProcessing.cs" />
-    <Compile Include="Models\FqStep.cs" />
+    <Compile Include="Models\FoursquareStep.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
