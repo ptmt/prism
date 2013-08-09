@@ -128,6 +128,7 @@ namespace Prism.App.Models
                 socialPlayer.Apply(SocialExperienceConstants.Foursquare.MAYORSHIP_CHECKIN, currentCheckin.IsMayor.HasValue && currentCheckin.IsMayor.Value);
                 socialPlayer.Apply(SocialExperienceConstants.Foursquare.ONE_COMMENT_TO_CHECKIN * currentCheckin.CommentsCount);
                 socialPlayer.Apply(SocialExperienceConstants.Foursquare.CHECKIN_WITH_PHOTO * currentCheckin.PhotosCount);
+                
             });
         }
         public void Finalize(FoursquareLiveStats liveStats)
