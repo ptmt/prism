@@ -24,6 +24,7 @@ namespace Prism.App
             }
             options.Urls.Add("localhost");
             options.Urls.Add("prism.phinitive.com");
+            options.Urls.Add("127.0.0.1");
             options.Settings.Add("env", env);
 
             using (WebApp.Start<Startup>(options))

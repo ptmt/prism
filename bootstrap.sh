@@ -6,6 +6,7 @@ apt-get install git || exit 1
 apt-get install automake || exit 1
 apt-get install g++ || exit 1
 apt-get install libtool || exit 1
+apt-get install supervisor || exit 1
 
 git clone git://github.com/mono/mono.git || exit 2
 cd mono
