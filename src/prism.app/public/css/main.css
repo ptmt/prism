@@ -74,7 +74,7 @@ a:hover {color:black}
 .col2 span, .col3 .row1 span {font-size:10px;text-align:right}
 .verdict { font-size:1em !important}
 .col3 .row1 { overflow-x:scroll;padding:10px;}
-
+.player-exp {color: #8D8D8D;}
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;}
 
 .invite-form {top: 259px;padding: 35px;position:absolute; max-width: 30%; z-index:10; position:relative;margin: 10% 0 0 30%; background-color: #E8E8E8;opacity: .9;
