@@ -174,7 +174,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
       Returns="$(TargetPath)">
     <PropertyGroup>
       <!-- Reset BclBuildRunningFullBuild, it will be set again when doing a full build. -->
-      <BclBuildRunningFullBuild>false</BclBuildRunningFullBuild>
+    
     </PropertyGroup>
   </Target>
 
@@ -205,23 +205,5 @@ Copyright (C) Microsoft Corporation. All rights reserved.
       <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
     </PropertyGroup>
     ===================================================================================================================
-    -->
-  <UsingTask TaskName="ValidatePackageReferences" AssemblyFile="$(MSBuildThisFileDirectory)Microsoft.Bcl.Build.Tasks.dll" />
-  <Target Name="BclBuildValidateNugetPackageReferences"
-          Condition="'$(BclBuildRunningFullBuild)' != 'true' AND '$(SkipValidatePackageReferences)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'"
-          BeforeTargets="GetTargetPath">
-    <ItemGroup>
-      <ValidatePackages Include="Microsoft.Bcl"/>
-      <ValidatePackages Include="Microsoft.Bcl.Async"/>
-      <ValidatePackages Include="Microsoft.Bcl.Compression"/>
-      <ValidatePackages Include="Microsoft.Net.Http"/>
-    </ItemGroup>
-
-    <ValidatePackageReferences Packages="@(ValidatePackages)"
-                               ReferencingProject="$(BclBuildReferencingProject)"
-                               ReferencingProjectPackagesConfig="$(BclBuildReferencingProjectConfig)"
-                               ReferencedProject="$(MSBuildProjectFullPath)"
-                               ReferencedProjectPackagesConfig="$(MSBuildProjectDirectory)\packages.config"
-                               TreatWarningsAsErrors="$(TreatWarningsAsErrors)" />
-  </Target>
+    --> 
 </Project>
