@@ -42,9 +42,9 @@ function initSignIn() {
     $.get('/api/login').success(function (signinlink) { $('.signin-button').attr('href', signinlink); });
 }
 
-function startProcessing() {
+function startProcessing(isDebug) {
     $('.invite-form').hide();
-    nextStep();
+    nextStep(isDebug);
 }
 function tooltipCheckinFormatter(sparkline, options, fields) {
     return "checkins";
@@ -110,7 +110,8 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 $(function () {
-    var isDebug = true;
+    var isDebug = String(document.cookie).indexOf("debug") > 0;
+    var isAuth = String(document.cookie).indexOf("isauth") > 0;
     if (isDebug) {
         startProcessing(isDebug);
     }

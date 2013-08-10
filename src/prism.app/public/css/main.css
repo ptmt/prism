@@ -61,7 +61,7 @@ a:hover {color:black}
 .ie .container {display:none;}
 .ie .hope-you-die {display:block; }
 /*-webkit-linear-gradient(red, yellow, orange, green, blue, purple);*/
-.stats-container { background: #ede9e9;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
+.stats-container { display:none;background: #ede9e9;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
 .stats-container h2, h3 { margin: 0; padding: 2px; font-weight:normal}
 
 .col1 { float: left; max-width: 30%;   margin:10px;}

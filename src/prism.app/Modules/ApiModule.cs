@@ -3,6 +3,7 @@ using Nancy.Helpers;
 using Newtonsoft.Json.Linq;
 using OAuth2;
 using OAuth2.Client;
+using OAuth2.Models;
 using Prism.App.Data;
 using Prism.App.Models;
 using System;
@@ -42,7 +43,7 @@ namespace Prism.App.Modules
                          HttpUtility.ParseQueryString(this.Request.Url.Query));
                     sessionStore.Add("userinfo", info);
                 }
-                return Response.AsRedirect("/");          
+                return Response.AsJson(sessionStore["userinfo"] as UserInfo);//Response.AsRedirect("/");          
             };
 
             Get["/nextstep"] = _ =>
@@ -56,6 +57,11 @@ namespace Prism.App.Modules
                         InitSocialPlayer(sessionStore);
                         if (this.Request.Query.MockData != null)
                             ParseMockCheckinsIntoMemory(sessionStore, this.Request.Query.MockData);
+                        else
+                        {
+                           (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient).MakeRequest();
+                            
+                        }
                         foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
                     }
                     var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
