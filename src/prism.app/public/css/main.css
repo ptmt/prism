@@ -65,16 +65,27 @@ a:hover {color:black}
 .stats-container h2, h3 { margin: 0; padding: 2px; font-weight:normal}
 
 .col1 { float: left; max-width: 30%;   margin:10px;}
-.col1 h2 {background:#7c0c50; color:white;font-size: 3em;text-align:right}
+.col1 h2 {background: rgb(4, 129, 158); color:white;font-size: 3em;text-align:right}
 .col1 span {text-align:right;}
 
-.col2 { float:left; max-width:20%;margin:10px}
-.col2 h3 {background:#fffb25;margin:0px;color:black;font-size:1em}
-.col3 h3 {background:#b3d4fc;margin:0px;color:black;font-size:1em}
-.col2 span, .col3 .row1 span {font-size:10px;text-align:right}
+/*
+    <tr>
+		<td class="cbox bg-pri-0" style="background-color: rgb(4, 129, 158);"></td>
+		<td class="cbox bg-sec1-0" style="background-color: rgb(56, 178, 206);"></td>
+		<td class="cbox bg-sec2-0" style="background-color: rgb(96, 185, 206);"></td>
+		<td class="cbox bg-compl-0" style="background-color: rgb(255, 127, 0);"></td>
+	</tr>
+    */
+
+
+.col2, .col2a { text-align: center;float:left; max-width:20%;margin:10px}
+.col2 h3 {background:rgb(56, 178, 206);margin:0px;color:black;font-size:1em}
+.col2a h3 {background:rgb(255, 127, 0);margin:0px;color:black;font-size:1em}
+.col3 h3 {background:rgb(96, 185, 206);margin:0px;color:black;font-size:1em}
+.col2 span, .col2a span, .col3 .row1 span {font-size:10px;}
 .verdict { font-size:1em !important}
 .col3 .row1 { overflow-x:scroll;padding:10px;}
-.player-exp {color: #8D8D8D;}
+.player-exp {color: rgb(255, 127, 0);}
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;}
 
 .invite-form {top: 259px;padding: 35px;position:absolute; max-width: 30%; z-index:10; position:relative;margin: 10% 0 0 30%; background-color: #E8E8E8;opacity: .9;

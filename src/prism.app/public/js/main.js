@@ -49,8 +49,9 @@ function startProcessing() {
 function tooltipCheckinFormatter(sparkline, options, fields) {
     return "checkins";
 }
-function nextStep() {
-    $.get('/api/nextstep').success(function (data) {
+function nextStep(isDebug) {
+    var apiurl = isDebug ? '/api/nextstep?mockdata=2' : '/api/nextstep';
+    $.get(apiurl).success(function (data) {
         if (data.CurrentCheckin) {
             // console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
@@ -111,7 +112,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 $(function () {
     var isDebug = true;
     if (isDebug) {
-        startProcessing();
+        startProcessing(isDebug);
     }
     initMap();
     initSignIn();
