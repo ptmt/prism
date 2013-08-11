@@ -3,6 +3,7 @@ using Nancy.Helpers;
 using Newtonsoft.Json.Linq;
 using OAuth2;
 using OAuth2.Client;
+using OAuth2.Client.Impl;
 using OAuth2.Models;
 using Prism.App.Data;
 using Prism.App.Models;
@@ -17,6 +18,9 @@ namespace Prism.App.Modules
 {
     public class ApiModule : NancyModule
     {
+        const string USER_INFO_KEY = "userinfo";
+        const string ACCESS_TOKEN_SESSION_KEY = "accessToken";
+
         private readonly AuthorizationRoot authorizationRoot;        
         private readonly FoursquareProcessing foursquareProcessing;
 
@@ -37,13 +41,17 @@ namespace Prism.App.Modules
             Get["/auth"] = _ =>
             {
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-                
-                if (sessionStore["userinfo"] == null) { 
-                    var info = GetFoursquareClient().GetUserInfo(
-                         HttpUtility.ParseQueryString(this.Request.Url.Query));
-                    sessionStore.Add("userinfo", info);
-                }
-                return Response.AsJson(sessionStore["userinfo"] as UserInfo);//Response.AsRedirect("/");          
+                string code = this.Request.Query.code;
+                sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, code);
+
+                //if (sessionStore[USER_INFO_KEY] == null)
+                //{ 
+                //    var info = GetFoursquareClient().GetUserInfo(
+                //         HttpUtility.ParseQueryString(this.Request.Url.Query));
+                //    sessionStore.Add(USER_INFO_KEY, info);
+                   
+                //}
+                return Response.AsJson(code);//Response.AsRedirect("/");          
             };
 
             Get["/nextstep"] = _ =>
@@ -59,7 +67,7 @@ namespace Prism.App.Modules
                             ParseMockCheckinsIntoMemory(sessionStore, this.Request.Query.MockData);
                         else
                         {
-                           (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient).MakeRequest();
+                            (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient).MakeRequest((string)sessionStore[ACCESS_TOKEN_SESSION_KEY]);
                             
                         }
                         foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));

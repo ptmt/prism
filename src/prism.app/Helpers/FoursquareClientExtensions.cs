@@ -22,14 +22,15 @@ namespace Prism.App
             }
         }
 
-        public static void MakeRequest(this OAuth2.Client.Impl.FoursquareClient client)
+        public static void MakeRequest(this OAuth2.Client.Impl.FoursquareClient client, string accessCode)
+        
         {
-            if (client.AccessToken == null)
+            if (String.IsNullOrEmpty(accessCode))
                 throw new ArgumentNullException("Not authorized access");
 
             RestClient restClient = new RestSharp.RestClient(CheckinsEndpoint.BaseUri);
-            
-            restClient.Authenticator = new OAuth2UriQueryParameterAuthenticator(client.AccessToken);
+
+            restClient.Authenticator = new OAuth2UriQueryParameterAuthenticator(accessCode);
 
             var request = new RestRequest(CheckinsEndpoint.Resource, Method.GET);
             //request.AddParameter("limit", "value"); // adds to POST or URL querystring based on Method
