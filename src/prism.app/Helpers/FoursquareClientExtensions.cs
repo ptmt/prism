@@ -22,7 +22,7 @@ namespace Prism.App
             }
         }
 
-        public static void MakeRequest(this OAuth2.Client.Impl.FoursquareClient client, string accessCode)
+        public static string MakeRequest(this OAuth2.Client.Impl.FoursquareClient client, string accessCode)
         
         {
             if (String.IsNullOrEmpty(accessCode))
@@ -35,11 +35,9 @@ namespace Prism.App
             var request = new RestRequest(CheckinsEndpoint.Resource, Method.GET);
             //request.AddParameter("limit", "value"); // adds to POST or URL querystring based on Method
 
-
-            var asyncHandle = restClient.ExecuteAsync(request, response =>
-            {
-                Console.WriteLine(response.Content);
-            });
+            
+            var response = restClient.Execute(request);
+            return response.Content;
         }
        
 

@@ -4,6 +4,7 @@ using System;
 using Xunit;
 using Newtonsoft.Json.Linq;
 using Prism.App.Models;
+using System.IO;
 
 
 namespace prism.tests
@@ -26,7 +27,7 @@ namespace prism.tests
         public void Parse_mockdata_should_return_foursquare_response_contains_checkins()
         {
             ISessionStore sessionStore = new InMemorySessionStore();
-            ApiModule.ParseMockCheckinsIntoMemory(sessionStore, MockFileId);
+            ApiModule.ParseCheckinsIntoMemory(File.ReadAllText(ApiModule.GetCheckinsFilename(MockFileId)), sessionStore);
 
             Assert.True(((FoursquareResponseData)sessionStore["checkins"]).Checkins.Count > 0);
         }

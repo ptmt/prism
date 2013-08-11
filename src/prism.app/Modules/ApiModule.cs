@@ -63,13 +63,10 @@ namespace Prism.App.Modules
                     if (sessionStore["foursquareResponse"] == null)
                     {
                         InitSocialPlayer(sessionStore);
-                        if (this.Request.Query.MockData != null)
-                            ParseMockCheckinsIntoMemory(sessionStore, this.Request.Query.MockData);
-                        else
-                        {
-                            (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient).MakeRequest((string)sessionStore[ACCESS_TOKEN_SESSION_KEY]);
-                            
-                        }
+                        string jsonText = this.Request.Query.MockData != null 
+                            ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
+                            : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient).MakeRequest((string)sessionStore[ACCESS_TOKEN_SESSION_KEY]);    
+                        ParseCheckinsIntoMemory(jsonText, sessionStore);
                         foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
                     }
                     var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
@@ -120,11 +117,9 @@ namespace Prism.App.Modules
             return "mockdata" + s + "checkins" + mocki + ".json";
         }
 
-        public static void ParseMockCheckinsIntoMemory(ISessionStore sessionStore, int mocki)
-        {
-
-
-            string jsonText = File.ReadAllText(GetCheckinsFilename(mocki));
+        
+        public static void ParseCheckinsIntoMemory(string jsonText, ISessionStore sessionStore)
+        {           
 
             JObject foursquareResponseRaw = JObject.Parse(jsonText);
 
