@@ -36,22 +36,31 @@ namespace Prism.App.Modules
             
             Get["/login"] = _ =>
             {
-                return Response.AsJson(GetFoursquareClient().GetLoginLinkUri());                
+                IClient foursquareClient = GetFoursquareClient();                               
+                string loginUrl = foursquareClient.GetLoginLinkUri();
+                // TODO rewrite OAuth Client section which works with configuration
+                loginUrl = loginUrl.Replace("redirect_uri=http:%2F%2Fprism.phinitive.com%2Fapi%2Fauth",
+                    "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
+                return Response.AsRedirect(loginUrl);                
             };
+
+            
 
             Get["/auth"] = _ =>
             {
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
                 string code = this.Request.Query.code;
                 sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, code);
+                
+                //
 
-                //if (sessionStore[USER_INFO_KEY] == null)
-                //{ 
-                //    var info = GetFoursquareClient().GetUserInfo(
-                //         HttpUtility.ParseQueryString(this.Request.Url.Query));
-                //    sessionStore.Add(USER_INFO_KEY, info);
-                   
-                //}
+                if (sessionStore[USER_INFO_KEY] == null)
+                { 
+                    var info = GetFoursquareClient().GetUserInfo(
+                         HttpUtility.ParseQueryString(this.Request.Url.Query));
+                    sessionStore.Add(USER_INFO_KEY, info);
+                  
+                }
                 return Response.AsJson(code);//Response.AsRedirect("/");          
             };
 
@@ -67,6 +76,7 @@ namespace Prism.App.Modules
                         string jsonText = this.Request.Query.MockData != null 
                             ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
                             : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient).MakeRequest((string)sessionStore[ACCESS_TOKEN_SESSION_KEY]);    
+                        
                         ParseCheckinsIntoMemory(jsonText, sessionStore);
                         foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
                     }

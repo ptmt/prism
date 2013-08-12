@@ -38,10 +38,6 @@ function initMap() {
     var hasher = new MM.Hash(mapObject);
 }
 
-function initSignIn() {
-    $.get('/api/login').success(function (signinlink) { $('.signin-button').attr('href', signinlink); });
-}
-
 function startProcessing(isDebug) {
     $('.invite-form').hide();
     nextStep(isDebug);
@@ -116,5 +112,5 @@ $(function () {
         startProcessing(isDebug);
     }
     initMap();
-    initSignIn();
+    //initSignIn();
 });
