@@ -32,15 +32,18 @@ namespace Prism.App.Models
 
         public FoursquareCheckin(JObject jcheckin)
         {
-            LocationLat = (float)jcheckin["venue"]["location"]["lat"];
-            LocationLng = (float)jcheckin["venue"]["location"]["lng"];
-            ClientName = (string)jcheckin["source"]["name"];
-            VenueName = (string)jcheckin["venue"]["name"];
+            if (jcheckin["venue"] != null) { 
+                LocationLat = (float)jcheckin["venue"]["location"]["lat"];
+                LocationLng = (float)jcheckin["venue"]["location"]["lng"];
+                MyVenueCheckins = (int)jcheckin["venue"]["beenHere"]["count"];
+                TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"];
+                VenueName = (string)jcheckin["venue"]["name"];
+            }
+          
             ID = (string)jcheckin["id"];
             CreatedAt = ((int)jcheckin["createdAt"]).FromUnix();
             LikesCount = (int)jcheckin["likes"]["count"];
-            MyVenueCheckins = (int)jcheckin["venue"]["beenHere"]["count"];
-            TotalVenueCheckins = (int)jcheckin["venue"]["stats"]["checkinsCount"];
+            ClientName = (string)jcheckin["source"]["name"];
             IsMayor = (bool?)jcheckin["isMayor"];
             LikesSummary = LikesCount > 0 ? (string)jcheckin["likes"]["summary"] : String.Empty;
             CommentsCount = (int)jcheckin["comments"]["count"];

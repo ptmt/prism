@@ -40,6 +40,7 @@ function initMap() {
 
 function startProcessing(isDebug) {
     $('.invite-form').hide();
+    $('.stats-container').show();
     nextStep(isDebug);
 }
 function tooltipCheckinFormatter(sparkline, options, fields) {
@@ -70,7 +71,7 @@ function nextStep(isDebug) {
             });
             $('.player-level').html(data.Player.Level);
             $('.player-exp').html(data.Player.Exp);                
-            nextStep();
+            nextStep(isDebug);
         }
         else {
             // final step 
