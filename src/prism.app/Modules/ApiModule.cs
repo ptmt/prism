@@ -27,6 +27,7 @@ namespace Prism.App.Modules
         public ApiModule()
             : base("/api")
         {
+           // GetFoursquareClient().Configuration.RedirectUri = this.Ho
             this.authorizationRoot = new AuthorizationRoot();
             this.foursquareProcessing = new FoursquareProcessing();
 
