@@ -36,17 +36,7 @@ namespace Prism.App
                     // Bad session ID. Create a new one.
                     sessionId = Guid.NewGuid().ToString();
                 }
-            }            
-            //context.request.Properties[SessionIdToken] = sessionId;            
-            //HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
-            //var env = (IDictionary<string, object>)Context.Items[NancyOwinHost.RequestEnvironmentKey];
-
-            //var cookieItem = new Nancy.Cookies.NancyCookie(SessionIdToken, sessionId)
-            //{
-            //    Domain = "phinitive.com",
-            //    Path = "/",
-            //    Expires = new DateTime?(DateTime.Now.AddDays(30))
-            //};
+            }                       
 
             context.Parameters.SessionId = sessionId;
             
@@ -69,6 +59,15 @@ namespace Prism.App
                 context.Response.AddCookie(cookieItem);
             }
             //return null;
+        }
+
+        static public void CookieAddAuth(
+          NancyContext context)
+        {
+
+            var cookieItem = new Nancy.Cookies.NancyCookie("isauth", "true");           
+            context.Response.AddCookie(cookieItem);
+            
         }
 
 
