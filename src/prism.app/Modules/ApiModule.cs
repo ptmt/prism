@@ -35,7 +35,12 @@ namespace Prism.App.Modules
             
             Get["/login"] = _ =>
             {
-                return Response.AsJson(GetFoursquareClient().GetLoginLinkUri());                
+                IClient foursquareClient = GetFoursquareClient();                               
+                string loginUrl = foursquareClient.GetLoginLinkUri();
+                // TODO rewrite OAuth Client section which works with configuration
+                loginUrl = loginUrl.Replace("redirect_uri=http:%2F%2Fprism.phinitive.com%2Fapi%2Fauth",
+                    "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
+                return Response.AsJson(loginUrl);                
             };
 
             Get["/auth"] = _ =>
@@ -43,6 +48,8 @@ namespace Prism.App.Modules
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
                 string code = this.Request.Query.code;
                 sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, code);
+                
+                //
 
                 //if (sessionStore[USER_INFO_KEY] == null)
                 //{ 

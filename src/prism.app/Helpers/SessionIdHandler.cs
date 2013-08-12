@@ -61,7 +61,7 @@ namespace Prism.App
 
                 var cookieItem = new Nancy.Cookies.NancyCookie(SessionIdToken, context.Parameters.SessionId)
                 {
-                    Domain = "phinitive.com",
+                    Domain = context.Request.Url.HostName,
                     Path = "/",
                     Expires = new DateTime?(DateTime.Now.AddDays(30))
                 };
