@@ -36,11 +36,12 @@ namespace Prism.App.Modules
             
             Get["/login"] = _ =>
             {
-                IClient foursquareClient = GetFoursquareClient();                               
+                IClient foursquareClient = GetFoursquareClient();
+                //(foursquareClient as FoursquareClient).ChangeAppConfigTo("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth");
                 string loginUrl = foursquareClient.GetLoginLinkUri();
                 // TODO rewrite OAuth Client section which works with configuration
                 loginUrl = loginUrl.Replace("redirect_uri=http:%2F%2Fprism.phinitive.com%2Fapi%2Fauth",
-                    "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
+                   "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
                 return Response.AsRedirect(loginUrl);                
             };
 
@@ -49,20 +50,22 @@ namespace Prism.App.Modules
             Get["/auth"] = _ =>
             {
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-                string code = this.Request.Query.code;
-                sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, code);
-                
+               // string code = this.Request.Query.code;
+                //sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, Get;               
                 //
 
                 if (sessionStore[USER_INFO_KEY] == null)
                 { 
                     var info = GetFoursquareClient().GetUserInfo(
                          HttpUtility.ParseQueryString(this.Request.Url.Query));
-                    sessionStore.Add(USER_INFO_KEY, info);
-                  
+                    sessionStore.Add(USER_INFO_KEY, info);                    
                 }
+
+                string code = (GetFoursquareClient() as FoursquareClient).GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
+                sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, code);
                 return Response.AsJson(code);//Response.AsRedirect("/");          
             };
+            
 
             Get["/nextstep"] = _ =>
             {
@@ -75,9 +78,16 @@ namespace Prism.App.Modules
                         InitSocialPlayer(sessionStore);
                         string jsonText = this.Request.Query.MockData != null 
                             ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
-                            : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient).MakeRequest((string)sessionStore[ACCESS_TOKEN_SESSION_KEY]);    
-                        
-                        ParseCheckinsIntoMemory(jsonText, sessionStore);
+                            : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
+                                .MakeRequest((string)sessionStore[ACCESS_TOKEN_SESSION_KEY], 250, 0);
+                        try
+                        { 
+                            ParseCheckinsIntoMemory(jsonText, sessionStore);
+                        }
+                        catch
+                        {
+                            return Response.AsText(jsonText);
+                        }
                         foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
                     }
                     var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
@@ -130,10 +140,14 @@ namespace Prism.App.Modules
 
         
         public static void ParseCheckinsIntoMemory(string jsonText, ISessionStore sessionStore)
-        {           
+        {
+            if (String.IsNullOrEmpty(jsonText))
+                throw new ArgumentNullException("json is empty");
+
 
             JObject foursquareResponseRaw = JObject.Parse(jsonText);
 
+            
             JArray checkins = (JArray)foursquareResponseRaw["response"]["checkins"]["items"];
 
             int totalCheckinsCount = (int)foursquareResponseRaw["response"]["checkins"]["count"];
@@ -151,7 +165,7 @@ namespace Prism.App.Modules
                 KeyValue = new Dictionary<string, object>(),
                 Temporary = new Dictionary<string, object>()
             };            
-
+            
            
         }
         

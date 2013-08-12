@@ -77,7 +77,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NowinWebServer.dll</HintPath>
     </Reference>
-    <Reference Include="OAuth2, Version=0.8.2.37851, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="OAuth2, Version=0.8.2.41092, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\OAuth2.dll</HintPath>
     </Reference>
