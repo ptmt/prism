@@ -1,0 +1,22 @@
+body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
+
+.map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;z-index: 5}
+
+.singup-form {top: 259px;padding: 35px;position:absolute; max-width: 30%; z-index:10; position:relative;margin: 10% 0 0 30%; background-color: #E8E8E8;opacity: .9;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3),0 -1px 0 rgba(255, 255, 255, 0.8),0 4px 10px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3),0 -1px 0 rgba(39, 39, 39, 0.8),0 4px 10px rgba(0, 0, 0, 0.6);
+    text-align:center;
+    border-radius:3px;
+}
+.singup-form:hover { opacity: 1 }
+
+.stats-container { background: white;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
+.stats-container div {margin:0px;text-align: center;}
+.stats-container span {font-size:10px;}
+.stats-container h2, h3 { margin: 2px; padding: 9px; font-weight:normal;overflow: hidden;text-overflow: clip;white-space: nowrap}
+.stats-container h3 {font-size:1em;background:#9c9c9c}
+.stats-container h2 {background: rgb(4, 129, 158); color:white;font-size: 3em;text-align:right}
+.col1 span {text-align:right;}
+
+.verdict span { font-size:1em !important}
+.player-exp {color: rgb(255, 127, 0);}
