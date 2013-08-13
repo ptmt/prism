@@ -41,6 +41,7 @@ function initMap() {
 function startProcessing(isDebug) {
     $('.invite-form').hide();
     $('.stats-container').show();
+    var isDebug = String(document.cookie).indexOf("debug") > 0;
     nextStep(isDebug);
 }
 function tooltipCheckinFormatter(sparkline, options, fields) {
@@ -106,12 +107,10 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
-$(function () {
-    var isDebug = String(document.cookie).indexOf("debug") > 0;
+$(function () {    
     var isAuth = String(document.cookie).indexOf("isauth") > 0;
-    if (isDebug) {
-        startProcessing(isDebug);
+    if (isAuth) {
+        startProcessing();
     }
-    initMap();
-    //initSignIn();
+    initMap();    
 });

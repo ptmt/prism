@@ -1,4 +1,5 @@
 ﻿using Nancy;
+using Prism.App.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace Prism.App
 {
     public class SessionIdHandler
     {
+        static public string USER_INFO_KEY = "userinfo";
+        static public string ACCESS_TOKEN_SESSION_KEY = "accessToken";
+
         static public string SessionIdToken = "prismid";
 
         static public Response SessionIdCreate(
@@ -58,7 +62,9 @@ namespace Prism.App
 
                 context.Response.AddCookie(cookieItem);
             }
-            //return null;
+            ISessionStore sessionStore = new InMemorySessionStore(context);
+            if (sessionStore[ACCESS_TOKEN_SESSION_KEY] != null) CookieAddAuth(context);
+            
         }
 
         static public void CookieAddAuth(

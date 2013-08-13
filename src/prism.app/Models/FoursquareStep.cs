@@ -14,7 +14,7 @@ namespace Prism.App.Models
         public FoursquareCheckin CurrentCheckin { get; set; }
         public FoursquareLiveStats Live { get; set; }
         public SocialPlayer Player { get; set; }
-
+        public FoursquareResponseData Response { get; set; }
        
     }
 }

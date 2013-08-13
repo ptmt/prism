@@ -18,16 +18,14 @@ namespace Prism.App.Modules
 {
     public class ApiModule : NancyModule
     {
-        const string USER_INFO_KEY = "userinfo";
-        const string ACCESS_TOKEN_SESSION_KEY = "accessToken";
+      
 
         private readonly AuthorizationRoot authorizationRoot;        
         private readonly FoursquareProcessing foursquareProcessing;
 
         public ApiModule()
             : base("/api")
-        {
-           // GetFoursquareClient().Configuration.RedirectUri = this.Ho
+        {           
             this.authorizationRoot = new AuthorizationRoot();
             this.foursquareProcessing = new FoursquareProcessing();
 
@@ -36,34 +34,27 @@ namespace Prism.App.Modules
             
             Get["/login"] = _ =>
             {
-                IClient foursquareClient = GetFoursquareClient();
-                //(foursquareClient as FoursquareClient).ChangeAppConfigTo("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth");
+                IClient foursquareClient = GetFoursquareClient();              
                 string loginUrl = foursquareClient.GetLoginLinkUri();
                 // TODO rewrite OAuth Client section which works with configuration
                 loginUrl = loginUrl.Replace("redirect_uri=http:%2F%2Fprism.phinitive.com%2Fapi%2Fauth",
                    "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
                 return Response.AsRedirect(loginUrl);                
-            };
-
-            
+            };            
 
             Get["/auth"] = _ =>
             {
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-               // string code = this.Request.Query.code;
-                //sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, Get;               
-                //
-
-                if (sessionStore[USER_INFO_KEY] == null)
+                if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
                 { 
                     var info = GetFoursquareClient().GetUserInfo(
                          HttpUtility.ParseQueryString(this.Request.Url.Query));
-                    sessionStore.Add(USER_INFO_KEY, info);                    
+                    sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);                    
                 }
-
                 string code = (GetFoursquareClient() as FoursquareClient).GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
-                sessionStore.Add(ACCESS_TOKEN_SESSION_KEY, code);
-                return Response.AsJson(code);//Response.AsRedirect("/");          
+                sessionStore.Add(SessionIdHandler.ACCESS_TOKEN_SESSION_KEY, code);
+                //SessionIdHandler.CookieAddAuth(this.Context);
+                return Response.AsRedirect("/");          
             };
             
 
@@ -79,10 +70,10 @@ namespace Prism.App.Modules
                         string jsonText = this.Request.Query.MockData != null 
                             ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
                             : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
-                                .MakeRequest((string)sessionStore[ACCESS_TOKEN_SESSION_KEY], 250, 0);
+                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], 250, 0);
                         try
                         { 
-                            ParseCheckinsIntoMemory(jsonText, sessionStore);
+                            ParseCheckinsIntoMemory(jsonText, sessionStore, 0, 250);
                         }
                         catch
                         {
@@ -92,23 +83,36 @@ namespace Prism.App.Modules
                     }
                     var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
                     var socialPlayer = (SocialPlayer)sessionStore["socialplayer"];
-                    JArray checkins = ((FoursquareResponseData)sessionStore["foursquareResponse"]).Checkins;
+                    var response = (FoursquareResponseData)sessionStore["foursquareResponse"];
+                    JArray checkins = response.Checkins;
 
-                    if (liveStats.Offset < checkins.Count)
+                    if (liveStats.i < checkins.Count || (liveStats.i + response.Offset < response.Count))
                     {
-                        JObject jcheckin = (JObject)checkins[liveStats.Offset];
-                        var currentCheckin = new FoursquareCheckin(jcheckin);                    
-                    
+                        if (liveStats.i > checkins.Count && liveStats.i + response.Offset < response.Count) 
+                        {
+                            string jsonText = (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
+                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], 250, response.Offset + 250);
+
+                            ParseCheckinsIntoMemory(jsonText, sessionStore, response.Offset + 250, 250);
+                        }
+
+                        JObject jcheckin = (JObject)checkins[liveStats.i];
+                        var currentCheckin = new FoursquareCheckin(jcheckin); 
                         foursquareProcessing.CalculationFunctions.ForEach(c => c(currentCheckin, liveStats, socialPlayer));
-                        liveStats.Offset++;
-                        return Response.AsJson(new FoursquareStep { CurrentCheckin = currentCheckin, Live = liveStats, Player = socialPlayer });
+                        liveStats.i++;
+                        return Response.AsJson(new FoursquareStep { 
+                            CurrentCheckin = currentCheckin,
+                            Live = liveStats,
+                            Player = socialPlayer,
+                            Response = response });
                     }
                     else
                     {
-                        sessionStore.Remove("livestats");
-                        sessionStore.Remove("foursquareResponse");
-                        foursquareProcessing.Finalize(liveStats);
-                        return Response.AsJson(new FoursquareStep { Live = liveStats, CurrentCheckin = null });
+                            sessionStore.Remove("livestats");
+                            sessionStore.Remove("foursquareResponse");
+                            foursquareProcessing.Finalize(liveStats);
+                            return Response.AsJson(new FoursquareStep { Live = liveStats, CurrentCheckin = null });
+                     
                     }
                 }
                 catch (Exception e)
@@ -139,7 +143,7 @@ namespace Prism.App.Modules
         }
 
         
-        public static void ParseCheckinsIntoMemory(string jsonText, ISessionStore sessionStore)
+        public static void ParseCheckinsIntoMemory(string jsonText, ISessionStore sessionStore, int offset, int limit)
         {
             if (String.IsNullOrEmpty(jsonText))
                 throw new ArgumentNullException("json is empty");
@@ -151,20 +155,31 @@ namespace Prism.App.Modules
             JArray checkins = (JArray)foursquareResponseRaw["response"]["checkins"]["items"];
 
             int totalCheckinsCount = (int)foursquareResponseRaw["response"]["checkins"]["count"];
-            sessionStore["foursquareResponse"] = new FoursquareResponseData() 
+
+            if (sessionStore["foursquareResponse"] == null)
+                sessionStore["foursquareResponse"] = new FoursquareResponseData() 
+                {
+                    Checkins = checkins,
+                    Count = totalCheckinsCount,
+                    Offset = offset,
+                    Limit = limit
+                };
+
+            if (sessionStore["livestats"] == null)
+                sessionStore["livestats"] = new FoursquareLiveStats
+                {
+                    TotalCheckins = 0,
+                    TotalDistance = 0,
+                    i = 0,
+                    Count = totalCheckinsCount,
+                    KeyValue = new Dictionary<string, object>(),
+                    Temporary = new Dictionary<string, object>()
+                };            
+            else
             {
-                Checkins = checkins,
-                Count = totalCheckinsCount
-            };
-            sessionStore["livestats"] = new FoursquareLiveStats
-            {
-                TotalCheckins = 0,
-                TotalDistance = 0,
-                Offset = 0,
-                Count = totalCheckinsCount,
-                KeyValue = new Dictionary<string, object>(),
-                Temporary = new Dictionary<string, object>()
-            };            
+                var livestats = (FoursquareLiveStats)sessionStore["livestats"];
+                livestats.i = 0;
+            }
             
            
         }
