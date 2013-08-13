@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Nancy.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,7 @@ namespace Prism.App.Models
         public double TotalDistance { get; set; }
         public int TotalCheckins { get; set; }
 
-        public int i { get; set; }
-        public int Count { get; set; }
+        public int i { get; set; }        
 
         public FoursquareCheckin MostPopularCheckin { get; set; }
         public FoursquareCheckin MostLikedCheckin { get; set; }
@@ -26,6 +26,7 @@ namespace Prism.App.Models
         public Dictionary<string, object> KeyValue { get; set; }
 
         [JsonIgnore]
+        [ScriptIgnore]
         public Dictionary<string, object> Temporary { get; set; }
 
     }

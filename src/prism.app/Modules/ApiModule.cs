@@ -18,7 +18,8 @@ namespace Prism.App.Modules
 {
     public class ApiModule : NancyModule
     {
-      
+
+        const int DEFAULT_FOURSQUARE_LIMIT = 250;
 
         private readonly AuthorizationRoot authorizationRoot;        
         private readonly FoursquareProcessing foursquareProcessing;
@@ -45,12 +46,12 @@ namespace Prism.App.Modules
             Get["/auth"] = _ =>
             {
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-                if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
-                { 
-                    var info = GetFoursquareClient().GetUserInfo(
-                         HttpUtility.ParseQueryString(this.Request.Url.Query));
-                    sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);                    
-                }
+                //if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
+                //{ 
+                //    var info = GetFoursquareClient().GetUserInfo(
+                //         HttpUtility.ParseQueryString(this.Request.Url.Query));
+                //    sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);                    
+                //}
                 string code = (GetFoursquareClient() as FoursquareClient).GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
                 sessionStore.Add(SessionIdHandler.ACCESS_TOKEN_SESSION_KEY, code);
                 //SessionIdHandler.CookieAddAuth(this.Context);
@@ -70,10 +71,10 @@ namespace Prism.App.Modules
                         string jsonText = this.Request.Query.MockData != null 
                             ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
                             : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
-                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], 250, 0);
+                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], DEFAULT_FOURSQUARE_LIMIT, 0);
                         try
-                        { 
-                            ParseCheckinsIntoMemory(jsonText, sessionStore, 0, 250);
+                        {
+                            ParseCheckinsIntoMemory(jsonText, sessionStore, 0, DEFAULT_FOURSQUARE_LIMIT);
                         }
                         catch
                         {
@@ -88,12 +89,12 @@ namespace Prism.App.Modules
 
                     if (liveStats.i < checkins.Count || (liveStats.i + response.Offset < response.Count))
                     {
-                        if (liveStats.i > checkins.Count && liveStats.i + response.Offset < response.Count) 
+                        if (liveStats.i >= checkins.Count && liveStats.i + response.Offset < response.Count) 
                         {
                             string jsonText = (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
-                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], 250, response.Offset + 250);
-
-                            ParseCheckinsIntoMemory(jsonText, sessionStore, response.Offset + 250, 250);
+                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], DEFAULT_FOURSQUARE_LIMIT, response.Offset + DEFAULT_FOURSQUARE_LIMIT);
+                            sessionStore.Remove("foursquareResponse");
+                            ParseCheckinsIntoMemory(jsonText, sessionStore, response.Offset + DEFAULT_FOURSQUARE_LIMIT, DEFAULT_FOURSQUARE_LIMIT);
                         }
 
                         JObject jcheckin = (JObject)checkins[liveStats.i];
@@ -164,14 +165,14 @@ namespace Prism.App.Modules
                     Offset = offset,
                     Limit = limit
                 };
+           
 
             if (sessionStore["livestats"] == null)
                 sessionStore["livestats"] = new FoursquareLiveStats
                 {
                     TotalCheckins = 0,
                     TotalDistance = 0,
-                    i = 0,
-                    Count = totalCheckinsCount,
+                    i = 0,                    
                     KeyValue = new Dictionary<string, object>(),
                     Temporary = new Dictionary<string, object>()
                 };            

@@ -9,7 +9,7 @@ namespace Prism.App.Models
     public static class SocialExperienceConstants
     {
 
-        public const double LEVELFX_LOGARITHM_BASE = 10;
+        public const double LEVELFX_LOGARITHM_BASE = 2; 
         public static class Foursquare {
 
             public const int BASE_CHECKIN = 10;

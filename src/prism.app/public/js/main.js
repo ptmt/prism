@@ -60,7 +60,7 @@ function nextStep(isDebug) {
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
-            loc.colorCode = encodeToColor(data.Live.Offset, data.Live.Count);
+            loc.colorCode = encodeToColor(data.Live.Offset, data.Request.Count);
             loc.radius = loc.isMayor ? 50 : 25;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);
