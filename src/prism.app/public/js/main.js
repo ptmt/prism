@@ -39,7 +39,7 @@ function initMap() {
 }
 
 function startProcessing(isDebug) {
-    $('.invite-form').hide();
+    $('.signup-form').hide();
     $('.stats-container').show();
     var isDebug = String(document.cookie).indexOf("debug") > 0;
     nextStep(isDebug);
@@ -58,9 +58,10 @@ function nextStep(isDebug) {
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
+            console.log (data);
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
-            loc.colorCode = encodeToColor(data.Live.Offset, data.Request.Count);
+            loc.colorCode = encodeToColor(data.Live.Offset, data.Response.Count);
             loc.radius = loc.isMayor ? 50 : 25;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);
