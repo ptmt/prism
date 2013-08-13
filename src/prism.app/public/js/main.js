@@ -27,9 +27,9 @@ function initMap() {
     var mapObject = new MM.Map(mapInDom[0], provider, size,
         [new MM.DragHandler(), new MM.DoubleClickHandler(), new MM.TouchHandler(), new MM.MouseWheelHandler()]);
     mapObject.autoSize = true;
-
-    mapObject.addLayer(spotlayer);
+   
     mapObject.addLayer(pathlayer);
+    mapObject.addLayer(spotlayer);
 
     var didSetLimits = provider.setCoordLimits(mapObject);
 
@@ -57,11 +57,10 @@ function nextStep(isDebug) {
             $('.most-likes').html(data.Live.MostLikedCheckin.LikesCount + ' for ' + data.Live.MostLikedCheckin.VenueName);
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
-            $('.my-top-client').html(data.Live.KeyValue.TopClient);
-            console.log (data);
+            $('.my-top-client').html(data.Live.KeyValue.TopClient);            
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
-            loc.colorCode = encodeToColor(data.Live.Offset, data.Response.Count);
+            loc.colorCode = encodeToColor((data.Live.i+data.Response.Offset), data.Response.Count);
             loc.radius = loc.isMayor ? 50 : 25;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);

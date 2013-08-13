@@ -11,7 +11,7 @@ Path.prototype = {
     // clearing resets the canvas and fills it with the fillStyle
     clear: function () {
         this.canvas.width = this.canvas.width;
-        this.ctx.globalCompositeOperation = "destination-atop";
+        this.ctx.globalCompositeOperation = "source-in";
         //  this.fill();
     },
 
@@ -96,10 +96,10 @@ PathLayer.prototype = {
             canvas = this.parent;
         if (this.locations.length > 1)
             this.path.drawPoint(
-        		this.locations[this.locations.length - 1]
-        		, this.locations[this.locations.length - 2]
-        		, map
-        		);
+                this.locations[this.locations.length - 1]
+                , this.locations[this.locations.length - 2]
+                , map
+                );
     },
 
     draw: function () {

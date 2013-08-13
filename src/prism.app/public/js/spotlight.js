@@ -20,7 +20,7 @@ Spotlight.prototype = {
     // clearing resets the canvas and fills it with the fillStyle
     clear: function () {
         this.canvas.width = this.canvas.width;
-        this.ctx.globalCompositeOperation = "source-over";
+        this.ctx.globalCompositeOperation = "source-out";
         this.fill();
     },
 
