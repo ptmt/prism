@@ -178,6 +178,9 @@
     <Content Include="public\img\icon-36x36.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="public\img\prism.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="public\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -72,7 +72,8 @@ namespace Prism.App.Models
 
             CalculationFunctions.Add((checkin, stats, socialPlayer) =>
             {
-                stats.PreviousCheckin = checkin;
+                if (checkin.LocationLat != 0 || checkin.LocationLng != 0)
+                    stats.PreviousCheckin = checkin;
             });
 
            
@@ -156,6 +157,7 @@ namespace Prism.App.Models
         private double CaclulateDistanceBeetweenTwoPoints(FoursquareCheckin previous, FoursquareCheckin current)
         {
             if (previous == null) return 0;
+            if (current.LocationLat == 0 && current.LocationLng == 0) return 0;
 
             var R = 6371; // km
             var dLat = toRad(current.LocationLat - previous.LocationLat);

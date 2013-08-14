@@ -48,12 +48,14 @@ function startProcessing() {
 function nextStep(isDebug) {
     var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
     $.get(apiurl).success(function (data) {
+        if (!data.Live) 
+            alert('Seems like application is deploying right now, and service is unavailable please refresh the page.');
         if (data.CurrentCheckin) {
-            // console.log(data);            
+            //console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
             $('.most-likes').html(data.Live.MostLikedCheckin.VenueName + '(' + data.Live.MostLikedCheckin.LikesCount + ' likes)');
-            console.log(data.Live.MostLikedCheckin);
+            //console.log(data.Live.MostLikedCheckin);
             $('.most-likes').attr('data-original-title', data.Live.MostLikedCheckin.VenueName);
             $('.most-likes').attr('data-content', 'Checkin date: '
                      + new Date(data.Live.MostLikedCheckin.CreatedAt).toString('yyyy-MM-dd')
@@ -63,13 +65,17 @@ function nextStep(isDebug) {
             // checkin example href https://foursquare.com/potomushto/checkin/51a04eb7498ee3b3e824999c
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
-            $('.my-top-client').html(data.Live.KeyValue.TopClient);
-            var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
-            loc.isMayor = data.CurrentCheckin.IsMayor;
-            loc.colorCode = encodeToColor((data.Live.i + data.Response.Offset), data.Response.Count);
-            loc.radius = loc.isMayor ? 80 : 40;
-            pathlayer.addLocation(loc);
-            spotlayer.addLocation(loc);
+            $('.my-top-client').html(data.Live.KeyValue.TopClient);            
+            if (data.CurrentCheckin.LocationLat != 0) {
+                var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
+                loc.isMayor = data.CurrentCheckin.IsMayor;
+                loc.colorCode = encodeToColor((data.Live.i + data.Response.Offset), data.Response.Count);
+                loc.radius = loc.isMayor ? 80 : 40;
+                loc.radius = data.CurrentCheckin.MyVenueCheckins + loc.radius;
+                pathlayer.addLocation(loc);
+                spotlayer.addLocation(loc);                
+            }
+            
             $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, {
                 type: 'line',
                 tooltipFormatter: function tooltipCheckinFormatter(sparkline, options, fields) {
@@ -88,7 +94,7 @@ function nextStep(isDebug) {
             // final step 
 
         }
-    });
+    }).fail(function(a){alert('Seems like application is deploying right now, and service is unavailable please refresh the page.');});
 }
 function updateProgessBar(progress) {
     if (progress == 100)

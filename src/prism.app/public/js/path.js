@@ -1,6 +1,6 @@
 var Path = function (canvas) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");  
+    this.ctx = canvas.getContext("2d");
 };
 
 Path.prototype = {
@@ -12,7 +12,7 @@ Path.prototype = {
     },
 
     drawPoint: function (point, prevpoint, map) {
-        
+
         var p1 = map.coordinatePoint(point.coord);
         var p2 = map.coordinatePoint(prevpoint.coord);
         this.ctx.beginPath();
@@ -30,13 +30,12 @@ Path.prototype = {
         if (blue > 255) blue = 255;
         this.ctx.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
         this.ctx.stroke();
-        map.zoomByAbout(1, point);
     },
 
     drawPoints: function (points, map) {
         if (points.length > 1) {
             for (var i = 1; i < points.length; i++) {
-                var p = points[i];                
+                var p = points[i];
                 this.drawPoint(points[i], points[i - 1], map);
             }
         }
