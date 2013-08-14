@@ -33,7 +33,7 @@ namespace Prism.App
                 sessionId = cookie;
                 try
                 {
-                    Guid guid = Guid.Parse(sessionId);
+                    Guid.Parse(sessionId);
                 }
                 catch (FormatException)
                 {

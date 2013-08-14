@@ -41,13 +41,13 @@ namespace Prism.App
         public static string MakeRequest(this OAuth2.Client.Impl.FoursquareClient client, string accessCode, int limit, int offset)        
         {
             if (String.IsNullOrEmpty(accessCode))
-                throw new ArgumentNullException("Not authorized access");            
+                return ("Not authorized access");            
             RestClient restClient = new RestSharp.RestClient(CheckinsEndpoint.BaseUri);
             restClient.Authenticator = new OAuth2UriQueryParameterAuthenticator(accessCode);            
             var request = new RestRequest(CheckinsEndpoint.Resource, Method.GET);            
-            IWebProxy webProxy = WebRequest.DefaultWebProxy;
-            webProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
-            restClient.Proxy = webProxy;
+            //IWebProxy webProxy = WebRequest.DefaultWebProxy;
+            //webProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+            //restClient.Proxy = webProxy;
 
             request.AddParameter("limit", limit);
             request.AddParameter("offset", offset);
