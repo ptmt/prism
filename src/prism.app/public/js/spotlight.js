@@ -15,7 +15,7 @@ var Spotlight = function (canvas, fillStyle) {
 
 Spotlight.prototype = {
     fillStyle: "rgba(10,10,10,.7)",
-    radius: 30,
+    radius: 60,
 
     // clearing resets the canvas and fills it with the fillStyle
     clear: function () {
@@ -32,11 +32,18 @@ Spotlight.prototype = {
         this.ctx.fill();
     },
 
+    getNormalizedRadius: function (zoomLevel, radius) {
+        if (zoomLevel >= 12)
+            return (zoomLevel - 12 + 1) * radius;
+        else
+            return radius / (12 - zoomLevel + 1);
+    },
+
     /**
      * Draw an array of points ({x, y}) as white circles. Each circle may
      * define its own radius, or we fall back on the value radius argument.
      */
-    drawPoints: function (points) {
+    drawPoints: function (points, map) {
         this.ctx.fillStyle = "rgba(10,10,10,.1)";
         var TWO_PI = Math.PI * 2,
             radius = this.radius;
@@ -51,6 +58,7 @@ Spotlight.prototype = {
                     ? p.radius
                     : radius;
             this.ctx.beginPath();
+            r = this.getNormalizedRadius(map.getZoom(), r);
             this.ctx.arc(p.x, p.y, r, 0, TWO_PI, true);
             //  this.ctx.closePath();
             this.ctx.fill();
@@ -61,12 +69,12 @@ Spotlight.prototype = {
      * Draw an array of points ({x, y}) as circles "punched out" from the fill
      * color. This produces the "spotlight" effect.
      */
-    punchout: function (points) {
+    punchout: function (points, map) {
         var time = +new Date();
         this.clear();
 
         this.ctx.globalCompositeOperation = "destination-out";
-        this.drawPoints(points);
+        this.drawPoints(points, map);
         //console.log(points.length, "pts took", (new Date() - time), "ms");
     }
 };
@@ -123,6 +131,14 @@ SpotlightLayer.prototype = {
         this.draw();
     },
 
+    extent: function(loc) {
+       // this.map.Coordinate = new MM.Coordinate(1, 2, 3);
+        //MM.getFrame(this.getRedraw());
+
+        /// update global frame (topleft, bottomright) coordinates if needed and rezoom&repan
+        /// performance should not affect responsive ui thread
+    },
+
     draw: function () {
         var map = this.map,
             canvas = this.parent;
@@ -141,7 +157,8 @@ SpotlightLayer.prototype = {
                 if ("radius" in loc) point.radius = loc.radius;
                 return point;
             });
-            this.spotlight.punchout(points);
+            this.spotlight.punchout(points, map);  
+                      
         } else {
             this.spotlight.clear();
         }

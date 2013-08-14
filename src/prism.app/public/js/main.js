@@ -52,16 +52,24 @@ function nextStep(isDebug) {
             // console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
-            $('.most-likes').html(data.Live.MostLikedCheckin.LikesCount + ' for ' + data.Live.MostLikedCheckin.VenueName);
+            $('.most-likes').html(data.Live.MostLikedCheckin.VenueName + '(' + data.Live.MostLikedCheckin.LikesCount + ' likes)');
+            console.log(data.Live.MostLikedCheckin);
+            $('.most-likes').attr('data-original-title', data.Live.MostLikedCheckin.VenueName);
+            $('.most-likes').attr('data-content', 'Checkin date: '
+                     + new Date(data.Live.MostLikedCheckin.CreatedAt).toString('yyyy-MM-dd')
+                     + '. It was liked by '
+                     + data.Live.MostLikedCheckin.LikesSummary
+                     + '. Click to see details about this checkin');
+            // checkin example href https://foursquare.com/potomushto/checkin/51a04eb7498ee3b3e824999c
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
             $('.my-top-client').html(data.Live.KeyValue.TopClient);
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
             loc.colorCode = encodeToColor((data.Live.i + data.Response.Offset), data.Response.Count);
-            loc.radius = loc.isMayor ? 50 : 25;
-            spotlayer.addLocation(loc);
+            loc.radius = loc.isMayor ? 80 : 40;
             pathlayer.addLocation(loc);
+            spotlayer.addLocation(loc);
             $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, {
                 type: 'line',
                 tooltipFormatter: function tooltipCheckinFormatter(sparkline, options, fields) {
@@ -73,6 +81,7 @@ function nextStep(isDebug) {
             var progress = ((data.Live.i + data.Response.Offset) / data.Response.Count) * 100;
             updateProgessBar(Math.round(progress));
             updatePlayerInfo(data.Player);
+            $('.popover-provide').popover()
             nextStep(isDebug);
         }
         else {
@@ -92,7 +101,10 @@ function updateProgessBar(progress) {
 function updatePlayerInfo(player) {
     updateSkill($('.sociality-skill'), player.Exp, player.Skills.Sociality, 'sociality');
     updateSkill($('.curiosity-skill'), player.Exp, player.Skills.Curiosity, 'curiosity');
-    $('.achievements-log').html(player.Achievements);
+    $.each(player.Achievements, function (i, item) {
+        $('.achievements-log').append('<p>' + item);
+    });
+
 }
 
 function updateSkill(jelement, total_exp, original_value, name) {

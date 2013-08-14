@@ -12,7 +12,7 @@ body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
 .stats-container { display:none;background: white;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
 .stats-container div {margin:0px;text-align: center;}
 .stats-container span {font-size:12px;}
-.stats-container h2, .stats-container h3 { margin: 2px; padding: 4px 9px; font-weight:normal;overflow: hidden;text-overflow: clip;white-space: nowrap;color:white;}
+.stats-container h2, .stats-container h3 { text-shadow: 1px 1px 1px black;margin: 2px; padding: 4px 9px; font-weight:normal;overflow: hidden;text-overflow: clip;white-space: nowrap;color:white;}
 .stats-container h3 {font-size:1em;background:#428bca;border-radius: .25em;}
 .stats-container h2 {background: #428bca; font-size: 3em;text-align:right;border-radius: .10em;}
 .checkins-timeline {overflow-x:scroll}

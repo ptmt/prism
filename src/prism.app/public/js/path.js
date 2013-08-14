@@ -1,30 +1,25 @@
 var Path = function (canvas) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
-    this.startDate = Date.parse("2013-01-01T10:51:52");
-    this.endDate = new Date();
+    this.ctx = canvas.getContext("2d");  
 };
 
 Path.prototype = {
-
-
     // clearing resets the canvas and fills it with the fillStyle
     clear: function () {
         this.canvas.width = this.canvas.width;
-        this.ctx.globalCompositeOperation = "source-in";
+        this.ctx.globalCompositeOperation = "destination-atop";
         //  this.fill();
     },
 
-
-
     drawPoint: function (point, prevpoint, map) {
+        
         var p1 = map.coordinatePoint(point.coord);
         var p2 = map.coordinatePoint(prevpoint.coord);
         this.ctx.beginPath();
         this.ctx.moveTo(p2.x, p2.y);
         this.ctx.lineTo(p1.x, p1.y);
         this.ctx.lineWidth = 1;
-        
+
         var red = Math.round(point.colorCode);
         if (red > 255) red = 255;
         var green = Math.round(point.colorCode - 255);
@@ -35,15 +30,13 @@ Path.prototype = {
         if (blue > 255) blue = 255;
         this.ctx.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
         this.ctx.stroke();
+        map.zoomByAbout(1, point);
     },
 
     drawPoints: function (points, map) {
         if (points.length > 1) {
             for (var i = 1; i < points.length; i++) {
-                var p = points[i];
-                this.ctx.beginPath();
-                this.ctx.moveTo(points[i - 1].x, points[i - 1].y);
-                this.ctx.lineTo(p.x, p.y);
+                var p = points[i];                
                 this.drawPoint(points[i], points[i - 1], map);
             }
         }
