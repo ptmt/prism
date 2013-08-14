@@ -46,7 +46,7 @@ function startProcessing() {
 }
 
 function nextStep(isDebug) {
-    var apiurl = isDebug ? '/api/nextstep?mockdata=2' : '/api/nextstep';
+    var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
     $.get(apiurl).success(function (data) {
         if (data.CurrentCheckin) {
             // console.log(data);            
@@ -72,6 +72,7 @@ function nextStep(isDebug) {
             $('.player-exp').html(data.Player.Exp);
             var progress = ((data.Live.i + data.Response.Offset) / data.Response.Count) * 100;
             updateProgessBar(Math.round(progress));
+            updatePlayerInfo(data.Player);
             nextStep(isDebug);
         }
         else {
@@ -85,11 +86,21 @@ function updateProgessBar(progress) {
         $('.processing-progress').removeClass('active').removeClass('progress-striped');
     $('.processing-progress .progress-bar').attr('aria-valuenow', progress);
     $('.processing-progress .progress-bar').css('width', progress + '%');
-    $('.processing-progress .progress-bar').html('<span class="sr-only">' + progress + '% complete</span>');
+    $('.processing-progress .progress-bar').html('' + progress + '% complete');
 }
 
 function updatePlayerInfo(player) {
-    console.log(player);
+    updateSkill($('.sociality-skill'), player.Exp, player.Skills.Sociality, 'sociality');
+    updateSkill($('.curiosity-skill'), player.Exp, player.Skills.Curiosity, 'curiosity');
+    $('.achievements-log').html(player.Achievements);
+}
+
+function updateSkill(jelement, total_exp, original_value, name) {
+
+    var value = (original_value / (total_exp > 500000 ? 10000000 : 500000)) * 100;
+    jelement.attr('aria-valuenow', value);
+    jelement.css('width', value + '%');
+    jelement.html(name + ':' + original_value);
 }
 
 function encodeToColor(i, total) {
