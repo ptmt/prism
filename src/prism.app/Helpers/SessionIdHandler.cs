@@ -47,10 +47,9 @@ namespace Prism.App
             return null; 
         }
 
-        static public void CookieInject(
-            NancyContext context)
+        static public void CookieInject(NancyContext context)
         {
-            if (context.Parameters.SessionId)
+            if (context.Parameters.SessionId && !context.Request.Cookies.ContainsKey(SessionIdToken))
             {
 
                 var cookieItem = new Nancy.Cookies.NancyCookie(SessionIdToken, context.Parameters.SessionId)
@@ -67,13 +66,10 @@ namespace Prism.App
             
         }
 
-        static public void CookieAddAuth(
-          NancyContext context)
+        static public void CookieAddAuth( NancyContext context)
         {
-
             var cookieItem = new Nancy.Cookies.NancyCookie("isauth", "true");           
-            context.Response.AddCookie(cookieItem);
-            
+            context.Response.AddCookie(cookieItem);            
         }
 
 

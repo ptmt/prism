@@ -87,7 +87,7 @@ namespace Prism.App.Modules
                     var response = (FoursquareResponseData)sessionStore["foursquareResponse"];
                     JArray checkins = response.Checkins;
 
-                    if (liveStats.i < checkins.Count || (liveStats.i + response.Offset < response.Count))
+                    if (liveStats.i < checkins.Count || (liveStats.i + response.Offset < response.Count && this.Request.Query.MockData == null))
                     {
                         if (liveStats.i >= checkins.Count && liveStats.i + response.Offset < response.Count) 
                         {
@@ -112,7 +112,7 @@ namespace Prism.App.Modules
                             sessionStore.Remove("livestats");
                             sessionStore.Remove("foursquareResponse");
                             foursquareProcessing.Finalize(liveStats);
-                            return Response.AsJson(new FoursquareStep { Live = liveStats, CurrentCheckin = null });
+                            return Response.AsJson(new FoursquareStep { Live = liveStats, CurrentCheckin = null, Player = socialPlayer });
                      
                     }
                 }

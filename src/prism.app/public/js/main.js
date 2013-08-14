@@ -38,15 +38,13 @@ function initMap() {
     var hasher = new MM.Hash(mapObject);
 }
 
-function startProcessing(isDebug) {
+function startProcessing() {
     $('.signup-form').hide();
     $('.stats-container').show();
     var isDebug = String(document.cookie).indexOf("debug") > 0;
     nextStep(isDebug);
 }
-function tooltipCheckinFormatter(sparkline, options, fields) {
-    return "checkins";
-}
+
 function nextStep(isDebug) {
     var apiurl = isDebug ? '/api/nextstep?mockdata=2' : '/api/nextstep';
     $.get(apiurl).success(function (data) {
@@ -83,12 +81,15 @@ function nextStep(isDebug) {
     });
 }
 function updateProgessBar(progress) {
-    console.log(progress);
     if (progress == 100)
         $('.processing-progress').removeClass('active').removeClass('progress-striped');
     $('.processing-progress .progress-bar').attr('aria-valuenow', progress);
     $('.processing-progress .progress-bar').css('width', progress + '%');
     $('.processing-progress .progress-bar').html('<span class="sr-only">' + progress + '% complete</span>');
+}
+
+function updatePlayerInfo(player) {
+    console.log(player);
 }
 
 function encodeToColor(i, total) {
@@ -119,6 +120,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 $(function () {
+    //$('.retry-button').on('click', window.location.reload());
     var isAuth = String(document.cookie).indexOf("isauth") > 0;
     if (isAuth) {
         startProcessing();

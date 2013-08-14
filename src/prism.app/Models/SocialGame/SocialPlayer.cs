@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nancy.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,12 +28,14 @@ namespace Prism.App.Models
 
         public int Level { get { return (int)Math.Round(Math.Log(Exp + 1, SocialExperienceConstants.LEVELFX_LOGARITHM_BASE)); } }
 
-        public Dictionary<PlayerSkill, long> Skills { get; set; }
+        
+        public Dictionary<string, long> Skills { get; set; }
         public List<string> Achievements { get; set; }
 
         public SocialPlayer()
         {
-            Skills = new Dictionary<PlayerSkill, long>();
+            exp = 0;
+            Skills = new Dictionary<string, long>();
             Achievements = new List<string>();
         }
         public void Apply(PlayerSkill skillKey, long points)
@@ -50,10 +53,10 @@ namespace Prism.App.Models
         }
 
         private void applySkill(PlayerSkill skillKey, long value) {            
-                if (Skills.ContainsKey(skillKey))
-                    Skills[skillKey] += value;
+                if (Skills.ContainsKey(skillKey.ToString()))
+                    Skills[skillKey.ToString()] += value;
                 else
-                    Skills.Add(skillKey, value);            
+                    Skills.Add(skillKey.ToString(), value);            
         }
     }
 }

@@ -125,8 +125,8 @@
     <Compile Include="Models\FoursquareCheckin.cs" />
     <Compile Include="Models\FoursquareLiveStats.cs" />
     <Compile Include="Models\FoursquareResponseData.cs" />
-    <Compile Include="Models\SocialExperienceConstants.cs" />
-    <Compile Include="Models\SocialPlayer.cs" />
+    <Compile Include="Models\SocialGame\SocialExperienceConstants.cs" />
+    <Compile Include="Models\SocialGame\SocialPlayer.cs" />
     <Compile Include="Modules\ApiModule.cs" />
     <Compile Include="OwinConstants.cs" />
     <Compile Include="Processing\FoursquareProcessing.cs" />
