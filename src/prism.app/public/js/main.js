@@ -27,7 +27,7 @@ function initMap() {
     var mapObject = new MM.Map(mapInDom[0], provider, size,
         [new MM.DragHandler(), new MM.DoubleClickHandler(), new MM.TouchHandler(), new MM.MouseWheelHandler()]);
     mapObject.autoSize = true;
-   
+
     mapObject.addLayer(pathlayer);
     mapObject.addLayer(spotlayer);
 
@@ -57,10 +57,10 @@ function nextStep(isDebug) {
             $('.most-likes').html(data.Live.MostLikedCheckin.LikesCount + ' for ' + data.Live.MostLikedCheckin.VenueName);
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
-            $('.my-top-client').html(data.Live.KeyValue.TopClient);            
+            $('.my-top-client').html(data.Live.KeyValue.TopClient);
             var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
             loc.isMayor = data.CurrentCheckin.IsMayor;
-            loc.colorCode = encodeToColor((data.Live.i+data.Response.Offset), data.Response.Count);
+            loc.colorCode = encodeToColor((data.Live.i + data.Response.Offset), data.Response.Count);
             loc.radius = loc.isMayor ? 50 : 25;
             spotlayer.addLocation(loc);
             pathlayer.addLocation(loc);
@@ -71,7 +71,9 @@ function nextStep(isDebug) {
                 }
             });
             $('.player-level').html(data.Player.Level);
-            $('.player-exp').html(data.Player.Exp);                
+            $('.player-exp').html(data.Player.Exp);
+            var progress = ((data.Live.i + data.Response.Offset) / data.Response.Count) * 100;
+            updateProgessBar(Math.round(progress));
             nextStep(isDebug);
         }
         else {
@@ -80,7 +82,16 @@ function nextStep(isDebug) {
         }
     });
 }
-function encodeToColor (i, total) {
+function updateProgessBar(progress) {
+    console.log(progress);
+    if (progress == 100)
+        $('.processing-progress').removeClass('active').removeClass('progress-striped');
+    $('.processing-progress .progress-bar').attr('aria-valuenow', progress);
+    $('.processing-progress .progress-bar').css('width', progress + '%');
+    $('.processing-progress .progress-bar').html('<span class="sr-only">' + progress + '% complete</span>');
+}
+
+function encodeToColor(i, total) {
     return (765 / total * i);
 }
 
@@ -107,10 +118,13 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
-$(function () {    
+$(function () {
     var isAuth = String(document.cookie).indexOf("isauth") > 0;
     if (isAuth) {
         startProcessing();
     }
-    initMap();    
+    else {
+        $('.signup-form').show();
+    }
+    initMap();
 });

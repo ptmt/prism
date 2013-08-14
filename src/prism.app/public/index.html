@@ -1,74 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>PRISM Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/prism.css">
-  </head>
-  <body> 
-
-
+</head>
+<body>
     <div class="map-container" data-provider="toner"></div>
-       
 
     <div class="signup-form">
-    	
-    	<div class="signup-services">
-    		<h1>The PRISM</h1>
-    		<p>A social networks experience under new angel.</p>
-    		<p>Sign in with your favorites accounts.</p>    		
-        	<p><a href="/api/login" class="signin-button" title="Sign In With Fourquare">
-        			<img src="img/icon-36x36.png" /></a>
-
-
+        <div class="signup-services">
+            <h1>The PRISM</h1>
+            <p>A social networks experience under new angel.</p>
+            <p>Sign in with your favorites accounts.</p>
+            <p>
+                <a href="/api/login" class="signin-button" title="Sign In With Fourquare">
+                    <img src="img/icon-36x36.png" />
+                </a>
+            </p>
         </div>
-
     </div>
 
     <div class="stats-container">
-    	<div class="row">
-		  <div class="col-lg-2">
-		  	  <span>TOTAL CHECKINS</span>
-		  	  <h2 class="total-checkins">0 000</h2>	          
-          </div>
-		  <div class="col-lg-2">		  	 
-	          <span>TOTAL DISTANCE</span>
-	          <h2 class="total-distance">0 000</h2>
-		  </div>
-		  <div class="col-lg-2">
-		  	<div class="row">
-		  		<span>MOST LIKED</span>
-		  		<h3 class="most-likes" data-toggle="tooltip" title="%tooltip%">%place-with-long-long-long title which may consist of more than two hundred of symbols%</h3>
-		  	</div>
-            <div class="row"><span>MOST POPULAR PLACE</span><h3 class="most-popular">%place%</h3></div>
-		  </div>
-		  <div class="col-lg-2">
-		  	<div class="row"><span>IMPORTANT PLACE</span><h3 class="my-top-place">%place%</h3></div>
-            <div class="row"><span>CLIENT</span><h3 class="my-top-client">%client%</h3></div>
-		  </div>
-		
-		  <div class="col-lg-2">
-		  	<div class="row"><span>CHECKINS TIMELINE</span><span class="checkins-timeline"></span></div>
-            <div class="row verdict"> 
-            	<a href="#playerinfo" class="btn btn-default">
-            		<span class="badge pull-right player-level">0</span>
-            		<span class="player-diagnose">%somebody%</span>
-            	</a>
+        <div class="row">
+
+            <div class="col-lg-2">
+                <span>TOTAL CHECKINS</span>
+                <h2 class="total-checkins">0 000</h2>
             </div>
-		  </div>
-		
-		</div>
+            <div class="col-lg-2">
+                <span>TOTAL DISTANCE</span>
+                <h2 class="total-distance">0 000</h2>
+            </div>
+            <div class="col-lg-2">
+                <div class="row">
+                    <span>MOST LIKED</span>
+                    <h3 class="most-likes" data-toggle="tooltip" title="%tooltip%">%place-with-long-long-long title which may consist of more than two hundred of symbols%</h3>
+                </div>
+                <div class="row"><span>MOST POPULAR PLACE</span><h3 class="most-popular">%place%</h3></div>
+            </div>
+            <div class="col-lg-2">
+                <div class="row"><span>IMPORTANT PLACE</span><h3 class="my-top-place">%place%</h3></div>
+                <div class="row"><span>CLIENT</span><h3 class="my-top-client">%client%</h3></div>
+            </div>
+
+            <div class="col-lg-2">
+                <div class="row"><span>CHECKINS TIMELINE</span><span class="checkins-timeline"></span></div>
+                <div class="row verdict">
+                    <a href="#playerinfo" class="btn btn-default">
+                        <span class="badge pull-right player-level">0</span>
+                        <span class="player-diagnose">%somebody%</span>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="progress progress-striped active processing-progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                    <span class="sr-only">Starting..</span>
+                </div>
+            </div>
+        </div>
     </div>
 
+
     <div class="player-modal">
-    	 <span class="player-exp">100 000 000</span> 
+        <span class="player-exp">100 000 000</span>
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
- 	
+
     <script type="text/javascript" src="/js/vendor/modestmaps.min.js"></script>
     <script type="text/javascript" src="/js/vendor/reqwest.min.js"></script>
     <script type="text/javascript" src="/js/vendor/jquery.sparkline.min.js"></script>
@@ -78,6 +84,6 @@
     <script type="text/javascript" src="/js/common.js"></script>
     <script type="text/javascript" src="/js/main.js"></script>
 
-    
-  </body>
+
+</body>
 </html>

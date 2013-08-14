@@ -3,18 +3,13 @@ body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;z-index: 5}
 
 .signup-form {
-	top: 150px;padding: 35px;position:absolute; max-width: 70%;
-	z-index:10; position:relative;
-	margin: 10% 0 0 15%; background-color: white;opacity: .8;    
-	background: url(/img/prism.jpg);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    text-align:center;border: 1px solid #cccccc;
-    border-radius:6px;
-    min-height: 400px;
+    display:none;
+	top: 150px;padding: 35px;position:absolute; max-width: 70%;z-index:10; position:relative;margin: 10% 0 0 15%; background-color: white;opacity: .8;    
+	background: url(/img/prism.jpg);box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);text-align:center;border: 1px solid #cccccc;border-radius:6px;min-height: 400px;
 }
 .signup-services { text-align: left;width: 60%;float: right;color:black;font-size:1.2em;}
 
-.stats-container { display:none;border-bottom: 2px solid #cccccc;background: white;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
+.stats-container { display:none;background: white;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
 .stats-container div {margin:0px;text-align: center;}
 .stats-container span {font-size:12px;}
 .stats-container h2, .stats-container h3 { margin: 2px; padding: 4px 9px; font-weight:normal;overflow: hidden;text-overflow: clip;white-space: nowrap}
@@ -22,6 +17,8 @@ body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
 .stats-container h2 {background: rgb(4, 129, 158); color:white;font-size: 3em;text-align:right;border-radius: .10em;}
 .checkins-timeline {overflow-x:scroll}
 .col1 span {text-align:right;}
+
+.processing-progress {height: 16px;box-shadow:none;border-radius:0px}
 
 /*.verdict span { font-size:2em !important}*/
 .player-exp {color: rgb(163, 163, 163);}
