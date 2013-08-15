@@ -20,14 +20,17 @@ namespace Prism.App.Models
             public const int NEW_PLACE_CHECKIN = BASE_CHECKIN * 5;
             public const int MAYORSHIP_CHECKIN = BASE_CHECKIN * 5;
             public const int CHECKIN_WITH_NEW_FOURSQUARE_CLIENT = BASE_CHECKIN * 5;
-            public const int CHECKIN_IN_PLACE_WITH_MORE_THAN_100_CHECKINS = BASE_CHECKIN * 2;
-            public const int CHECKIN_IN_PLACE_WITH_MORE_THAN_1000_CHECKINS = BASE_CHECKIN * 4;
-            public const int CHECKIN_IN_PLACE_WITH_MORE_THAN_10000_CHECKINS = BASE_CHECKIN * 6;
-            public const int CHECKIN_IN_PLACE_REMOTE_FROM_LAST_AT_1000KM = BASE_CHECKIN * 5;
-            public const int CHECKIN_IN_PLACE_REMOTE_FROM_LAST_AT_5000KM = BASE_CHECKIN * 10;
-            public const int CHECKIN_IN_PLACE_REMOTE_FROM_LAST_AT_10000KM = BASE_CHECKIN * 100;
+            public const int CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS = BASE_CHECKIN * 2;
+            public const int CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS = BASE_CHECKIN * 4;
+            public const int CHECKIN_AT_PLACE_WITH_MORE_THAN_10000_CHECKINS = BASE_CHECKIN * 6;
+            public const int CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM = BASE_CHECKIN * 5;
+            public const int CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM = BASE_CHECKIN * 10;
+            public const int CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM = BASE_CHECKIN * 100;
 
-            
+            public const int CHECKIN_AT_JUST_CREATED_PLACE = BASE_CHECKIN * 10; // curiosity
+            public const int CHECKIN_AT_NEW_CATEGORY = BASE_CHECKIN * 5; // curiosity
+            public const int CHECKIN_WITH_ONE_FRIEND = BASE_CHECKIN * 5; // sociality
+            //public const int CHECKIN_WITH_ONE_FRIEND = BASE_CHECKIN * 5; // sociality
             
         }
         

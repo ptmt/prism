@@ -3,11 +3,19 @@ using System;
 
 namespace Prism.App.Models
 {
+    public class FoursquareUser
+    {
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public string Gender { get; set; }
+    }
     public class FoursquareCheckin
     {
         public string ID { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedAtStr { get { return CreatedAt.ToUnix().ToString(); } } // for maps rendering
+
+        public FoursquareUser CreatedBy { get; set; }
         public bool? IsMayor { get; set; }
 
         public string ClientName { get; set; }
@@ -42,6 +50,14 @@ namespace Prism.App.Models
           
             ID = (string)jcheckin["id"];
             CreatedAt = ((int)jcheckin["createdAt"]).FromUnix();
+            if (jcheckin["createdBy"] != null) {
+                CreatedBy = new FoursquareUser()
+                {
+                    ID = (string)jcheckin["createdBy"]["id"],
+                    Name = (string)jcheckin["createdBy"]["firstName"] + " " + (string)jcheckin["createdBy"]["lastName"],
+                    Gender = (string)jcheckin["createdBy"]["gender"]
+                };
+            }
             LikesCount = (int)jcheckin["likes"]["count"];
             ClientName = (string)jcheckin["source"]["name"];
             IsMayor = (bool?)jcheckin["isMayor"];

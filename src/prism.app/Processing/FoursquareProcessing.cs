@@ -126,17 +126,17 @@ namespace Prism.App.Models
             {
                 socialPlayer.Apply(PlayerSkill.Sociality,SocialExperienceConstants.Foursquare.BASE_CHECKIN);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.ONE_KILOMETER_PASSED * (int)stats.LastDistance);
-                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.TotalVenueCheckins > 100);
-                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.TotalVenueCheckins > 1000);
-                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_WITH_MORE_THAN_10000_CHECKINS, currentCheckin.TotalVenueCheckins > 10000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.TotalVenueCheckins > 100);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.TotalVenueCheckins > 1000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_10000_CHECKINS, currentCheckin.TotalVenueCheckins > 10000);
                 socialPlayer.Apply(PlayerSkill.Sociality, SocialExperienceConstants.Foursquare.ONE_LIKE_TO_CHECKIN * currentCheckin.LikesCount);
                 socialPlayer.Apply(PlayerSkill.Sociality, SocialExperienceConstants.Foursquare.MAYORSHIP_CHECKIN, currentCheckin.IsMayor.HasValue && currentCheckin.IsMayor.Value);
                 socialPlayer.Apply(PlayerSkill.Sociality, SocialExperienceConstants.Foursquare.ONE_COMMENT_TO_CHECKIN * currentCheckin.CommentsCount);
                 socialPlayer.Apply(PlayerSkill.Sociality, SocialExperienceConstants.Foursquare.CHECKIN_WITH_PHOTO * currentCheckin.PhotosCount);
 
-                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.LastDistance > 1000);
-                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.LastDistance > 5000);
-                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_IN_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.LastDistance > 10000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.LastDistance > 1000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.LastDistance > 5000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.LastDistance > 10000);
 
                 
             });
