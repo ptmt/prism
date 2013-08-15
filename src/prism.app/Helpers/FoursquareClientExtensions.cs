@@ -52,6 +52,7 @@ namespace Prism.App
             request.AddParameter("limit", limit);
             request.AddParameter("offset", offset);
             request.AddParameter("sort", "oldestfirst");
+            request.AddParameter("v", DateTime.Now.ToString("yyyyMMdd"));
             var response = restClient.Execute(request);
             return response.Content;
         }

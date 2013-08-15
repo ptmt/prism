@@ -54,7 +54,7 @@ namespace Prism.App.Data
             }
             set
             {
-                Add(GetFullKey(key), value);
+                Add(key, value);
             }
         }
 
