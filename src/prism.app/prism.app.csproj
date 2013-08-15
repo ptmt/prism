@@ -128,6 +128,7 @@
     <Compile Include="Models\SocialGame\SocialExperienceConstants.cs" />
     <Compile Include="Models\SocialGame\SocialPlayer.cs" />
     <Compile Include="Modules\ApiModule.cs" />
+    <Compile Include="Modules\DefaultModule.cs" />
     <Compile Include="OwinConstants.cs" />
     <Compile Include="Processing\FoursquareProcessing.cs" />
     <Compile Include="Models\FoursquareStep.cs" />

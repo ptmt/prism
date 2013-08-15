@@ -3,9 +3,9 @@ body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;z-index: 5}
 
 .signup-form {
-    display:none;
+    display:none;background-size: 100%;
 	top: 150px;padding: 35px;position:absolute; max-width: 70%;z-index:10; position:relative;margin: 10% 0 0 15%; background-color: white;opacity: .8;    
-	background: url(/img/prism.jpg);box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);text-align:center;border: 1px solid #cccccc;border-radius:6px;min-height: 400px;
+	background: url(/img/prism.jpg) no-repeat;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);text-align:center;border: 1px solid #cccccc;border-radius:6px;min-height: 400px;
 }
 .signup-services { text-align: left;width: 60%;float: right;color:black;font-size:1.2em;}
 

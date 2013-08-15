@@ -62,7 +62,8 @@ namespace Prism.App
                 context.Response.AddCookie(cookieItem);
             }
             ISessionStore sessionStore = new InMemorySessionStore(context);
-            if (sessionStore[ACCESS_TOKEN_SESSION_KEY] != null) CookieAddAuth(context);
+            if (sessionStore[ACCESS_TOKEN_SESSION_KEY] != null) 
+                CookieAddAuth(context);
             
         }
 

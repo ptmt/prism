@@ -48,8 +48,11 @@ function startProcessing() {
 function nextStep(isDebug) {
     var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
     $.get(apiurl).success(function (data) {
-        if (!data.Live) 
-            alert('Seems like application is deploying right now, and service is unavailable please refresh the page.');
+        if (!data.Live) {
+            alert('Seems like your sessions is expired. Refresh the page and sign in again.');            
+            document.cookie = "isauth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+            
+        }
         if (data.CurrentCheckin) {
             //console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
@@ -94,7 +97,7 @@ function nextStep(isDebug) {
             // final step 
 
         }
-    }).fail(function(a){alert('Seems like application is deploying right now, and service is unavailable please refresh the page.');});
+    }).fail(function(a){alert('Seems like application is deploying right now, and service is unavailable. Please refresh the page.');});
 }
 function updateProgessBar(progress) {
     if (progress == 100)
@@ -107,6 +110,7 @@ function updateProgessBar(progress) {
 function updatePlayerInfo(player) {
     updateSkill($('.sociality-skill'), player.Exp, player.Skills.Sociality, 'sociality');
     updateSkill($('.curiosity-skill'), player.Exp, player.Skills.Curiosity, 'curiosity');
+    $('.achievements-log').empty();
     $.each(player.Achievements, function (i, item) {
         $('.achievements-log').append('<p>' + item);
     });

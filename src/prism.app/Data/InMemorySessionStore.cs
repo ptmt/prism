@@ -26,36 +26,41 @@ namespace Prism.App.Data
 	    }
         public void Add(string key, object value)
         {
-            cache.Add(key, value, DateTime.Now.AddDays(30));            
+            cache.Add(GetFullKey(key), value, DateTime.Now.AddDays(30));            
         }
 
         public Task<object> GetAsync(string key)
         {
             return Task.Run<object>(() =>
             {
-                return cache.Get(key);
+                return cache.Get(GetFullKey(key));
             });          
         }
 
-        public Task<bool> UpdateAsync(string userName, string newSecret)
+        public Task<bool> UpdateAsync(string key, string value)
         {
             throw new NotImplementedException();
         }
 
         public void Remove(string key)
         {
-            cache.Remove(key);
+            cache.Remove(GetFullKey(key));
         }
         public object this[string key]
         {
             get
             {
-                return this.GetAsync(key).Result;
+                return this.cache.Get(GetFullKey(key));
             }
             set
             {
-                Add(key, value);
+                Add(GetFullKey(key), value);
             }
+        }
+
+        private string GetFullKey(string key)
+        {
+            return sessionId + key;
         }
     }
 }

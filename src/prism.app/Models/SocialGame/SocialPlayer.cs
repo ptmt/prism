@@ -1,4 +1,5 @@
 ﻿using Nancy.Json;
+using OAuth2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace Prism.App.Models
         
         public Dictionary<string, long> Skills { get; set; }
         public List<string> Achievements { get; set; }
+
+        public UserInfo UserInfo { get; set; }
 
         public SocialPlayer()
         {

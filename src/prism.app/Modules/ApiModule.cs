@@ -134,7 +134,9 @@ namespace Prism.App.Modules
 
         public static void InitSocialPlayer(ISessionStore sessionStore)
         {            
-            sessionStore["socialplayer"] = new SocialPlayer();
+            var player = new SocialPlayer();
+            player.UserInfo = (UserInfo)sessionStore["userinfo"];
+            sessionStore["socialplayer"] = player;
         }
 
         public static string GetCheckinsFilename(int mocki)

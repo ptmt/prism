@@ -19,7 +19,7 @@ Path.prototype = {
         this.ctx.moveTo(p2.x, p2.y);
         this.ctx.lineTo(p1.x, p1.y);
         this.ctx.lineWidth = 1;
-
+        
         var red = Math.round(point.colorCode);
         if (red > 255) red = 255;
         var green = Math.round(point.colorCode - 255);
@@ -29,6 +29,7 @@ Path.prototype = {
         if (blue < 0) blue = 0;
         if (blue > 255) blue = 255;
         this.ctx.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
+        this.ctx.setLineDash([5]);
         this.ctx.stroke();
     },
 
