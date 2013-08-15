@@ -57,14 +57,21 @@ function nextStep(isDebug) {
             //console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
-            $('.most-likes').html(data.Live.MostLikedCheckin.VenueName + '(' + data.Live.MostLikedCheckin.LikesCount + ' likes)');
-            //console.log(data.Live.MostLikedCheckin);
-            $('.most-likes').attr('data-original-title', data.Live.MostLikedCheckin.VenueName);
-            $('.most-likes').attr('data-content', 'Checkin date: '
-                     + new Date(data.Live.MostLikedCheckin.CreatedAt).toString('yyyy-MM-dd')
-                     + '. It was liked by '
-                     + data.Live.MostLikedCheckin.LikesSummary
-                     + '. Click to see details about this checkin');
+           
+            updateStat($('.most-liked')
+                , data.Live.MostLikedCheckin.VenueName + '(' + data.Live.MostLikedCheckin.LikesCount + ' likes)'
+                , data.Live.MostLikedCheckin.VenueName
+                , 
+                (data.Live.MostLikedCheckin.CreatedAtStr
+                 + ' it was liked by '
+                 + data.Live.MostLikedCheckin.LikesSummary
+                 + '. <a href="'
+                 + 'https://foursquare.com/user/'
+                 + data.Player.UserInfo.Id 
+                 + '/checkin/'
+                 + data.Live.MostLikedCheckin.ID
+                 + '">Foursquare link</a>, click to see details about this checkin')        
+            );   
             // checkin example href https://foursquare.com/potomushto/checkin/51a04eb7498ee3b3e824999c
             $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
@@ -90,7 +97,7 @@ function nextStep(isDebug) {
             var progress = ((data.Live.i + data.Response.Offset) / data.Response.Count) * 100;
             updateProgessBar(Math.round(progress));
             updatePlayerInfo(data.Player);
-            $('.popover-provide').popover()
+            $('.popover-provide').popover({ 'html': 'true' })
             nextStep(isDebug);
         }
         else {
@@ -98,6 +105,11 @@ function nextStep(isDebug) {
 
         }
     }).fail(function(a){alert('Seems like application is deploying right now, and service is unavailable. Please refresh the page.');});
+}
+function updateStat(element, html, title, content) {
+    element.html(html);    
+    element.attr('data-original-title', title);    
+    element.attr('data-content', content);
 }
 function updateProgessBar(progress) {
     if (progress == 100)

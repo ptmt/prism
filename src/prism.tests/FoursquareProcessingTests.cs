@@ -27,7 +27,9 @@ namespace prism.tests
         public void Parse_mockdata_should_return_foursquare_response_contains_checkins()
         {
             ISessionStore sessionStore = new InMemorySessionStore();
-            ApiModule.ParseCheckinsIntoMemory(File.ReadAllText(ApiModule.GetCheckinsFilename(MockFileId)), sessionStore);
+            ApiModule.ParseCheckinsIntoMemory(
+                File.ReadAllText(ApiModule.GetCheckinsFilename(MockFileId)),
+                sessionStore, 0, 200);
 
             Assert.True(((FoursquareResponseData)sessionStore["checkins"]).Checkins.Count > 0);
         }

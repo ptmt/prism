@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prism.app", "prism.app\pris
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prism.tests", "prism.tests\prism.tests.csproj", "{27091403-B3A7-4F5F-97A7-F829A3419AF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth2", "..\..\_temporary\OAuth2\OAuth2\OAuth2.csproj", "{C95637CD-25E5-483E-9C74-89FE3ADB999B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,26 @@ Global
 		{27091403-B3A7-4F5F-97A7-F829A3419AF4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{27091403-B3A7-4F5F-97A7-F829A3419AF4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{27091403-B3A7-4F5F-97A7-F829A3419AF4}.Release|x86.ActiveCfg = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoDebug|Any CPU.Build.0 = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoDebug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoDebug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoDebug|x86.ActiveCfg = Debug|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoRelease|Any CPU.Build.0 = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.MonoRelease|x86.ActiveCfg = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C95637CD-25E5-483E-9C74-89FE3ADB999B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

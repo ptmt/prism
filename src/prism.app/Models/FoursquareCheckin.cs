@@ -13,7 +13,7 @@ namespace Prism.App.Models
     {
         public string ID { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string CreatedAtStr { get { return CreatedAt.ToUnix().ToString(); } } // for maps rendering
+        public string CreatedAtStr { get { return CreatedAt.ToString("r"); } } // for maps rendering
 
         public FoursquareUser CreatedBy { get; set; }
         public bool? IsMayor { get; set; }

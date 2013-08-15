@@ -70,8 +70,9 @@ namespace Prism.App.Modules
                     ISessionStore sessionStore = new InMemorySessionStore(this.Context);
                     if (sessionStore["foursquareResponse"] == null)
                     {
-                        InitSocialPlayer(sessionStore);
-                        string jsonText = this.Request.Query.MockData != null 
+                        bool isDebug = this.Request.Query.MockData != null;
+                        InitSocialPlayer(sessionStore, isDebug);
+                        string jsonText = isDebug
                             ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
                             : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
                                 .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], DEFAULT_FOURSQUARE_LIMIT, 0);
@@ -135,10 +136,17 @@ namespace Prism.App.Modules
             return authorizationRoot.Clients.First();
         }
 
-        public static void InitSocialPlayer(ISessionStore sessionStore)
-        {            
+        public static void InitSocialPlayer(ISessionStore sessionStore, bool isDebug)
+        {   
             var player = new SocialPlayer();
-            player.UserInfo = (UserInfo)sessionStore["userinfo"];
+            //player.ID = 17907214; // Congratulations, now you know my Foursquare Id.
+            if (isDebug)
+                player.UserInfo = new UserInfo()
+                {
+                    Id = "17907214" 
+                };
+            else
+                player.UserInfo = (UserInfo)sessionStore[SessionIdHandler.USER_INFO_KEY];
             sessionStore["socialplayer"] = player;
         }
 
