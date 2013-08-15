@@ -40,21 +40,24 @@ namespace Prism.App.Modules
                 // TODO rewrite OAuth Client section which works with configuration
                 loginUrl = loginUrl.Replace("redirect_uri=http:%2F%2Fprism.phinitive.com%2Fapi%2Fauth",
                    "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
+                // mono bug fix
+                loginUrl = loginUrl.Replace("redirect_uri=http://prism.phinitive.com/api/auth",
+                   "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
+           
                 return Response.AsRedirect(loginUrl);                
             };            
 
             Get["/auth"] = _ =>
             {
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-                //if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
-                //{ 
-                //    var info = GetFoursquareClient().GetUserInfo(
-                //         HttpUtility.ParseQueryString(this.Request.Url.Query));
-                //    sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);                    
-                //}
+                if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
+                {
+                    var info = GetFoursquareClient().GetUserInfo(
+                         HttpUtility.ParseQueryString(this.Request.Url.Query));
+                    sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);
+                }
                 string code = (GetFoursquareClient() as FoursquareClient).GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
-                sessionStore.Add(SessionIdHandler.ACCESS_TOKEN_SESSION_KEY, code);
-                //SessionIdHandler.CookieAddAuth(this.Context);
+                sessionStore.Add(SessionIdHandler.ACCESS_TOKEN_SESSION_KEY, code);               
                 return Response.AsRedirect("/");          
             };
             
