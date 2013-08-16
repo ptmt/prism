@@ -17,12 +17,20 @@ namespace Prism.App.Models
             CalculationFunctions = new List<Action<FoursquareCheckin, FoursquareLiveStats, SocialPlayer>>();
             InitFunctions = new List<Action<FoursquareLiveStats>>();
 
+            InitFunctions.Add(stats =>
+            {
+                stats.KeyValue.Add("TopSpeed", 0.0f);
+                stats.KeyValue.Add("CurrentSpeed", 0.0f);
+            });
             /// Common routines
             CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
             {                
                 stats.TotalCheckins++;
                 stats.LastDistance = CaclulateDistanceBeetweenTwoPoints(stats.PreviousCheckin, currentCheckin);
                 stats.TotalDistance+= stats.LastDistance;
+                stats.KeyValue["CurrentSpeed"] = (float)stats.LastDistance / (currentCheckin.CreatedAt - stats.PreviousCheckin.CreatedAt).Hours;
+                if ((float)stats.KeyValue["CurrentSpeed"] > (float)stats.KeyValue["TopSpeed"])
+                    stats.KeyValue["TopSpeed"] = stats.KeyValue["CurrentSpeed"];
             });
 
 
@@ -137,6 +145,8 @@ namespace Prism.App.Models
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.LastDistance > 1000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.LastDistance > 5000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.LastDistance > 10000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.TotalVenueCheckins == 0);
+                
 
                 
             });

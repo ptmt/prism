@@ -17,6 +17,8 @@ namespace Prism.App.Models
         public double TotalDistance { get; set; }
         public int TotalCheckins { get; set; }
 
+        
+
         public int i { get; set; }        
 
         public FoursquareCheckin MostPopularCheckin { get; set; }
