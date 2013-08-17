@@ -7,7 +7,7 @@ Path.prototype = {
     // clearing resets the canvas and fills it with the fillStyle
     clear: function () {
         this.canvas.width = this.canvas.width;
-        this.ctx.globalCompositeOperation = "destination-atop";
+        //this.ctx.globalCompositeOperation = "destination-atop";
         //  this.fill();
     },
 

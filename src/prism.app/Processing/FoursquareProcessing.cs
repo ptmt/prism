@@ -33,7 +33,7 @@ namespace Prism.App.Models
                     TimeSpan delta = (currentCheckin.CreatedAt - stats.PreviousCheckin.CreatedAt);
                     if (Math.Abs(delta.TotalMinutes) > 0)
                     {
-                        stats.KeyValue["CurrentSpeed"] = (double)stats.LastDistance / Math.Abs(delta.TotalMinutes) / 6d;
+                        stats.KeyValue["CurrentSpeed"] = (double)stats.LastDistance / Math.Abs(delta.TotalMinutes) * 60d;
                         if ((double)stats.KeyValue["CurrentSpeed"] > (double)stats.KeyValue["TopSpeed"])
                             stats.KeyValue["TopSpeed"] = stats.KeyValue["CurrentSpeed"];
                         stats.KeyValue["AvgSpeed"] = ((double)stats.KeyValue["AvgSpeed"] + (double)stats.KeyValue["CurrentSpeed"]) / 2;
@@ -153,9 +153,9 @@ namespace Prism.App.Models
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.LastDistance > 1000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.LastDistance > 5000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.LastDistance > 10000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH, (double)stats.KeyValue["TopSpeed"] > 500);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_1000KMH, (double)stats.KeyValue["TopSpeed"] > 1000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.TotalVenueCheckins == 0);
-                
-
                 
             });
         }
@@ -165,6 +165,15 @@ namespace Prism.App.Models
         {        
             
             
+        }
+
+        private void GetImportantPlaces()
+        {
+           /// first of all we need to trying to categorize checkin as a home-related, work and vacations
+           /// home - a place where we checkining without any pattern (in any time of week). maybe we checkin in nearby, in this case we need to calculate radius
+           /// work - it is about 
+
+
         }
 
         private string GetTimelineKey(DateTime forDateTime)

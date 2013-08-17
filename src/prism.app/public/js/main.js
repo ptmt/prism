@@ -55,7 +55,7 @@ function nextStep(isDebug) {
         if (!(data.Live && data.Player.UserInfo)) {
             alert('Seems like your sessions is expired. Refresh the page and sign in again.');            
             document.cookie = "isauth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-            
+            document.location.href = document.location.href;
         }
         if (data.CurrentCheckin ) {
             //console.log(data);            
@@ -77,8 +77,23 @@ function nextStep(isDebug) {
                  + data.Live.MostLikedCheckin.ID
                  + '">Foursquare link</a>, click to see details about this checkin')        
             );   
-            // checkin example href https://foursquare.com/potomushto/checkin/51a04eb7498ee3b3e824999c
-            $('.most-popular').html(number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName);
+            updateStat($('.most-popular')
+               , number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName
+               , data.Live.MostPopularCheckin.VenueName
+               ,
+               (
+                'This place is hot. Total checkin in this place:'
+                + data.Live.MostPopularCheckin.TotalVenueCheckins
+                + " First time you have been here at "
+                + data.Live.MostPopularCheckin.CreatedAtStr
+                + '. <a href="'
+                + 'https://foursquare.com/user/'
+                + data.Player.UserInfo.Id
+                + '/checkin/'
+                + data.Live.MostPopularCheckin.ID
+                + '">Foursquare link</a>, click to see details about this checkin')
+           );
+            
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
             $('.my-top-client').html(data.Live.KeyValue.TopClient);            
             if (data.CurrentCheckin.LocationLat != 0) {
@@ -102,7 +117,7 @@ function nextStep(isDebug) {
             var progress = ((data.Live.i + data.Response.Offset) / data.Response.Count) * 100;
             updateProgessBar(Math.round(progress));
             updatePlayerInfo(data.Player);
-            $('.popover-provide').popover({ 'html': 'true' })
+            $('.popover-provide').popover({ 'html': 'true', 'placement' : 'bottom' })
             nextStep(isDebug);
         }
         else {
