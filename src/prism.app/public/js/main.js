@@ -42,20 +42,25 @@ function startProcessing() {
     $('.signup-form').hide();
     $('.stats-container').show();
     var isDebug = String(document.cookie).indexOf("debug") > 0;
+    $('#myTab a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
     nextStep(isDebug);
 }
 
 function nextStep(isDebug) {
     var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
     $.get(apiurl).success(function (data) {
-        if (!data.Live) {
+        if (!(data.Live && data.Player.UserInfo)) {
             alert('Seems like your sessions is expired. Refresh the page and sign in again.');            
             document.cookie = "isauth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
             
         }
-        if (data.CurrentCheckin) {
+        if (data.CurrentCheckin ) {
             //console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
+            $('.speed-stats').html('TOP ' + number_format(data.Live.KeyValue.TopSpeed, 3, ',', ' ') + ' kmh' + ' AVG ' + number_format(data.Live.KeyValue.AvgSpeed, 3, ',', ' ') + ' kmh');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
            
             updateStat($('.most-liked')

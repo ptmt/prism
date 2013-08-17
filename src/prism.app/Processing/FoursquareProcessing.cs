@@ -19,8 +19,9 @@ namespace Prism.App.Models
 
             InitFunctions.Add(stats =>
             {
-                stats.KeyValue.Add("TopSpeed", 0.0f);
-                stats.KeyValue.Add("CurrentSpeed", 0.0f);
+                stats.KeyValue.Add("TopSpeed", 0d);
+                stats.KeyValue.Add("CurrentSpeed", 0d);
+                stats.KeyValue.Add("AvgSpeed", 0d);
             });
             /// Common routines
             CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
@@ -28,9 +29,16 @@ namespace Prism.App.Models
                 stats.TotalCheckins++;
                 stats.LastDistance = CaclulateDistanceBeetweenTwoPoints(stats.PreviousCheckin, currentCheckin);
                 stats.TotalDistance+= stats.LastDistance;
-                stats.KeyValue["CurrentSpeed"] = (float)stats.LastDistance / (currentCheckin.CreatedAt - stats.PreviousCheckin.CreatedAt).Hours;
-                if ((float)stats.KeyValue["CurrentSpeed"] > (float)stats.KeyValue["TopSpeed"])
-                    stats.KeyValue["TopSpeed"] = stats.KeyValue["CurrentSpeed"];
+                if (stats.PreviousCheckin != null) {
+                    TimeSpan delta = (currentCheckin.CreatedAt - stats.PreviousCheckin.CreatedAt);
+                    if (Math.Abs(delta.TotalMinutes) > 0)
+                    {
+                        stats.KeyValue["CurrentSpeed"] = (double)stats.LastDistance / Math.Abs(delta.TotalMinutes) / 6d;
+                        if ((double)stats.KeyValue["CurrentSpeed"] > (double)stats.KeyValue["TopSpeed"])
+                            stats.KeyValue["TopSpeed"] = stats.KeyValue["CurrentSpeed"];
+                        stats.KeyValue["AvgSpeed"] = ((double)stats.KeyValue["AvgSpeed"] + (double)stats.KeyValue["CurrentSpeed"]) / 2;
+                    }
+                }
             });
 
 
