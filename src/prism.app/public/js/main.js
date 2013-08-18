@@ -65,7 +65,7 @@ function nextStep(isDebug) {
             $('.distance-stats').html(number_format_default(data.Live.KeyValue.AvgDistancePerCheckin) + 'km PER CHECKIN');
 
             updateStat($('.most-liked')
-                , data.Live.MostLikedCheckin.VenueName + '(' + data.Live.MostLikedCheckin.LikesCount + ' likes)'
+                , data.Live.MostLikedCheckin.VenueName + ' (' + data.Live.MostLikedCheckin.LikesCount + ' likes)'
                 , data.Live.MostLikedCheckin.VenueName
                 ,
                 (data.Live.MostLikedCheckin.CreatedAtStr
@@ -79,13 +79,13 @@ function nextStep(isDebug) {
                  + '">Foursquare link</a>, click to see details about this checkin')
             );
             updateStat($('.most-popular')
-               , data.Live.MostPopularCheckin.VenueName + ' (' + number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + 'total)'
+               , data.Live.MostPopularCheckin.VenueName + ' (' + number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' checkins total)'
                , data.Live.MostPopularCheckin.VenueName
                ,
                (
-                'This place is hot. Total checkin in this place: '
+                'This place is hot with '
                 + number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins)
-                + " First time you have been here at "
+                + " checkins total. First time you have been here at "
                 + data.Live.MostPopularCheckin.CreatedAtStr
                 + '. <a href="'
                 + 'https://foursquare.com/user/'

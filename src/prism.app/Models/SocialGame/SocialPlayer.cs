@@ -11,7 +11,7 @@ namespace Prism.App.Models
     public enum PlayerSkill
     {
          Sociality // This skills is only about likes and friends you have and related activity.
-       , Curiosity // Total kilometers and total diffirent places, total following
+       , Curiosity // Total kilometers and total diffirent places
        , Сharisma  // Likes+Retweets/TotalFriends
        
     }

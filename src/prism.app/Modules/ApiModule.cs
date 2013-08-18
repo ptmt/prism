@@ -32,6 +32,11 @@ namespace Prism.App.Modules
 
             Before += SessionIdHandler.SessionIdCreate;
             After += SessionIdHandler.CookieInject;
+            OnError.AddItemToEndOfPipeline((z, a) =>
+            {
+                Console.Write("Unhandled error on request: " + z.Request.Url + " : " + a.Message, a);
+                return Response.AsText(a.Message + "\n" + a.StackTrace);
+            });
             
             Get["/login"] = _ =>
             {
@@ -49,16 +54,21 @@ namespace Prism.App.Modules
 
             Get["/auth"] = _ =>
             {
+             //   try { 
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-               // if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
-               // {
-                    var info = GetFoursquareClient().GetUserInfo(
-                         HttpUtility.ParseQueryString(this.Request.Url.Query));
-                    sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);
-               // }
+               
+                var info = GetFoursquareClient().GetUserInfo(
+                        HttpUtility.ParseQueryString(this.Request.Url.Query));
+                sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);
+               
                 string code = (GetFoursquareClient() as FoursquareClient).GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
                 sessionStore.Add(SessionIdHandler.ACCESS_TOKEN_SESSION_KEY, code);               
                 return Response.AsRedirect("/");          
+             //   }
+             //   catch (Exception e)
+             //   {
+             //       return Response.AsText(e.Message + e.StackTrace);
+            //    }
             };
             
 

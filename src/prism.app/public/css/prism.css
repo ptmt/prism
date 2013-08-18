@@ -4,7 +4,7 @@ body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
 
 .signup-form {
     display:none;background-size: 100%;top:150px;
-	position:absolute; max-width: 630px;z-index:10; position:relative;margin: auto; background-color: white;opacity: .8; 
+	position:absolute; max-width: 630px;z-index:10; position:relative;margin: auto; background-color: white;
 	background: url(/img/prism.jpg);box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);text-align:center;border: 1px solid #cccccc;border-radius:6px;min-height: 400px;
 }
 .signup-services { text-align: left;width: 60%;padding:25px;float: right;color:white;font-size:1.7em;text-shadow: 1px 0px black;}
@@ -20,7 +20,7 @@ body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
 .stats-container h2 {background: #428bca; font-size: 3em;text-align:right;border-radius: .10em;}
 .timeline {overflow-x:scroll}
 .col1 span {text-align:right;}
-.jqstooltip {height:20px !important;padding:14px}
+.jqstooltip {height:20px !important;padding:18px;margin:5px}
 
 .processing-progress {height: 16px;box-shadow:none;border-radius:0px}
 
