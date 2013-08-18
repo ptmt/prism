@@ -50,12 +50,12 @@ namespace Prism.App.Modules
             Get["/auth"] = _ =>
             {
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
-                if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
-                {
+               // if (sessionStore[SessionIdHandler.USER_INFO_KEY] == null)
+               // {
                     var info = GetFoursquareClient().GetUserInfo(
                          HttpUtility.ParseQueryString(this.Request.Url.Query));
                     sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);
-                }
+               // }
                 string code = (GetFoursquareClient() as FoursquareClient).GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
                 sessionStore.Add(SessionIdHandler.ACCESS_TOKEN_SESSION_KEY, code);               
                 return Response.AsRedirect("/");          

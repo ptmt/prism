@@ -30,8 +30,8 @@ namespace Prism.App.Models
             public const int CHECKIN_AT_JUST_CREATED_PLACE = BASE_CHECKIN * 10; // curiosity
             public const int CHECKIN_AT_NEW_CATEGORY = BASE_CHECKIN * 5; // curiosity
             public const int CHECKIN_WITH_ONE_FRIEND = BASE_CHECKIN * 5; // sociality
-            public const int CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH = BASE_CHECKIN * 5; // curiosity
-            public const int CHECKIN_WITH_TOP_SPEED_MORE_THAN_1000KMH = BASE_CHECKIN * 10; // curiosity
+            public const int CHECKIN_WITH_TOP_SPEED_MORE_THAN_100KMH = BASE_CHECKIN * 5; // curiosity
+            public const int CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH = BASE_CHECKIN * 10; // curiosity
 
             public const int EACH_FRIEND = 100; // sociality
             public const int EACH_YOUR_FOLLOWER_WITHOUT_MUTUALITY = 10; //charisma

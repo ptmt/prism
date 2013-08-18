@@ -22,6 +22,7 @@ namespace Prism.App.Models
                 stats.KeyValue.Add("TopSpeed", 0d);
                 stats.KeyValue.Add("CurrentSpeed", 0d);
                 stats.KeyValue.Add("AvgSpeed", 0d);
+                stats.KeyValue.Add("AvgDistancePerCheckin", 0d);
             });
             /// Common routines
             CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
@@ -29,6 +30,7 @@ namespace Prism.App.Models
                 stats.TotalCheckins++;
                 stats.LastDistance = CaclulateDistanceBeetweenTwoPoints(stats.PreviousCheckin, currentCheckin);
                 stats.TotalDistance+= stats.LastDistance;
+                stats.KeyValue["AvgDistancePerCheckin"] = (double)stats.TotalDistance / stats.TotalCheckins;
                 if (stats.PreviousCheckin != null) {
                     TimeSpan delta = (currentCheckin.CreatedAt - stats.PreviousCheckin.CreatedAt);
                     if (Math.Abs(delta.TotalMinutes) > 0)
@@ -153,8 +155,8 @@ namespace Prism.App.Models
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.LastDistance > 1000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.LastDistance > 5000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.LastDistance > 10000);
+                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_100KMH, (double)stats.KeyValue["TopSpeed"] > 100);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH, (double)stats.KeyValue["TopSpeed"] > 500);
-                socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_1000KMH, (double)stats.KeyValue["TopSpeed"] > 1000);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.TotalVenueCheckins == 0);
                 
             });

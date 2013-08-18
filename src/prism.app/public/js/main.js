@@ -52,38 +52,39 @@ function startProcessing() {
 function nextStep(isDebug) {
     var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
     $.get(apiurl).success(function (data) {
-        if (!(data.Live && data.Player.UserInfo)) {
-            alert('Seems like your sessions is expired. Refresh the page and sign in again.');            
+        if (!(data.Player) || !(data.Player.UserInfo)) {
+            //alert('Seems like your sessions is expired. Refresh the page and sign in again.');            
             document.cookie = "isauth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-            document.location.href = document.location.href;
+            document.location.href = "/";
         }
-        if (data.CurrentCheckin ) {
+        if (data.CurrentCheckin) {
             //console.log(data);            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
-            $('.speed-stats').html('TOP ' + number_format(data.Live.KeyValue.TopSpeed, 3, ',', ' ') + ' kmh' + ' AVG ' + number_format(data.Live.KeyValue.AvgSpeed, 3, ',', ' ') + ' kmh');
+            $('.speed-stats').html('TOP ' + number_format_default(data.Live.KeyValue.TopSpeed) + ' kmh' + ' AVG ' + number_format(data.Live.KeyValue.AvgSpeed, 3, ',', ' ') + ' kmh');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
-           
+            $('.distance-stats').html(number_format_default(data.Live.KeyValue.AvgDistancePerCheckin) + 'km PER CHECKIN');
+
             updateStat($('.most-liked')
                 , data.Live.MostLikedCheckin.VenueName + '(' + data.Live.MostLikedCheckin.LikesCount + ' likes)'
                 , data.Live.MostLikedCheckin.VenueName
-                , 
+                ,
                 (data.Live.MostLikedCheckin.CreatedAtStr
                  + ' it was liked by '
                  + data.Live.MostLikedCheckin.LikesSummary
                  + '. <a href="'
                  + 'https://foursquare.com/user/'
-                 + data.Player.UserInfo.Id 
+                 + data.Player.UserInfo.Id
                  + '/checkin/'
                  + data.Live.MostLikedCheckin.ID
-                 + '">Foursquare link</a>, click to see details about this checkin')        
-            );   
+                 + '">Foursquare link</a>, click to see details about this checkin')
+            );
             updateStat($('.most-popular')
-               , number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + ' in ' + data.Live.MostPopularCheckin.VenueName
+               , data.Live.MostPopularCheckin.VenueName + ' (' + number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins) + 'total)'
                , data.Live.MostPopularCheckin.VenueName
                ,
                (
-                'This place is hot. Total checkin in this place:'
-                + data.Live.MostPopularCheckin.TotalVenueCheckins
+                'This place is hot. Total checkin in this place: '
+                + number_format_default(data.Live.MostPopularCheckin.TotalVenueCheckins)
                 + " First time you have been here at "
                 + data.Live.MostPopularCheckin.CreatedAtStr
                 + '. <a href="'
@@ -93,9 +94,9 @@ function nextStep(isDebug) {
                 + data.Live.MostPopularCheckin.ID
                 + '">Foursquare link</a>, click to see details about this checkin')
            );
-            
+
             $('.my-top-place').html(data.Live.MyTopCheckin.VenueName);
-            $('.my-top-client').html(data.Live.KeyValue.TopClient);            
+            $('.my-top-client').html(data.Live.KeyValue.TopClient);
             if (data.CurrentCheckin.LocationLat != 0) {
                 var loc = new MM.Location(data.CurrentCheckin.LocationLat, data.CurrentCheckin.LocationLng);
                 loc.isMayor = data.CurrentCheckin.IsMayor;
@@ -103,9 +104,9 @@ function nextStep(isDebug) {
                 loc.radius = loc.isMayor ? 80 : 40;
                 loc.radius = data.CurrentCheckin.MyVenueCheckins + loc.radius;
                 pathlayer.addLocation(loc);
-                spotlayer.addLocation(loc);                
+                spotlayer.addLocation(loc);
             }
-            
+
             $('.checkins-timeline').sparkline(data.Live.KeyValue.timeline, {
                 type: 'line',
                 tooltipFormatter: function tooltipCheckinFormatter(sparkline, options, fields) {
@@ -113,22 +114,22 @@ function nextStep(isDebug) {
                 }
             });
             $('.player-level').html(data.Player.Level);
-            $('.player-exp').html(data.Player.Exp);
+            $('.player-exp').html(number_format_default(data.Player.Exp));
             var progress = ((data.Live.i + data.Response.Offset) / data.Response.Count) * 100;
             updateProgessBar(Math.round(progress));
             updatePlayerInfo(data.Player);
-            $('.popover-provide').popover({ 'html': 'true', 'placement' : 'bottom' })
+            $('.popover-provide').popover({ 'html': 'true', 'placement': 'bottom' })
             nextStep(isDebug);
         }
         else {
             // final step 
 
         }
-    }).fail(function(a){alert('Seems like application is deploying right now, and service is unavailable. Please refresh the page.');});
+    }).fail(function (a) { alert('Seems like application is deploying right now, and service is unavailable. Please refresh the page.'); });
 }
 function updateStat(element, html, title, content) {
-    element.html(html);    
-    element.attr('data-original-title', title);    
+    element.html(html);
+    element.attr('data-original-title', title);
     element.attr('data-content', content);
 }
 function updateProgessBar(progress) {

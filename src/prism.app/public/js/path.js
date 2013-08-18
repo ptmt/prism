@@ -19,7 +19,7 @@ Path.prototype = {
         this.ctx.moveTo(p2.x, p2.y);
         this.ctx.lineTo(p1.x, p1.y);
         this.ctx.lineWidth = 1;
-        
+
         var red = Math.round(point.colorCode);
         if (red > 255) red = 255;
         var green = Math.round(point.colorCode - 255);
@@ -61,7 +61,17 @@ PathLayer.prototype = {
             loc.coord = this.map.locationCoordinate(loc);
         }
         this.locations.push(loc);
+        //console.log(loc);
+        //this.map.setCenterZoom(loc, 10);
+
+        var extent = this.map.getExtent();
+        extent.encloseLocation(loc);
+        this.map.setExtent(extent);
+
+
         this.drawlast();
+
+
     },
 
     removeLocation: function (loc) {
@@ -87,6 +97,7 @@ PathLayer.prototype = {
     drawlast: function () {
         var map = this.map,
             canvas = this.parent;
+
         if (this.locations.length > 1)
             this.path.drawPoint(
                 this.locations[this.locations.length - 1]
