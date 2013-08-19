@@ -14,7 +14,7 @@ namespace Prism.App
 
     public class Diagnostician
     {
-        public static Diagnose FillDiagnose(SocialPlayer player)
+        public static Diagnose GetDiagnose(SocialPlayer player)
         {
             if (player.GetSkill(PlayerSkill.Curiosity) > player.GetSkill(PlayerSkill.Sociality))
                 return new Diagnose()

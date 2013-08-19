@@ -78,10 +78,11 @@ namespace Prism.App.Modules
                 {
                     
                     ISessionStore sessionStore = new InMemorySessionStore(this.Context);
+                    bool isDebug = this.Request.Query.MockData != null;
                     if (sessionStore["foursquareResponse"] == null)
                     {
-                        bool isDebug = this.Request.Query.MockData != null;
-                        InitSocialPlayer(sessionStore, isDebug);
+                        
+                      
                         string jsonText = isDebug
                             ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
                             : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
@@ -95,6 +96,10 @@ namespace Prism.App.Modules
                             return Response.AsText(jsonText);
                         }
                         foursquareProcessing.InitFunctions.ForEach(c => c((FoursquareLiveStats)sessionStore["livestats"]));
+                    }
+                    if (sessionStore["socialplayer"] == null)
+                    {
+                        InitSocialPlayer(sessionStore, isDebug);
                     }
                     var liveStats = (FoursquareLiveStats)sessionStore["livestats"];
                     var socialPlayer = (SocialPlayer)sessionStore["socialplayer"];

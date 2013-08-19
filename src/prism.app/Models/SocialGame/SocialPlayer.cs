@@ -36,6 +36,7 @@ namespace Prism.App.Models
         public List<string> Achievements { get; set; }
 
         public UserInfo UserInfo { get; set; }
+        public Diagnose Diagnose { get; set; }
 
         public SocialPlayer()
         {

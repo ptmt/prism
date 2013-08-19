@@ -87,6 +87,7 @@ namespace Prism.App.Models
 
             TimelineProcessingTasks();
             ExperienceAccumulationTasks();
+            FillDiagnoseTask();
 
             CalculationFunctions.Add((checkin, stats, socialPlayer) =>
             {
@@ -159,6 +160,14 @@ namespace Prism.App.Models
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH, (double)stats.KeyValue["TopSpeed"] > 500);
                 socialPlayer.Apply(PlayerSkill.Curiosity, SocialExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.TotalVenueCheckins == 0);
                 
+            });
+        }
+
+        private void FillDiagnoseTask()
+        {
+            CalculationFunctions.Add((currentCheckin, stats, socialPlayer) =>
+            {
+                socialPlayer.Diagnose = Diagnostician.GetDiagnose(socialPlayer);
             });
         }
 
