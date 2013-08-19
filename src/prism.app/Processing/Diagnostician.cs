@@ -16,6 +16,18 @@ namespace Prism.App
     {
         public static Diagnose FillDiagnose(SocialPlayer player)
         {
+            if (player.GetSkill(PlayerSkill.Curiosity) > player.GetSkill(PlayerSkill.Sociality))
+                return new Diagnose()
+                {
+                    Short = "Voyager",
+                    Description = "You love dicover a new places."
+                };
+            if (player.GetSkill(PlayerSkill.Sociality) > player.GetSkill(PlayerSkill.Curiosity))
+                return new Diagnose()
+                {
+                    Short = "Hipster",
+                    Description = "I need a more detailed descrption."
+                };
             return null;
         }
     }

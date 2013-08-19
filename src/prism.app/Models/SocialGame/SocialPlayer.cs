@@ -63,5 +63,12 @@ namespace Prism.App.Models
                 else
                     Skills.Add(skillKey.ToString(), value);            
         }
+        public long GetSkill(PlayerSkill skillKey)
+        {
+            if (Skills.ContainsKey(skillKey.ToString()))
+                return Skills[skillKey.ToString()];
+            else
+                return 0;
+        }
     }
 }
