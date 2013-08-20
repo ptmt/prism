@@ -36,6 +36,7 @@ namespace Prism.App.Models
         public List<string> Achievements { get; set; }
 
         public UserInfo UserInfo { get; set; }
+        public Diagnose Diagnose { get; set; }
 
         public SocialPlayer()
         {
@@ -62,6 +63,13 @@ namespace Prism.App.Models
                     Skills[skillKey.ToString()] += value;
                 else
                     Skills.Add(skillKey.ToString(), value);            
+        }
+        public long GetSkill(PlayerSkill skillKey)
+        {
+            if (Skills.ContainsKey(skillKey.ToString()))
+                return Skills[skillKey.ToString()];
+            else
+                return 0;
         }
     }
 }

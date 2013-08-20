@@ -23,4 +23,7 @@ rm -fr mono || exit 9
 
 apt-get remove -y mono-gmcs || exit 10
 
+sudo mozroots --import --ask-remove --machine || exit 11
+certmgr -ssl https://foursquare.com || exit 12
+
 exit 0

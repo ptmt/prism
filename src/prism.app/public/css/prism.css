@@ -18,7 +18,7 @@ body {background: black;text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);}
 .stats-container h2, .stats-container h3 { text-shadow: 1px 1px 1px black;margin: 2px; padding: 4px 9px; font-weight:normal;overflow: hidden;text-overflow: clip;white-space: nowrap;color:white;}
 .stats-container h3 {font-size:1em;background:#428bca;border-radius: .25em;}
 .stats-container h2 {background: #428bca; font-size: 3em;text-align:right;border-radius: .10em;}
-.timeline {overflow-x:scroll}
+.timeline {overflow-x:auto}
 .col1 span {text-align:right;}
 .jqstooltip {height:20px !important;padding:18px;margin:5px}
 

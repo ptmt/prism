@@ -116,6 +116,7 @@ function nextStep(isDebug) {
             });
             $('.player-level').html(data.Player.Level);
             $('.player-exp').html(number_format_default(data.Player.Exp));
+            $('.verdict').html(data.Player.Diagnose.Short);
             var progress = ((data.Live.i + data.Response.Offset) / data.Response.Count) * 100;
             updateProgessBar(Math.round(progress));
             updatePlayerInfo(data.Player);
