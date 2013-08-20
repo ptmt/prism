@@ -38,9 +38,10 @@ function initMap() {
     var hasher = new MM.Hash(mapObject);
 }
 
-function startProcessing() {
+function startFoursquareProcessing() {
     $('.signup-form').hide();
     $('.stats-container').show();
+    $('.navbar').show()
     var isDebug = String(document.cookie).indexOf("debug") > 0;
     $('#myTab a').click(function (e) {
         e.preventDefault()
@@ -53,13 +54,11 @@ function nextStep(isDebug) {
     var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
     $.ajaxSetup({ cache: false });
     $.getJSON(apiurl).success(function (data) {
-        if (!(data.Live) || !(data.Player.UserInfo)) {
-            //alert('Seems like your sessions is expired. Refresh the page and sign in again.');            
+        if (!(data.Live) || !(data.Player.UserInfo)) {            
             document.cookie = "isauth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
             document.location.href = "/";
         }
-        if (data.CurrentCheckin) {
-            //console.log(data);            
+        if (data.CurrentCheckin) {            
             $('.total-distance').html(number_format_default(data.Live.TotalDistance) + ' km');
             $('.speed-stats').html('TOP ' + number_format_default(data.Live.KeyValue.TopSpeed) + ' kmh' + ' AVG ' + number_format(data.Live.KeyValue.AvgSpeed, 3, ',', ' ') + ' kmh');
             $('.total-checkins').html(number_format_default(data.Live.TotalCheckins));
@@ -127,7 +126,11 @@ function nextStep(isDebug) {
             // final step 
 
         }
-    }).fail(function (a) { alert('Seems like application is deploying right now, and service is unavailable. Please refresh the page.'); });
+    }).fail(function (a) {
+        alert('Looks like application is deploying right now and service is unavailable. Please refresh the page.');
+        document.cookie = "isauth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.location.href = "/";
+    });
 }
 function updateStat(element, html, title, content) {
     element.html(html);
@@ -191,7 +194,7 @@ $(function () {
     //$('.retry-button').on('click', window.location.reload());
     var isAuth = String(document.cookie).indexOf("isauth") > 0;
     if (isAuth) {
-        startProcessing();
+        startFoursquareProcessing();
     }
     else {
         $('.signup-form').show();

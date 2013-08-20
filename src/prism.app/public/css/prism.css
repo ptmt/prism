@@ -1,6 +1,8 @@
 body {background: black;}
 .navbar {border-radius: 0px;display:none}
-
+a.twitter-section {padding-left: 25px;background: url(/img/twitter-bird-16x16.png) 2% 47% no-repeat;}
+a.foursquare-section {padding-left: 25px;background: url(/img/icon-16x16.png) 2% 47%  no-repeat;}
+a.instagram-section {padding-left: 25px;background: url(/img/instagram.png) 2% 47%  no-repeat;}
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;z-index: 5}
 
 .signup-form {
@@ -12,7 +14,7 @@ body {background: black;}
 .signup-form .links { color: white;width: 100%;margin: auto;text-align: center;position: absolute;bottom: 10px;}
 .signup-form a {text-shadow: none;color: #C8E5FF;;}
 .links a {color:white}
-.stats-container { display:none;background: white;position:absolute;left:0px;top:0px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
+.stats-container { display:none;background: white;position:absolute;left:0px;top:52px;width:100%;z-index:10;opacity:.9;box-shadow:inset}
 .stats-container div {margin:0px;text-align: center;}
 .stats-container span {font-size:12px;}
 .popover-provide {cursor:pointer}
