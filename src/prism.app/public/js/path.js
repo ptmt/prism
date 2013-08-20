@@ -29,7 +29,8 @@ Path.prototype = {
         if (blue < 0) blue = 0;
         if (blue > 255) blue = 255;
         this.ctx.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
-        this.ctx.setLineDash([5]);
+        if (typeof this.ctx.setLineDash == 'function')
+            this.ctx.setLineDash([5]);
         this.ctx.stroke();
     },
 

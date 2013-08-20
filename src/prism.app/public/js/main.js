@@ -51,8 +51,9 @@ function startProcessing() {
 
 function nextStep(isDebug) {
     var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
-    $.get(apiurl).success(function (data) {
-        if (!(data.Player) || !(data.Player.UserInfo)) {
+    $.ajaxSetup({ cache: false });
+    $.getJSON(apiurl).success(function (data) {
+        if (!(data.Live) || !(data.Player.UserInfo)) {
             //alert('Seems like your sessions is expired. Refresh the page and sign in again.');            
             document.cookie = "isauth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
             document.location.href = "/";
