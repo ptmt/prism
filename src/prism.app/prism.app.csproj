@@ -77,10 +77,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NowinWebServer.dll</HintPath>
     </Reference>
-    <Reference Include="OAuth2, Version=0.8.2.41606, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\OAuth2.dll</HintPath>
-    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -195,15 +191,22 @@
     <Content Include="public\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="public\instagram\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="public\js\bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="public\js\common.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="public\js\main.js">
+    <Content Include="public\js\instagram.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="public\js\foursquare.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\js\lib.js" />
     <Content Include="public\js\path.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -228,6 +231,12 @@
     <Content Include="public\loaderio-d57af82fd2c3b38d3a419b0fbe7749a2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\_temporary\OAuth2\OAuth2\OAuth2.csproj">
+      <Project>{c95637cd-25e5-483e-9c74-89fe3adb999b}</Project>
+      <Name>OAuth2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.8\tools\Microsoft.Bcl.Build.targets" />

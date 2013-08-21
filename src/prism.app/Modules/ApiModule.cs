@@ -38,37 +38,38 @@ namespace Prism.App.Modules
                 return Response.AsText(a.Message + "\n" + a.StackTrace);
             });
             
-            Get["/login"] = _ =>
-            {
-                IClient foursquareClient = GetFoursquareClient();              
-                string loginUrl = foursquareClient.GetLoginLinkUri();
-                // TODO rewrite OAuth Client section which works with configuration
-                loginUrl = loginUrl.Replace("redirect_uri=http:%2F%2Fprism.phinitive.com%2Fapi%2Fauth",
-                   "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
-                // mono bug fix
-                loginUrl = loginUrl.Replace("redirect_uri=http://prism.phinitive.com/api/auth",
-                   "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth"));
-           
-                return Response.AsRedirect(loginUrl);                
-            };            
+            Get["/signin_foursquare"] = _ =>
+            {                
+                return Response.AsRedirect(FilterLoginUrl(GetFoursquareClient().GetLoginLinkUri(), "foursquare"));                
+            };
 
-            Get["/auth"] = _ =>
-            {
-             //   try { 
+            Get["/signin_instagram"] = _ =>
+            {                
+                return Response.AsRedirect(FilterLoginUrl(GetInstagramClient().GetLoginLinkUri(), "instagram"));
+            };     
+
+            Get["/auth_foursquare"] = _ =>
+            {             
                 ISessionStore sessionStore = new InMemorySessionStore(this.Context);
                
-                var info = GetFoursquareClient().GetUserInfo(
-                        HttpUtility.ParseQueryString(this.Request.Url.Query));
+                var info = GetFoursquareClient().GetUserInfo(HttpUtility.ParseQueryString(this.Request.Url.Query));
                 sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);
                
                 string code = (GetFoursquareClient() as FoursquareClient).GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
-                sessionStore.Add(SessionIdHandler.ACCESS_TOKEN_SESSION_KEY, code);               
-                return Response.AsRedirect("/");          
-             //   }
-             //   catch (Exception e)
-             //   {
-             //       return Response.AsText(e.Message + e.StackTrace);
-            //    }
+                sessionStore.Add(SessionIdHandler.FOURSQUARE_ACCESS_TOKEN_SESSION_KEY, code);               
+                return Response.AsRedirect("/");                       
+            };
+
+            Get["/auth_instagram"] = _ =>
+            {
+                ISessionStore sessionStore = new InMemorySessionStore(this.Context);
+
+                var info = GetInstagramClient().GetUserInfo(HttpUtility.ParseQueryString(this.Request.Url.Query));
+                sessionStore.Add(SessionIdHandler.USER_INFO_KEY, info);
+
+                string code = (GetFoursquareClient() as InstagramClient).AccessToken;// GetAccessCode(HttpUtility.ParseQueryString(this.Request.Url.Query));
+                sessionStore.Add(SessionIdHandler.INSTAGRAM_ACCESS_TOKEN_SESSION_KEY, code);
+                return Response.AsRedirect("/instagram/");
             };
             
 
@@ -86,7 +87,7 @@ namespace Prism.App.Modules
                         string jsonText = isDebug
                             ? File.ReadAllText(GetCheckinsFilename(this.Request.Query.MockData))
                             : (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
-                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], DEFAULT_FOURSQUARE_LIMIT, 0);
+                                .MakeRequest((string)sessionStore[SessionIdHandler.FOURSQUARE_ACCESS_TOKEN_SESSION_KEY], DEFAULT_FOURSQUARE_LIMIT, 0);
                         try
                         {
                             ParseCheckinsIntoMemory(jsonText, sessionStore, 0, DEFAULT_FOURSQUARE_LIMIT);
@@ -111,7 +112,7 @@ namespace Prism.App.Modules
                         if (liveStats.i >= checkins.Count && liveStats.i + response.Offset < response.Count) 
                         {
                             string jsonText = (GetFoursquareClient() as OAuth2.Client.Impl.FoursquareClient)
-                                .MakeRequest((string)sessionStore[SessionIdHandler.ACCESS_TOKEN_SESSION_KEY], DEFAULT_FOURSQUARE_LIMIT, response.Offset + DEFAULT_FOURSQUARE_LIMIT);
+                                .MakeRequest((string)sessionStore[SessionIdHandler.FOURSQUARE_ACCESS_TOKEN_SESSION_KEY], DEFAULT_FOURSQUARE_LIMIT, response.Offset + DEFAULT_FOURSQUARE_LIMIT);
                             sessionStore.Remove("foursquareResponse");
                             ParseCheckinsIntoMemory(jsonText, sessionStore, response.Offset + DEFAULT_FOURSQUARE_LIMIT, DEFAULT_FOURSQUARE_LIMIT);
                         }
@@ -148,7 +149,11 @@ namespace Prism.App.Modules
 
         private IClient GetFoursquareClient()
         {
-            return authorizationRoot.Clients.First();
+            return authorizationRoot.Clients.First(c=>c.Name == "Foursquare");
+        }
+        private IClient GetInstagramClient()
+        {
+            return authorizationRoot.Clients.First(c => c.Name == "Instagram");
         }
 
         public static void InitSocialPlayer(ISessionStore sessionStore, bool isDebug)
@@ -163,6 +168,17 @@ namespace Prism.App.Modules
             else
                 player.UserInfo = (UserInfo)sessionStore[SessionIdHandler.USER_INFO_KEY];
             sessionStore["socialplayer"] = player;
+        }
+
+        public string FilterLoginUrl(string loginUrl, string service)
+        {
+            loginUrl = loginUrl.Replace(String.Format("redirect_uri=http:%2F%2Fprism.phinitive.com%2Fapi%2Fauth_{0}", service),
+                  "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth_" + service));
+            // mono bug fix
+            loginUrl = loginUrl.Replace(String.Format("redirect_uri=http://prism.phinitive.com/api/auth_{0}", service),
+               "redirect_uri=" + HttpUtility.UrlEncode("http://" + this.Request.Url.HostName + ":" + this.Request.Url.Port + "/api/auth_" + service));
+
+            return loginUrl;
         }
 
         public static string GetCheckinsFilename(int mocki)

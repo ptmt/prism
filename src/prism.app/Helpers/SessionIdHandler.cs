@@ -14,7 +14,8 @@ namespace Prism.App
     public class SessionIdHandler
     {
         static public string USER_INFO_KEY = "userinfo";
-        static public string ACCESS_TOKEN_SESSION_KEY = "accessToken";
+        static public string FOURSQUARE_ACCESS_TOKEN_SESSION_KEY = "fsqAccessToken";
+        static public string INSTAGRAM_ACCESS_TOKEN_SESSION_KEY = "instaAccessToken";
 
         static public string SessionIdToken = "prismid";
 
@@ -62,7 +63,7 @@ namespace Prism.App
                 context.Response.AddCookie(cookieItem);
             }
             ISessionStore sessionStore = new InMemorySessionStore(context);
-            if (sessionStore[ACCESS_TOKEN_SESSION_KEY] != null) 
+            if (sessionStore[FOURSQUARE_ACCESS_TOKEN_SESSION_KEY] != null) 
                 CookieAddAuth(context);
             
         }

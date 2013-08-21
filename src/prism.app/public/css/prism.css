@@ -1,8 +1,8 @@
 body {background: black;}
 .navbar {border-radius: 0px;display:none}
-a.twitter-section {padding-left: 25px;background: url(/img/twitter-bird-16x16.png) 2% 47% no-repeat;}
-a.foursquare-section {padding-left: 25px;background: url(/img/icon-16x16.png) 2% 47%  no-repeat;}
-a.instagram-section {padding-left: 25px;background: url(/img/instagram.png) 2% 47%  no-repeat;}
+a.twitter-section {padding-left: 25px !important;background: url(/img/twitter-bird-16x16.png) 2% 47% no-repeat;}
+a.foursquare-section {padding-left: 25px !important;background: url(/img/icon-16x16.png) 2% 47%  no-repeat;}
+a.instagram-section {padding-left: 25px !important;background: url(/img/instagram.png) 2% 47%  no-repeat;}
 .map-container { top:0px;margin:0px;padding:0px; height:100%;width:100%;position:absolute;z-index: 5}
 
 .signup-form {
