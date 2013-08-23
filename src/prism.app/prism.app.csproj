@@ -125,6 +125,7 @@
     <Compile Include="Models\SocialGame\SocialPlayer.cs" />
     <Compile Include="Modules\ApiModule.cs" />
     <Compile Include="Modules\DefaultModule.cs" />
+    <Compile Include="Modules\FoursquareModuleHelper.cs" />
     <Compile Include="OwinConstants.cs" />
     <Compile Include="Processing\Diagnostician.cs" />
     <Compile Include="Processing\FoursquareProcessing.cs" />

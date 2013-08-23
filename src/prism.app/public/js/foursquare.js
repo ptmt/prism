@@ -51,7 +51,7 @@ function startFoursquareProcessing() {
 }
 
 function nextStep(isDebug) {
-    var apiurl = isDebug ? '/api/nextstep?mockdata=1' : '/api/nextstep';
+    var apiurl = isDebug ? '/api/foursquare/nextstep?mockdata=1' : '/api/foursquare/nextstep';
     $.ajaxSetup({ cache: false });
     $.getJSON(apiurl).success(function (data) {
         if (!(data.Live) || !(data.Player.UserInfo)) {            

@@ -4,7 +4,7 @@ $(function () {
         startInstagramProcessing();
     }
     else {
-        document.location.href = "/api/signin_instagram";
+        document.location.href = "/api/signin/instagram";
     }
     initMap();
 });
