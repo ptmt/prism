@@ -207,7 +207,9 @@
     <Content Include="public\js\foursquare.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="public\js\lib.js" />
+    <Content Include="public\js\lib.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="public\js\path.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
