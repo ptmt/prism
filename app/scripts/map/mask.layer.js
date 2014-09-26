@@ -106,7 +106,7 @@ var extend = function (L) {
         g.strokeStyle = this.options.lineColor;
         g.lineWidth = this.options.lineWidth || 1;
       }
-      g.globalCompositeOperation = 'source-out';
+      g.globalCompositeOperation = 'source-over';
       if (!this.options.noMask) {
         g.fillRect(0, 0, tileSize, tileSize);
         g.globalCompositeOperation = 'destination-out';

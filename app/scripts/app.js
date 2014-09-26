@@ -49,6 +49,13 @@
 var map = require('./map');
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('document is ready. I can sleep now');
   map.init();
+
+  var isAuth = window.localStorage && window.localStorage.getItem('auth');
+  if (isAuth) {
+      startFoursquareProcessing();
+  }
+  else {
+      document.querySelectorAll('.signup-form')[0].style.display = 'block';
+  }
 });
