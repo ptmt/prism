@@ -1,28 +1,37 @@
 {
-  "name": "prism",
-  "version": "0.0.0",
+  "name": "PRISM",
+  "version": "1.0.0",
+  "description": "Social Networks activity analyzer",
+  "repository": "https://github.com/unknownexceptin/prism",
   "dependencies": {
+    "common-node": "^0.10.16",
+    "config": "^1.2.1",
+    "fibers": "^1.0.2",
+    "gulp-nodemon": "^1.0.4",
     "leaflet": "^0.7.3",
-    "modestmaps": "^3.3.7-dev"
+    "modestmaps": "^3.3.7-dev",
+    "node-foursquare": "^0.2.1",
+    "stick": "^0.2.9"
   },
   "devDependencies": {
     "gulp": "*",
-    "gulp-load-plugins": "~0.3.0",
-    "gulp-util": "~2.2.9",
     "gulp-autoprefixer": "~0.0.6",
-    "gulp-jshint": "~1.4.0",
-    "gulp-imagemin": "~0.1.4",
-    "gulp-clean": "~0.2.4",
     "gulp-bower": "0.0.3",
+    "gulp-browserify": "~0.4.6",
     "gulp-cache": "~0.1.1",
+    "gulp-clean": "~0.2.4",
+    "gulp-connect": "~1.0.0",
+    "gulp-imagemin": "~0.1.4",
+    "gulp-jade": "~0.4.2",
+    "gulp-jshint": "~1.4.0",
+    "gulp-load-plugins": "~0.3.0",
     "gulp-react": "~0.2.0",
     "gulp-size": "~0.1.2",
-    "gulp-connect": "~1.0.0",
-    "gulp-jade": "~0.4.2",
     "gulp-useref": "~0.4.4",
-    "gulp-browserify": "~0.4.6",
-    "reactify": "~0.10.0",
-    "react": "^0.10.0"
+    "gulp-util": "~2.2.9",
+    "mocha": "^1.21.4",
+    "react": "^0.10.0",
+    "reactify": "~0.10.0"
   },
   "engines": {
     "node": ">=0.10.0"

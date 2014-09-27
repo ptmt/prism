@@ -1,4 +1,4 @@
-/* global document */
+/* global document, window */
 'use strict';
 
 // /** @jsx React.DOM */
@@ -47,15 +47,17 @@
 // React.renderComponent(<TodoApp />, mountNode);
 //
 var map = require('./map');
+var foursquare = require('./foursquare');
 
 document.addEventListener('DOMContentLoaded', function () {
   map.init();
-
+  if (document.location.href.indexOf('start') > -1) {
+    window.localStorage.setItem('auth', true);
+  }
   var isAuth = window.localStorage && window.localStorage.getItem('auth');
   if (isAuth) {
-      startFoursquareProcessing();
-  }
-  else {
-      document.querySelectorAll('.signup-form')[0].style.display = 'block';
+    foursquare.start();
+  } else {
+    document.querySelectorAll('.signup-form')[0].style.display = 'block';
   }
 });
