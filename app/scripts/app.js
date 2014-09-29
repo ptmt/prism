@@ -50,13 +50,16 @@ var map = require('./map');
 var foursquare = require('./foursquare');
 
 document.addEventListener('DOMContentLoaded', function () {
-  map.init();
+  var m = map.init();
+  var l = map.initMaskedLayer();
+  l.setData([]);
+  m.addLayer(l);
   if (document.location.href.indexOf('start') > -1) {
     window.localStorage.setItem('auth', true);
   }
-  var isAuth = window.localStorage && window.localStorage.getItem('auth');
+  var isAuth = window.localStorage && window.localStorage.getItem('auth') === 'true';
   if (isAuth) {
-    foursquare.start();
+    foursquare.start(m, l);
   } else {
     document.querySelectorAll('.signup-form')[0].style.display = 'block';
   }

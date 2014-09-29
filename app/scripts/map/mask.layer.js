@@ -14,7 +14,7 @@ var extend = function (L) {
       debug: false
     },
 
-    initialize: function (options, data) {
+    initialize: function (options) {
       var self = this;
       L.Util.setOptions(this, options);
 
@@ -39,7 +39,7 @@ var extend = function (L) {
       g.strokeStyle = '#000000';
       g.fillStyle = '#FFFF00';
       g.strokeRect(0, 0, max, max);
-      g.font = "12px Arial";
+      g.font = '12px Arial';
       g.fillRect(0, 0, 5, 5);
       g.fillRect(0, max - 5, 5, 5);
       g.fillRect(max - 5, 0, 5, 5);
@@ -51,29 +51,44 @@ var extend = function (L) {
 
     setData: function (dataset) {
       var self = this;
+      this.dataset = dataset;
 
       this.bounds = new L.LatLngBounds(dataset);
 
+      this.bounds20 = new L.LatLngBounds(dataset.slice(-20));
+      // if (dataset.length > 1) {
+      //   this.centerView = [(bounds20.getSouthWest().lat + bounds20.getNorthEast().lat) /
+      //     2,
+      //    (bounds20.getSouthWest().lng + bounds20.getNorthEast().lng) / 2];
+      // }
       this._quad = new QuadTree(this._boundsToQuery(this.bounds), false, 6, 6);
 
       var first = dataset[0];
       var xc = 1,
         yc = 0;
       if (first instanceof L.LatLng) {
-        xc = "lng";
-        yc = "lat";
+        xc = 'lng';
+        yc = 'lat';
       }
 
       dataset.forEach(function (d) {
         self._quad.insert({
           x: d[xc], //lng
-          y: d[yc] //lat
+          y: d[yc], //lat,
+          r: d[2]
         });
       });
 
       if (this._map) {
         this.redraw();
       }
+    },
+
+    addPoint: function (point) {
+      //var self = this;
+
+      this.dataset.push(point);
+      this.setData(this.dataset);
     },
 
     setRadius: function (radius) {
@@ -98,8 +113,8 @@ var extend = function (L) {
       var c = ctx.canvas,
         g = c.getContext('2d'),
         self = this,
-        p,
-        tileSize = this.options.tileSize;
+        p;
+
       g.fillStyle = this.options.color;
 
       if (this.options.lineColor) {
@@ -107,15 +122,15 @@ var extend = function (L) {
         g.lineWidth = this.options.lineWidth || 1;
       }
       g.globalCompositeOperation = 'source-over';
-      if (!this.options.noMask) {
-        g.fillRect(0, 0, tileSize, tileSize);
-        g.globalCompositeOperation = 'destination-out';
-      }
-      g.fillStyle="rgba(10,10,10,0.3)"
+      //if (!this.options.noMask) {
+      g.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      g.globalCompositeOperation = 'destination-out';
+      //  }
+      g.fillStyle = 'rgba(10,10,10,0.3)';
       coordinates.forEach(function (coords) {
         p = self._tilePoint(ctx, coords);
         g.beginPath();
-        var radius = coords[2] ? self._getRadius()*10 : self._getRadius();
+        var radius = coords[2] ? coords[2] * self._getRadius() : self._getRadius();
         g.arc(p[0], p[1], radius, 0, Math.PI * 2, true);
         g.fill();
         if (self.options.lineColor) {
@@ -125,7 +140,7 @@ var extend = function (L) {
     },
 
     _boundsToQuery: function (bounds) {
-      if (bounds.getSouthWest() == undefined) {
+      if (bounds.getSouthWest() === undefined) {
         return {
           x: 0,
           y: 0,
@@ -190,10 +205,12 @@ var extend = function (L) {
       nwPoint = nwPoint.subtract(pad);
       sePoint = sePoint.add(pad);
 
-      var bounds = new L.LatLngBounds(this._map.unproject(sePoint), this._map.unproject(
-        nwPoint));
+      var bounds = new L.LatLngBounds(this._map.unproject(sePoint), this._map
+        .unproject(
+          nwPoint));
 
-      var coordinates = this._quad.retrieveInBounds(this._boundsToQuery(bounds));
+      var coordinates = this._quad.retrieveInBounds(this._boundsToQuery(
+        bounds));
 
       this._drawPoints(ctx, coordinates);
     }
@@ -204,7 +221,8 @@ module.exports = function (L, options) {
   'use strict';
   L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend(extend(L));
   var mc = new L.TileLayer.MaskCanvas(options);
-  var leafletVersion = parseInt(L.version.match(/\d{1,}\.(\d{1,})\.\d{1,}/)[1], 10);
+  var leafletVersion = parseInt(L.version.match(/\d{1,}\.(\d{1,})\.\d{1,}/)[1],
+    10);
   if (leafletVersion < 7) {
     mc._createTile = mc._oldCreateTile;
   }

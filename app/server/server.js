@@ -36,13 +36,20 @@ app.get('/api/v1/foursquare/callback', function (req) {
   return utils.redirect('/?start');
 });
 
-app.get('/api/v1/foursquare/iterate', function (req) {
+app.get('/api/v1/foursquare/iterate', function () {
   if (!app.cache) {
-    return utils.redirect('/');
+    return utils.json({error: 'Session is expired'});
   }
+  var currentCheckin = app.cache.checkinsData.checkins.items[app.cache.live.i];
+  if (app.cache.checkinsData.checkins.items.length > app.cache.live.i) {
+    app.cache.live.i++;
+  } else {
+    app.cache.live.i = 0;
+  }
+
   return utils.json({
     live: app.cache.live,
-    currentCheckin: app.cache.checkinsData.checkins.items[app.cache.live.i],
+    currentCheckin: currentCheckin,
     player: app.cache.player
   });
 });
