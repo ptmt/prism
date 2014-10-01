@@ -1,18 +1,18 @@
 'use strict';
 
-var fs = require('fs-base');
-var Fiber = require('fibers');
+var fs = require('fs-base'),
+  Fiber = require('fibers'),
+  FoursquareService = function(foursquare, options) {
+    this.foursquare = foursquare;
+    this.options = options || {};
+  };
 
-var FoursquareService = function (foursquare, options) {
-  this.foursquare = foursquare;
-  this.options = options || {};
-};
-FoursquareService.prototype.auth = function (code) {
+FoursquareService.prototype.auth = function(code) {
   function getAccessTokenSync(foursquare, code) {
     var fiber = Fiber.current;
     foursquare.getAccessToken({
       code: code
-    }, function (error, accessToken) {
+    }, function(error, accessToken) {
       if (error) {
         fiber.throwInto(error);
       } else {
@@ -25,7 +25,7 @@ FoursquareService.prototype.auth = function (code) {
   this.accessToken = getAccessTokenSync(this.foursquare, code);
 };
 
-FoursquareService.prototype.getCheckins = function (offset, limit) {
+FoursquareService.prototype.getCheckins = function(offset, limit) {
   offset = offset || 0;
   limit = limit || 250;
 
@@ -37,18 +37,18 @@ FoursquareService.prototype.getCheckins = function (offset, limit) {
     //  function getCheckinsSync(accessToken) {
     var fiber = Fiber.current;
     this.foursquare.Users.getCheckins('self', {
-        offset: offset,
-        limit: limit,
-        sort: 'oldestfirst'
-      }, this.accessToken,
-      function (error, checkins) {
-        console.log('error', error);
-        if (error) {
-          fiber.throwInto(error);
-        } else {
-          fiber.run(checkins);
-        }
-      });
+      offset: offset,
+      limit: limit,
+      sort: 'oldestfirst'
+    }, this.accessToken,
+    function(error, checkins) {
+      console.log('error', error);
+      if (error) {
+        fiber.throwInto(error);
+      } else {
+        fiber.run(checkins);
+      }
+    });
     return Fiber.yield();
   }
   //  }

@@ -2,6 +2,7 @@
 var L = require('leaflet');
 var MaskLayer = require('./mask.layer');
 require('./tile.stamen').extendL(L);
+require('./leaflet.lineext.js')(L);
 
 module.exports.initMaskedLayer = function() {
   return new MaskLayer(L, {

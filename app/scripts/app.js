@@ -46,19 +46,24 @@
 //
 // React.renderComponent(<TodoApp />, mountNode);
 //
-var map = require('./map');
-var foursquare = require('./foursquare');
+var map = require('./map'),
+  foursquare = require('./foursquare');
 
-document.addEventListener('DOMContentLoaded', function () {
-  var m = map.init();
-  var l = map.initMaskedLayer();
+document.addEventListener('DOMContentLoaded', function() {
+  var m = map.init(),
+    l = map.initMaskedLayer(),
+    isAuth = window.localStorage && window.localStorage.getItem('auth') ===
+    'true',
+    isDebug = window.localStorage && window.localStorage.getItem('debug') ===
+    'true';
+
   l.setData([]);
   m.addLayer(l);
   if (document.location.href.indexOf('start') > -1) {
     window.localStorage.setItem('auth', true);
   }
-  var isAuth = window.localStorage && window.localStorage.getItem('auth') === 'true';
-  if (isAuth) {
+
+  if (isAuth || isDebug) {
     foursquare.start(m, l);
   } else {
     document.querySelectorAll('.signup-form')[0].style.display = 'block';

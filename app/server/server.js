@@ -18,33 +18,56 @@ var config = {
 
 var foursquareLib = require('node-foursquare')(config);
 var FoursquareService = require('./foursquare/service');
+var FoursquareCalculate = require('./foursquare/calculate');
 var fq = new FoursquareService(foursquareLib, {
-  debug: process.NODE_ENV !== 'production'
-});
+    debug: process.NODE_ENV !== 'production'
+  }),
+  fc = new FoursquareCalculate();
 
-app.get('/api/v1/foursquare/signin', function () {
-  return utils.redirect(foursquareLib.getAuthClientRedirectUrl());
-});
-
-app.get('/api/v1/foursquare/callback', function (req) {
-  fq.auth(req.queryParams.code);
+function initCache() {
   app.cache = {};
   app.cache.live = {};
   app.cache.player = {};
-  app.cache.live.i = 0;
+  //app.cache.live.i = 0;
   app.cache.checkinsData = fq.getCheckins();
+  console.log(fc);
+  fc.initFunctions.forEach(function(initFunc) {
+    initFunc(app.cache.live);
+  });
+}
+app.get('/api/v1/foursquare/signin', function() {
+  return utils.redirect(foursquareLib.getAuthClientRedirectUrl());
+});
+
+app.get('/api/v1/foursquare/callback', function(req) {
+  fq.auth(req.queryParams.code);
+  initCache();
   return utils.redirect('/?start');
 });
 
-app.get('/api/v1/foursquare/iterate', function () {
+app.get('/api/v1/foursquare/iterate', function(req) {
   if (!app.cache) {
-    return utils.json({error: 'Session is expired'});
+    if (req.queryParams.debug) {
+      initCache();
+    } else {
+      return utils.json({
+        error: 'Session is expired'
+      });
+    }
   }
-  var currentCheckin = app.cache.checkinsData.checkins.items[app.cache.live.i];
+  var currentCheckin = app.cache.checkinsData.checkins.items[app.cache.live
+    .i];
+
+  fc.calculationFunctions.forEach(function(calcFunc) {
+    calcFunc(currentCheckin, app.cache.live, app.cache.player); //currentCheckin, stats, socialPlayer
+  });
+
   if (app.cache.checkinsData.checkins.items.length > app.cache.live.i) {
     app.cache.live.i++;
   } else {
-    app.cache.live.i = 0;
+    return utils.json({
+      final: 'final'
+    })
   }
 
   return utils.json({
