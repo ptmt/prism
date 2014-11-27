@@ -2,7 +2,7 @@
 'use strict';
 
 var assert = require('assert');
-var FoursquareService = require('../app/server/foursquare/service');
+var FoursquareService = require('../app/server.compiled/foursquare/service');
 
 describe('Foursquare Client', function () {
 

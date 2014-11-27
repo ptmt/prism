@@ -42,6 +42,7 @@
     "requireCurlyBraces": [
         "do"
     ],
+    "esnext": true,
     "requireSpaceAfterKeywords": [
         "if",
         "else",

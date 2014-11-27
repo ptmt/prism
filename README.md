@@ -2,7 +2,7 @@
 
 
 ```
-npm install common-node -g
+npm install -g flow-bin
 npm install
 gulp test
 gulp watch

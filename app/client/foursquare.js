@@ -29,7 +29,7 @@ function getJson(url, callback) {
 
 function nextIteration(m, l) {
   var isDebug = window.localStorage.getItem('debug') === 'true';
-  getJson('/api/v1/foursquare/iterate?debug=' + isDebug, function(err, data) {
+  getJson('/api/foursquare/iterate?debug=' + isDebug, function(err, data) {
     // check if session is expired
     if (err || !(data.live) || (!data.player)) {
       window.localStorage.setItem('auth', false);
@@ -53,8 +53,8 @@ function nextIteration(m, l) {
           data.live.previousCheckin.venue.location, m);
       }
       setTimeout(function() {
-      nextIteration(m, l);
-    }, 2500);
+        nextIteration(m, l);
+      }, 2500);
 
     }
 

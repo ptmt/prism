@@ -6,7 +6,7 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
 // Scripts
-gulp.task('scripts', function () {
+gulp.task('scripts', function() {
   return gulp.src('app/scripts/app.js')
     .pipe($.browserify({
       insertGlobals: true,
@@ -17,7 +17,7 @@ gulp.task('scripts', function () {
     .pipe($.connect.reload());
 });
 
-gulp.task('jade', function () {
+gulp.task('jade', function() {
   return gulp.src('app/template/*.jade')
     .pipe($.jade({
       pretty: true
@@ -27,7 +27,7 @@ gulp.task('jade', function () {
 });
 
 // HTML
-gulp.task('html', function () {
+gulp.task('html', function() {
   return gulp.src('app/*.html')
     .pipe($.useref())
     .pipe(gulp.dest('dist'))
@@ -36,7 +36,7 @@ gulp.task('html', function () {
 });
 
 // Images
-gulp.task('images', function () {
+gulp.task('images', function() {
   return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({
       optimizationLevel: 3,
@@ -48,19 +48,19 @@ gulp.task('images', function () {
     .pipe($.connect.reload());
 });
 
-gulp.task('test', function () {
-  require('common-node').run('./node_modules/.bin/_mocha');//common-node ./node_modules/.bin/_mocha
+gulp.task('test', function() {
+  require('common-node').run('./node_modules/.bin/_mocha'); //common-node ./node_modules/.bin/_mocha
 });
 
 // Clean
-gulp.task('clean', function () {
+gulp.task('clean', function() {
   return gulp.src(['dist/styles', 'dist/scripts', 'dist/images'], {
     read: false
   }).pipe($.clean());
 });
 
 // Bundle
-gulp.task('bundle', ['scripts', 'styles', 'bower'], function () {
+gulp.task('bundle', ['scripts', 'styles', 'bower'], function() {
   return gulp.src('./app/*.html')
     .pipe($.useref.assets())
     .pipe($.useref.restore())
@@ -72,61 +72,63 @@ gulp.task('bundle', ['scripts', 'styles', 'bower'], function () {
 gulp.task('build', ['html', 'bundle', 'images']);
 
 // Default task
-gulp.task('default', ['clean'], function () {
+gulp.task('default', ['clean'], function() {
   gulp.start('build');
 });
 
-gulp.task('nodemon', function () {
-  $.nodemon({
-    script: './app/server/start.js',
-    'ignore': ['test/*', 'node_modules/*'],
-    ext: 'html js css'
-  })
-    .on('restart', function () {
-      console.log('nodemon restarted!');
-    });
+gulp.task('flow', function() {
+  return gulp.src([
+    'app/server/**/**.js',
+    ])
+    .pipe($.flowtype({
+      declarations: './app/interfaces'
+    }))
+    .pipe($.react({
+      stripTypes: true,
+      harmony: true
+    }))
+    // Output each file into the ./build/javascript/ directory
+    .pipe(gulp.dest('./app/server.compiled/'));
 });
 
-// Connect
-gulp.task('connect', $.connect.server({
+
+
+//Connect
+gulp.task('connect', ['flow'], $.connect.server({
   root: ['dist'],
   port: 9000,
-  livereload: true
+  livereload: true,
+  middleware: require('./app/server.compiled/index.js')
 }));
 
 // Bower helper
-gulp.task('bower', function () {
+gulp.task('bower', function() {
   gulp.src('app/bower_components/**/*.js', {
-    base: 'app/bower_components'
-  })
+      base: 'app/bower_components'
+    })
     .pipe(gulp.dest('dist/bower_components/'));
 
 });
 
-gulp.task('styles', function () {
+gulp.task('styles', function() {
   gulp.src('app/styles/**/*.css')
-    .pipe(gulp.dest('dist/styles/'));
+    .pipe(gulp.dest('dist/styles/'))
+    .pipe($.connect.reload());;
 
 });
 
-gulp.task('json', function () {
-  gulp.src('app/scripts/json/**/*.json', {
-    base: 'app/scripts'
-  })
-    .pipe(gulp.dest('dist/scripts/'));
-});
 
 // Watch
-gulp.task('watch', ['html', 'bundle', 'nodemon'], function () {
+gulp.task('watch', ['html', 'bundle', 'connect'], function() {
 
-  // Watch .json files
-  gulp.watch('app/scripts/**/*.json', ['json']);
+  // Watch server-side js files
+  gulp.watch('app/server/**/*.js', ['connect']);
 
   // Watch .html files
   gulp.watch('app/*.html', ['html']);
 
   // Watch .jade files
-  gulp.watch('app/template/**/*.jade', ['jade', 'html']);
+  //gulp.watch('app/template/**/*.jade', ['jade', 'html']);
 
   // Watch .jade files
   gulp.watch('app/styles/main.css', ['styles']);
