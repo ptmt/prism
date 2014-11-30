@@ -9,14 +9,11 @@
 
         <!-- build:css styles/lib.css -->
         <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+        <link href="styles/vendor/leaflet.css" />
+        <link href="styles/main.css">
         <!-- endbuild -->
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 
-        <link rel="stylesheet" href="styles/main.css">
-
-        <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
-        <!-- endbuild -->
 
     </head>
     <body>
@@ -29,16 +26,11 @@
         <div class="signup-form">
           <div class="signup-services">
             <h1>Fancy slogan for PRISM here</h1>
-            <a class="btn btn-primary btn-lg" href="/api/v1/foursquare/signin"><img src="images/foursquare-logomark.png" width="36" /> Sign in With Foursquare</a>
+            <a class="btn btn-primary btn-lg" href="/api/foursquare/signin"><img src="images/foursquare-logomark.png" width="36" /> Sign in With Foursquare</a>
             <p>Private data is stored in memory only. <br /><a href="/about.md">Learn more</a></p>
           </div>
         </div>
 
-        <!-- build:js scripts/vendor.js -->
-        <!-- bower:js -->
-        <script src="bower_components/jquery/dist/jquery.js"></script>
-        <!-- endbower -->
-        <!-- endbuild -->
         <script src="scripts/app.js"></script>
 
     </body>

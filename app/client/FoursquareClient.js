@@ -1,4 +1,5 @@
 /* global window, document, XMLHttpRequest */
+/* @flow */
 'use strict';
 var path = require('./map/path');
 
@@ -33,7 +34,7 @@ function nextIteration(m, l) {
     // check if session is expired
     if (err || !(data.live) || (!data.player)) {
       window.localStorage.setItem('auth', false);
-      document.location.href = '/';
+      document.location.href = '/?logout';
       return;
     }
     console.log(data.live);
@@ -54,7 +55,7 @@ function nextIteration(m, l) {
       }
       setTimeout(function() {
         nextIteration(m, l);
-      }, 2500);
+      }, 1000);
 
     }
 

@@ -47,15 +47,14 @@
 // React.renderComponent(<TodoApp />, mountNode);
 //
 var map = require('./map'),
-  foursquare = require('./foursquare');
+  foursquare = require('./FoursquareClient');
 
 document.addEventListener('DOMContentLoaded', function() {
   var m = map.init(),
     l = map.initMaskedLayer(),
-    isAuth = window.localStorage && window.localStorage.getItem('auth') ===
-    'true',
-    isDebug = window.localStorage && window.localStorage.getItem('debug') ===
-    'true';
+    isAuth = window.localStorage.getItem('auth') === 'true',
+    isDebug = window.localStorage.getItem('debug') === 'true' 
+      && document.location.href.indexOf('logout') === -1;
 
   l.setData([]);
   m.addLayer(l);
