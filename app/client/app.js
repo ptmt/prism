@@ -1,3 +1,4 @@
+/* @flow */
 /* global document, window */
 'use strict';
 

@@ -5,12 +5,22 @@ var gulp = require('gulp');
 // Load plugins
 var $ = require('gulp-load-plugins')();
 
+gulp.task('client-flow', function() {
+  return gulp.src([
+    'app/client/**/**.js',
+    ])
+    .pipe($.flowtype({
+      declarations: './app/interfaces'
+    }));
+})
 // Scripts
-gulp.task('scripts', function() {
+gulp.task('scripts', ['client-flow'], function() {
   return gulp.src('app/client/app.js')
     .pipe($.browserify({
       insertGlobals: true,
-      transform: ['reactify']
+      transform: [ 
+        ['reactify', { harmony: true, stripTypes: true}]
+      ]
     }))
     .pipe(gulp.dest('dist/scripts'))
     .pipe($.size())
@@ -72,9 +82,7 @@ gulp.task('bundle', ['scripts', 'styles', 'bower'], function() {
 gulp.task('build', ['html', 'bundle', 'images']);
 
 // Default task
-gulp.task('default', ['clean'], function() {
-  gulp.start('build');
-});
+gulp.task('default', ['watch']);
 
 gulp.task('flow', function() {
   return gulp.src([
