@@ -1,4 +1,4 @@
-// declare class ErrnoException extends Error {
+// declare var document : {
 //   errno?: any;
 //   code?: string;
 //   path?: string;

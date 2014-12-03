@@ -3,3 +3,4 @@ dist/
 config/
 .DS_Store
 app/server.compiled/
+app/bower_components

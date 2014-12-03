@@ -1,3 +1,4 @@
+/* @flow */
 /* global window, document */
 var L = require('leaflet');
 var MaskLayer = require('./mask.layer');
@@ -15,21 +16,21 @@ module.exports.initMaskedLayer = function() {
     lineColor: 'rgba(10,10,10,.1)' // color of the circle outline if noMask is true
   });
 }
-module.exports.init = function () {
+module.exports.getMap = function () {
   'use strict';
 
-  function getSize() {
-    return new MM.Point(window.innerWidth, window.innerHeight);
-  }
+  // function getSize() {
+  //   return new MM.Point(window.innerWidth, window.innerHeight);
+  // }
 
-  function resize() {
-    try {
-      size = getSize();
-      if (mapObject) {
-        mapObject.setSize(size);
-      }
-    } catch (e) {}
-  }
+  // function resize() {
+  //   try {
+  //     size = getSize();
+  //     if (mapObject) {
+  //       mapObject.setSize(size);
+  //     }
+  //   } catch (e) {}
+  // }
 
   var map = L.map('map').setView([55.0398, 82.902], 13);
   //   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

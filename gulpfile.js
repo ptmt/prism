@@ -27,15 +27,6 @@ gulp.task('scripts', ['client-flow'], function() {
     .pipe($.connect.reload());
 });
 
-// gulp.task('jade', function() {
-//   return gulp.src('app/template/*.jade')
-//     .pipe($.jade({
-//       pretty: true
-//     }))
-//     .pipe(gulp.dest('dist'))
-//     .pipe($.connect.reload());
-// });
-
 // HTML
 gulp.task('html', function() {
   return gulp.src('app/*.html')
@@ -70,11 +61,11 @@ gulp.task('clean', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['scripts', 'styles', 'bower'], function() {
+gulp.task('bundle', ['scripts', 'less', 'bower'], function() {
   return gulp.src('./app/*.html')
-     .pipe($.useref.assets())
-     .pipe($.useref.restore())
-     .pipe($.useref())
+     // .pipe($.useref.assets())
+     // .pipe($.useref.restore())
+     // .pipe($.useref())
      .pipe(gulp.dest('dist'));
 });
 
@@ -126,11 +117,20 @@ gulp.task('bower', function() {
 
 });
 
-gulp.task('styles', function() {
-  gulp.src('app/styles/**/*.css')
-    .pipe(gulp.dest('dist/styles/'))
+gulp.task('less', function () {
+  gulp.src('./app/less/**/*.less')
+    .pipe($.less({
+      paths: [ require('path').join(__dirname, 'less', 'includes') ]
+    }))
+    .pipe(gulp.dest('./dist/styles'))
     .pipe($.connect.reload());
 });
+
+// gulp.task('styles', ['less'], function() {
+//   gulp.src('app/styles/**/*.css')
+//     .pipe(gulp.dest('dist/styles/'))
+//     .pipe($.connect.reload());
+// });
 
 
 // Watch
@@ -146,7 +146,7 @@ gulp.task('watch', ['html', 'bundle', 'connect'], function() {
   //gulp.watch('app/template/**/*.jade', ['jade', 'html']);
 
   // Watch .css files
-  gulp.watch('app/styles/main.css', ['styles']);
+  gulp.watch('app/less/*.less', ['less']);
 
   // Watch client .js files
   gulp.watch('app/client/**/*.js', ['scripts']);
