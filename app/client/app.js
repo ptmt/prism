@@ -4,6 +4,8 @@
 
 var maps = require('./map');
 var foursquareClient = require('./FoursquareClient');
+var React = require('react');
+var WelcomeWindow = require('./components/WelcomeWindow.react.js');
 
 document.addEventListener('DOMContentLoaded', function() {
   var map = maps.getMap();
@@ -19,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
   if (isAuth || isDebug) {
     foursquareClient.start(map, layer);
   } else {
-    document.querySelectorAll('.signup-form')[0].style.display = 'block';
+    React.render(
+      <WelcomeWindow />,
+      document.querySelectorAll('.signup-form')
+    );
+    //document.querySelectorAll('.signup-form')[0].style.display = 'block';
   }
 });

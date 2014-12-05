@@ -1,9 +1,19 @@
-/* global window, document, XMLHttpRequest */
 /* @flow */
+/* global window, document, XMLHttpRequest */
+
 'use strict';
 var path = require('./map/path');
+var L = require('leaflet');
 
-function getJson(url, callback) {
+type Callback<T> = (err: any, data?: T) => void;
+
+type IterationStep = {
+  live: any;
+  currentCheckin: any;
+  player: any;
+}
+
+function getJson(url: string, callback: Callback<IterationStep>) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
 
@@ -28,11 +38,11 @@ function getJson(url, callback) {
   request.send();
 }
 
-function nextIteration(m, l) {
-  var isDebug = window.localStorage.getItem('debug') === 'true';
-  getJson('/api/foursquare/iterate?debug=' + isDebug, function(err, data) {
+function nextIteration(map: L.LeafletMap, layer: L.LeafletLayer) {
+  var endpoint: string = '/api/foursquare/iterate?debug=' + window.localStorage.getItem('debug');
+  getJson(endpoint, function(err, data?: IterationStep) {
     // check if session is expired
-    if (err || !(data.live) || (!data.player)) {
+    if (err || !data || (!data.player)) {
       window.localStorage.setItem('auth', false);
       document.location.href = '/?logout';
       return;
@@ -42,19 +52,18 @@ function nextIteration(m, l) {
     if (data.currentCheckin) {
       if (data.currentCheckin.venue && data.currentCheckin.venue.location
         .lat) {
-        l.addPoint([data.currentCheckin.venue.location.lat,
-          data.currentCheckin.venue.location.lng, 1.5
-        ]);
-        if (!m.getBounds().contains(l.bounds20)) {
-          m.fitBounds(l.bounds20, {
+          layer.addPoint([data.currentCheckin.venue.location.lat,
+          data.currentCheckin.venue.location.lng, 1.5]);
+        if (!map.getBounds().contains(layer.bounds20)) {
+          map.fitBounds(layer.bounds20, {
             animate: true
           });
         }
         path.drawLine(data.currentCheckin.venue.location,
-          data.live.previousCheckin.venue.location, m);
+          data.live.previousCheckin.venue.location, map);
       }
       setTimeout(function() {
-        nextIteration(m, l);
+        nextIteration(map, layer);
       }, 1000);
 
     }
@@ -62,6 +71,4 @@ function nextIteration(m, l) {
   });
 }
 
-module.exports.start = function(m, l) {
-  nextIteration(m, l);
-};
+module.exports.start = nextIteration;
