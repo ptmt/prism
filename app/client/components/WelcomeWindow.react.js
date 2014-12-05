@@ -1,4 +1,5 @@
 /* @flow */
+var React = require('react');
 
 var WelcomeWindow = React.createClass({
 

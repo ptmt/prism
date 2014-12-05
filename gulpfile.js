@@ -15,22 +15,37 @@ gulp.task('client-flow', function() {
 })
 // Scripts
 gulp.task('scripts', ['client-flow'], function() {
-  return gulp.src('app/client/app.js')
-    .pipe($.browserify({
-      insertGlobals: true,
-      transform: [ 
-        ['reactify', { harmony: true, stripTypes: true}]
-      ]
-    }))
-    .pipe(gulp.dest('dist/scripts'))
-    .pipe($.size())
+  var browserify = require('browserify');
+  var source = require('vinyl-source-stream');
+  var buffer = require('vinyl-buffer');
+  var reactify = require('reactify');
+
+  var bundler = browserify({
+    entries: ['./app/client/app.js'],
+    debug: true
+  });
+
+  bundler.transform('reactify', {es6: true, stripTypes: true})
+
+  var bundle = function() {
+    return bundler
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe($.sourcemaps.init({loadMaps: true}))
+    .pipe($.uglify())
+    .pipe($.sourcemaps.write('./'))
+    .pipe(gulp.dest('./dist/scripts/'))
     .pipe($.connect.reload());
+  };
+
+  return bundle();
 });
 
 // HTML
 gulp.task('html', function() {
   return gulp.src('app/*.html')
-    .pipe($.useref())
+    //.pipe($.useref())
     .pipe(gulp.dest('dist'))
     .pipe($.size())
     .pipe($.connect.reload());
