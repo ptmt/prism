@@ -5,7 +5,8 @@
 var maps = require('./map');
 var foursquareClient = require('./FoursquareClient');
 var React = require('react');
-var WelcomeWindow = require('./components/WelcomeWindow.react.js');
+var WelcomeWindow = require('./components/WelcomeWindow.react');
+var TopToolbar = require('./components/TopToolbar.react');
 
 document.addEventListener('DOMContentLoaded', function() {
   var map = maps.getMap();
@@ -18,8 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
   if (document.location.href.indexOf('start') > -1) {
     window.localStorage.setItem('auth', true);
   }
+  React.render(<TopToolbar />, document.querySelector('.toolbar-container'));
   if (isAuth || isDebug) {
     foursquareClient.start(map, layer);
+
   } else {
     React.render(
       <WelcomeWindow />,

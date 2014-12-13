@@ -24,19 +24,6 @@ module.exports.initMaskedLayer = function(): L.LeafletLayer {
 module.exports.getMap = function (): L.LeafletMap {
   'use strict';
 
-  // function getSize() {
-  //   return new MM.Point(window.innerWidth, window.innerHeight);
-  // }
-
-  // function resize() {
-  //   try {
-  //     size = getSize();
-  //     if (mapObject) {
-  //       mapObject.setSize(size);
-  //     }
-  //   } catch (e) {}
-  // }
-
   var map = L.map('map').setView([55.0398, 82.902], 13);
   map.addLayer(new L.StamenTileLayer('toner'));
   return map;

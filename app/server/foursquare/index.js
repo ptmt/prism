@@ -27,7 +27,7 @@ class Cache {
     service.getCheckins(0, 250, (err, checkins) => {
       this.checkinsData = checkins;
       calculator.initFunctions.forEach((initFunc) => {
-        initFunc(this.live);
+        initFunc(this.live, checkins);
       });
       callback();
     });
@@ -60,11 +60,6 @@ module.exports.iterate = function(req: Request, content: any, render: () => void
         cb();
       }
     }, function calculateData(cb) {
-      var currentCheckin = cache.checkinsData.checkins.items[cache.live.i];
-
-      calculator.calculationFunctions.forEach(function(calcFunc) {
-        calcFunc(currentCheckin, cache.live, cache.player); //currentCheckin, stats, socialPlayer
-      });
 
       if (cache.checkinsData.checkins.items.length > cache.live.i) {
         cache.live.i++;
@@ -73,6 +68,10 @@ module.exports.iterate = function(req: Request, content: any, render: () => void
           final: 'final'
         });
       }
+
+      var currentCheckin = cache.checkinsData.checkins.items[cache.live.i - 1];
+
+      calculator.calculationFunctions.forEach((calcFunc) => calcFunc(currentCheckin, cache.live, cache.player));
 
       return cb(null, {
         live: cache.live,

@@ -47,20 +47,23 @@ function nextIteration(map: L.LeafletMap, layer: L.LeafletLayer) {
       document.location.href = '/?logout';
       return;
     }
-    console.log(data.live);
+
     // draw a point
     if (data.currentCheckin) {
-      if (data.currentCheckin.venue && data.currentCheckin.venue.location
-        .lat) {
+      if (data.currentCheckin.venue && data.currentCheckin.venue.location.lat) {
           layer.addPoint([data.currentCheckin.venue.location.lat,
           data.currentCheckin.venue.location.lng, 1.5]);
+
+        // change bounds if didn't fit
         if (!map.getBounds().contains(layer.bounds20)) {
           map.fitBounds(layer.bounds20, {
             animate: true
           });
         }
-        path.drawLine(data.currentCheckin.venue.location,
-          data.live.previousCheckin.venue.location, map);
+
+        if (data.live.prevprevCheckin && data.live.prevprevCheckin.venue) {
+          path.drawLine(data.currentCheckin.venue.location, data.live.prevprevCheckin.venue.location, map);
+        }
       }
       setTimeout(function() {
         nextIteration(map, layer);
@@ -70,5 +73,6 @@ function nextIteration(map: L.LeafletMap, layer: L.LeafletLayer) {
 
   });
 }
+
 
 module.exports.start = nextIteration;

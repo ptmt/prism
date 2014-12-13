@@ -65,7 +65,7 @@ gulp.task('images', function() {
 });
 
 gulp.task('test', function() {
-  require('common-node').run('./node_modules/.bin/_mocha'); //common-node ./node_modules/.bin/_mocha
+  require('common-node').run('./node_modules/.bin/_mocha');
 });
 
 // Clean
@@ -76,13 +76,7 @@ gulp.task('clean', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['scripts', 'less', 'bower'], function() {
-  return gulp.src('./app/*.html')
-     // .pipe($.useref.assets())
-     // .pipe($.useref.restore())
-     // .pipe($.useref())
-     .pipe(gulp.dest('dist'));
-});
+gulp.task('bundle', ['scripts', 'less', 'bower']);
 
 // Build
 gulp.task('build', ['html', 'bundle', 'images']);

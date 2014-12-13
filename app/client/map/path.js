@@ -1,4 +1,12 @@
-module.exports.drawLine = function(point, prevpoint, map) {
+/* @flow */
+var L = require('Leaflet');
+
+type Point = {
+  lat: string;
+  lng: string;
+  colorCode: number;
+}
+module.exports.drawLine = function(point: Point, prevpoint: Point, map: L.LeafletMap) {
 
   //var p1 = map.coordinatePoint(point.coord);
   //var p2 = map.coordinatePoint(prevpoint.coord);
@@ -14,16 +22,16 @@ module.exports.drawLine = function(point, prevpoint, map) {
   var color = 'rgb(' + red + ',' + green + ',' + blue + ')';
   //if (typeof this.ctx.setLineDash == 'function')
   //  this.ctx.setLineDash([5]);
-  console.log(color, prevpoint, point);
-  var path = L.polyline([
+  var polyline = L.polyline([
     [prevpoint.lat, prevpoint.lng],
     [point.lat, point.lng]
   ], {
     color: color,
-    weight: 1,
+    weight: 2,
     opacity: 0.3
-  }).addTo(map);
+  });
 
-  path.showExtremities('arrowM');
+  polyline.addTo(map);
+  polyline.showExtremities('arrowM');
 
 };

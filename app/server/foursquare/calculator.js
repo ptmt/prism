@@ -1,32 +1,38 @@
-var FoursquareCalculating = function() {
+var FoursquareCalculator = function() {
   this.calculationFunctions = [];
   this.initFunctions = [];
   this.startRoutines();
-  this.endRoutines();
+  this.inProcessRoutines();
 };
 
-module.exports = FoursquareCalculating;
+module.exports = FoursquareCalculator;
 
-FoursquareCalculating.prototype.startRoutines = function() {
+FoursquareCalculator.prototype.startRoutines = function() {
 
-  this.initFunctions.push(function(stats) {
+  this.initFunctions.push((stats, checkinsData) => {
     stats.i = 0;
-    stats.totalCheckins = 0;
+    stats.processedCheckins = 0;
     stats.topSpeed = 0;
     stats.avgSpeed = 0;
     stats.avgDistancePerCheckin = 0;
+    stats.totalDistance = 0;
+    stats.checkinsSize = checkinsData.checkins.items.length;
   });
+}
+
+FoursquareCalculator.prototype.inProcessRoutines = function() {
 
   this.calculationFunctions.push(function(currentCheckin, stats, socialPlayer) {
     if (currentCheckin.venue && currentCheckin.venue.location) {
-      currentCheckin.venue.location.colorCode = stats.i;
+      console.log(stats.checkinsSize, stats.i);
+      currentCheckin.venue.location.colorCode = (765 / stats.checkinsSize * stats.i);
     }
-    stats.totalCheckins++;
+    stats.processedCheckins++;
     stats.lastDistance = calculateDistanceBetweenPoints(stats.previousCheckin,
       currentCheckin);
-    stats.TotalDistance += stats.LastDistance;
+    stats.totalDistance += stats.lastDistance;
     stats.avgDistancePerCheckin = stats.TotalDistance / stats.totalCheckins;
-    if (stats.PreviousCheckin != null) {
+    if (stats.previousCheckin != null) {
       // var deltaTime = (currentCheckin.CreatedAt - stats.previousCheckin.CreatedAt);
       // if (Math.Abs(delta.TotalMinutes) > 0)
       // {
@@ -37,12 +43,14 @@ FoursquareCalculating.prototype.startRoutines = function() {
       // }
     }
   });
-}
 
-FoursquareCalculating.prototype.endRoutines = function() {
   this.calculationFunctions.push(function(currentCheckin, stats, socialPlayer) {
-    if (currentCheckin.lat != 0 || currentCheckin.lng != 0)
+    if (currentCheckin.lat != 0 || currentCheckin.lng != 0) {
+      if (stats.previousCheckin) {
+        stats.prevprevCheckin = JSON.parse(JSON.stringify(stats.previousCheckin));
+      }
       stats.previousCheckin = currentCheckin;
+    }
   });
 }
 
