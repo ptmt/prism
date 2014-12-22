@@ -1,70 +1,50 @@
-var mui = require('material-ui');
-var RaisedButton = mui.RaisedButton;
 var React = require('react');
 
 var TopToolbar = React.createClass({
-
+  getInitialState: function() {
+    return {
+      level: 0,
+      exp: 0
+    };
+  },
   render: function() {
 
-    var filterOptions = [
-        {
-          payload: '1',
-          text: 'All Broadcasts'
-        },
-        {
-          payload: '2',
-          text: 'All Voice'
-        },
-        {
-          payload: '3',
-          text: 'All Text'
-        },
-        {
-          payload: '4',
-          text: 'Complete Voice'
-        },
-        {
-          payload: '5',
-          text: 'Complete Text'
-        },
-        {
-          payload: '6',
-          text: 'Active Voice'
-        },
-        {
-          payload: '7',
-          text: 'Active Text'
-        },
-                  ],
-      iconMenuItems = [
-        {
-          payload: '1',
-          text: 'Download'
-        },
-        {
-          payload: '2',
-          text: 'More Info'
-        }
-                      ];
+    //$('.player-level').html(data.Player.Level);
+    //$('.player-exp').html(number_format_default(data.Player.Exp));
+    var level = 1;
+    var exp = 1000;
 
     return (
 
+      <nav className="navbar navbar-inverse" role="navigation">
 
-        <mui.Toolbar>
-          <mui.ToolbarGroup key={0} float="left">
-          <mui.DropDownMenu menuItems={filterOptions} />
-          </mui.ToolbarGroup>
-          <mui.ToolbarGroup key={1} float="right">
-          <mui.Icon icon='mui-icon-pie' />
-          <mui.Icon icon='mui-icon-sort' />
-          <mui.DropDownIcon icon="navigation-expand-more" menuItems={iconMenuItems}
-          onChange={this._onDropDownMenuChange} />
-          <span className="mui-toolbar-separator">&nbsp;</span>
-          <mui.RaisedButton label="Create Broadcast" primary={true} />
-          </mui.ToolbarGroup>
-        </mui.Toolbar>
-      
+        <div className="navbar-header">
+          <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span className="sr-only">Toggle navigation</span>
+          <span className="icon-bar"></span>
+          <span className="icon-bar"></span>
+          <span className="icon-bar"></span>
+          </button>
+          <a className="navbar-brand" href="/">PRISM</a>
+        </div>
 
+        <div className="collapse navbar-collapse navbar-ex1-collapse">
+
+          <ul className="nav navbar-nav navbar-right">
+            <li>
+            <p className="navbar-text">
+            <span>Level</span>
+            <span className="player-level">{level}</span>/
+            <span className="player-exp">{exp} exp</span>
+            </p>
+            </li>
+            <li>
+            <button href="#playerinfo" className="navbar-btn btn btn-default" data-toggle="modal">Dossier</button>
+            </li>
+          </ul>
+        </div>
+
+      </nav>
     );
   },
 

@@ -127,9 +127,9 @@ gulp.task('bower', function() {
 });
 
 gulp.task('less', function () {
-  gulp.src('./app/less/**/*.less')
+  gulp.src('./app/less/app.less')
     .pipe($.less({
-      paths: [ require('path').join(__dirname, 'less', 'includes') ]
+      paths: ['./app/less/app.less' ] //require('path').join(__dirname, 'less', 'includes')
     }))
     .pipe(gulp.dest('./dist/styles'))
     .pipe($.connect.reload());

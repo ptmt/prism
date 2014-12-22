@@ -5,6 +5,7 @@
 var path = require('./map/path');
 var L = require('leaflet');
 
+
 type Callback<T> = (err: any, data?: T) => void;
 
 type IterationStep = {
@@ -12,6 +13,8 @@ type IterationStep = {
   currentCheckin: any;
   player: any;
 }
+
+var currentState : IterationStep;
 
 function getJson(url: string, callback: Callback<IterationStep>) {
   var request = new XMLHttpRequest();
@@ -75,4 +78,5 @@ function nextIteration(map: L.LeafletMap, layer: L.LeafletLayer) {
 }
 
 
+module.exports.FoursquareStore = currentState;
 module.exports.start = nextIteration;
