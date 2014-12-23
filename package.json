@@ -10,7 +10,8 @@
     "leaflet": "^0.7.3",
     "material-ui": "^0.3.2",
     "modestmaps": "^3.3.7-dev",
-    "node-foursquare": "^0.2.1"
+    "node-foursquare": "^0.2.1",
+    "reflux": "^0.2.1"
   },
   "devDependencies": {
     "browserify": "^7.0.0",

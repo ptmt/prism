@@ -1,18 +1,28 @@
 var React = require('react');
+var foursquareStore = require('../stores/foursquareStore');
+var Reflux = require('reflux');
 
 var TopToolbar = React.createClass({
+
+  mixins: [Reflux.ListenerMixin],
+
   getInitialState: function() {
     return {
-      level: 0,
-      exp: 0
+      player: {
+        level: 0,
+        exp: 0
+      }
     };
+  },
+  componentDidMount: function() {
+    this.listenTo(foursquareStore, this._onChange);
   },
   render: function() {
 
     //$('.player-level').html(data.Player.Level);
     //$('.player-exp').html(number_format_default(data.Player.Exp));
-    var level = 1;
-    var exp = 1000;
+    // var level = 1;
+    // var exp = 1000;
 
     return (
 
@@ -34,8 +44,8 @@ var TopToolbar = React.createClass({
             <li>
             <p className="navbar-text">
             <span>Level</span>
-            <span className="player-level">{level}</span>/
-            <span className="player-exp">{exp} exp</span>
+            <span className="player-level">{this.state.player.level}</span>/
+            <span className="player-exp">{this.state.player.exp} exp</span>
             </p>
             </li>
             <li>
@@ -46,6 +56,13 @@ var TopToolbar = React.createClass({
 
       </nav>
     );
+  },
+
+  /**
+  * Event handler for 'change' events coming from the stores
+  */
+  _onChange: function() {
+    this.setState(foursquareStore.iterationStep);
   },
 
   _onDropDownMenuChange: function(e, key, menuItem) {
