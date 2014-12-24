@@ -1,4 +1,9 @@
 [ignore]
 .*/node_modules/*
+.*/dist/*
+.*/app/interfaces
+.*/app/server.compiled
 [include]
 .*/app/server/*
+[libs]
+./app/interfaces

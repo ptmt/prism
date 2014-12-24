@@ -1,4 +1,5 @@
-var ExperienceConstants = require('constants');
+/* @flow */
+var ExperienceConstants = require('./constants');
   // public enum PlayerSkill :
   // {
   //   Sociality // This skills is only about likes and friends you have and related activity.
@@ -22,21 +23,22 @@ class SocialPlayer
   userinfo: any;
   diagnose: any;
 
+  addSkill(skill: any, points: number) {
+    this.skills[skill] = points;
+  }
+
   apply(skill: any, points: number, conditions?: bool) {
     if (points > 0 && conditions) {
       this.exp += points;
-      applySkill(skill, points);
+      this.addSkill(skill, points);
     }
   }
 
-  addSkill(skill, points) {
-    skills[skill] = points;
-  }
 
 }
 
-Object.defineProperty('level', {
-  get: function() { return Math.Round(Math.Log(Exp + 1, ExperienceConstants.LEVELFX_LOGARITHM_BASE)); }
+Object.defineProperty(SocialPlayer, 'level', {
+  get: function() { return Math.floor(Math.log(this.exp + 1, ExperienceConstants.LEVELFX_LOGARITHM_BASE)); }
 });
 
 //module.exports.PlayerSkill : PlayerSkill;
