@@ -65,10 +65,10 @@ function addExperienceAccumulationTasks()
     Sociality: 'sociality',
     Curiosity: 'curiosity'
   }
-  this.calculationFunctions.push((currentCheckin, stats, p: Player) =>
+  this.calculationFunctions.push((currentCheckin, stats, p) =>
     {
       p.apply(skill.Sociality, ExperienceConstants.Foursquare.BASE_CHECKIN);
-      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.ONE_KILOMETER_PASSED * (int)stats.LastDistance);
+      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.ONE_KILOMETER_PASSED * stats.LastDistance);
       p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.TotalVenueCheckins > 100);
       p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.TotalVenueCheckins > 1000);
       p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_10000_CHECKINS, currentCheckin.TotalVenueCheckins > 10000);
@@ -80,9 +80,9 @@ function addExperienceAccumulationTasks()
       p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.LastDistance > 1000);
       p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.LastDistance > 5000);
       p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.LastDistance > 10000);
-      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_100KMH, (double)stats.KeyValue["TopSpeed"] > 100);
-      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH, (double)stats.KeyValue["TopSpeed"] > 500);
-      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.TotalVenueCheckins :: 0);
+      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_100KMH, stats.KeyValue["TopSpeed"] > 100);
+      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH, stats.KeyValue["TopSpeed"] > 500);
+      p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.TotalVenueCheckins == 0);
 
     });
 }
