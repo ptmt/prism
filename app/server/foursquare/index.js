@@ -9,6 +9,7 @@ var config = {
     'redirectUrl': CONF.app.host + '/api/v1/foursquare/callback'
   }
 };
+var Player = require('../models/player').Player;
 var async = require('async');
 var foursquareLib = require('node-foursquare')(config);
 var service = new FoursquareService(foursquareLib, {
@@ -22,7 +23,7 @@ class Cache {
   checkinsData: any;
   init(service: FoursquareService, calculator: FoursquareCalculator, callback: Function):void {
     this.live = {};
-    this.player = {};
+    this.player = new Player();
     this.live.i = 0;
     service.getCheckins(0, 250, (err, checkins) => {
       this.checkinsData = checkins;

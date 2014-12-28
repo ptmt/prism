@@ -48,6 +48,7 @@ var foursquareStore = Reflux.createStore({
     var endpoint: string = '/api/foursquare/iterate?debug=' + window.localStorage
       .getItem('debug');
     getJson(endpoint, (err, data) => {
+
       if (err || !data || (!data.player)) {
         window.localStorage.setItem('auth', false);
         document.location.href = '/?logout';

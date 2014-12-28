@@ -14,7 +14,7 @@ gulp.task('client-flow', function() {
     }));
 })
 // Scripts
-gulp.task('scripts', ['client-flow'], function() {
+gulp.task('scripts', function() {
   var browserify = require('browserify');
   var source = require('vinyl-source-stream');
   var buffer = require('vinyl-buffer');
@@ -36,7 +36,7 @@ gulp.task('scripts', ['client-flow'], function() {
     .pipe($.uglify())
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/scripts/'))
-    .pipe($.connect.reload());
+    .pipe($.livereload());
   };
 
   return bundle();
@@ -48,7 +48,7 @@ gulp.task('html', function() {
     //.pipe($.useref())
     .pipe(gulp.dest('dist'))
     .pipe($.size())
-    .pipe($.connect.reload());
+    .pipe($.livereload());
 });
 
 // Images
@@ -61,7 +61,7 @@ gulp.task('images', function() {
     }))
     .pipe(gulp.dest('dist/images'))
     .pipe($.size())
-    .pipe($.connect.reload());
+    .pipe($.livereload());
 });
 
 gulp.task('test', function() {
@@ -88,9 +88,9 @@ gulp.task('flow', function() {
   return gulp.src([
     'app/server/**/**.js',
     ])
-    .pipe($.flowtype({
-      declarations: './app/interfaces'
-    }))
+    // .pipe($.flowtype({
+    //   declarations: './app/interfaces'
+    // }))
     .pipe($.react({
       stripTypes: true,
       harmony: true
@@ -99,23 +99,11 @@ gulp.task('flow', function() {
     .pipe(gulp.dest('./app/server.compiled/'));
 });
 
-
-
-//Connect
-gulp.task('connect', ['flow'], function() {
-  $.connect.server({
-    root: ['dist'],
-    port: 9000,
-    livereload: true,
-    middleware: require('./app/server.compiled/index.js')
-  });
+gulp.task( 'server:start', ['flow'], function() {
+  $.developServer.listen({
+    path: './app/server.compiled/index.js'
+  }, $.livereload.listen );
 });
-
-gulp.task('kill', function() {
-  $.connect.serverClose();
-});
-
-gulp.task('restart', ['kill', 'connect']);
 
 // Bower helper
 gulp.task('bower', function() {
@@ -132,21 +120,34 @@ gulp.task('less', function () {
       paths: ['./app/less/app.less' ] //require('path').join(__dirname, 'less', 'includes')
     }))
     .pipe(gulp.dest('./dist/styles'))
-    .pipe($.connect.reload());
+    .pipe($.livereload());
 });
 
-// gulp.task('styles', ['less'], function() {
-//   gulp.src('app/styles/**/*.css')
-//     .pipe(gulp.dest('dist/styles/'))
-//     .pipe($.connect.reload());
-// });
+
+gulp.task('server:restart', ['flow'], function () {
+  $.developServer.changed( function( error ) {
+    if( ! error ) $.livereload.changed();
+  });
+  // gulp.src('./app/server.compiled/app.js')
+  //   .pipe($.developServer({
+  //     path: './app/server.compiled/index.js'
+  //   }))
+  //   .pipe($.livereload());
+});
 
 
 // Watch
-gulp.task('watch', ['html', 'bundle', 'connect'], function() {
+gulp.task('watch', ['html', 'bundle', 'server:start'], function() {
+
+  // function restart( file ) {
+  //   $.developServer.changed( function( error ) {
+  //     gulp.task('flow');
+  //     if( ! error ) $.livereload.changed( file.path );
+  //   });
+  // }
 
   // Watch server-side js files
-  gulp.watch(['gulpfile.js', 'app/server/**/*.js', 'app/interfaces/**/*.js'], ['restart']);
+  gulp.watch(['app/server/**/*.js', 'app/interfaces/**/*.js'], ['server:restart']);//.on( 'change', restart );;
 
   // Watch .html files
   gulp.watch('app/*.html', ['html']);
@@ -158,7 +159,7 @@ gulp.task('watch', ['html', 'bundle', 'connect'], function() {
   gulp.watch('app/less/*.less', ['less']);
 
   // Watch client .js files
-  gulp.watch('app/client/**/*.js', ['scripts']);
+  gulp.watch('app/client/**/*.js', ['client-flow', 'scripts']);
 
   // Watch image files
   gulp.watch('app/images/**/*', ['images']);

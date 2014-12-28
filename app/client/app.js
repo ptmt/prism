@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
   if (document.location.href.indexOf('start') > -1) {
     window.localStorage.setItem('auth', true);
   }
-  React.render(<TopToolbar />, document.querySelector('.toolbar-container'));
+
   if (isAuth || isDebug) {
-    //foursquareClient.start(map, layer);
+    React.render(<TopToolbar />, document.querySelector('.toolbar-container'));
     appActions.startFoursquare(map, layer);
   } else {
     React.render(

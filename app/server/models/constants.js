@@ -24,8 +24,9 @@ var FoursquareConst = function() {
 
   this.EACH_FRIEND = 100; // sociality
   this.EACH_YOUR_FOLLOWER_WITHOUT_MUTUALITY = 10; //charisma
+  return this;
 }
 module.exports = {
   LEVELFX_LOGARITHM_BASE : 10,
-  Foursquare: FoursquareConst
+  Foursquare: FoursquareConst()
 }

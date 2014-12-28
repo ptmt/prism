@@ -22,24 +22,28 @@ class SocialPlayer
   achievements: any;
   userinfo: any;
   diagnose: any;
+  level: number;
+
+  constructor() {
+    this.skills = [];
+    this.exp = 0;
+    this.level = 0;
+  }
 
   addSkill(skill: any, points: number) {
     this.skills[skill] = points;
   }
 
   apply(skill: any, points: number, conditions?: bool) {
+    console.log('apply points', points, conditions);
     if (points > 0 && conditions) {
       this.exp += points;
+      this.level = Math.floor(Math.log(this.exp + 1, ExperienceConstants.LEVELFX_LOGARITHM_BASE));
       this.addSkill(skill, points);
     }
   }
 
-
 }
-
-Object.defineProperty(SocialPlayer, 'level', {
-  get: function() { return Math.floor(Math.log(this.exp + 1, ExperienceConstants.LEVELFX_LOGARITHM_BASE)); }
-});
 
 //module.exports.PlayerSkill : PlayerSkill;
 module.exports.Player = SocialPlayer;
