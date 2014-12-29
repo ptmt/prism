@@ -13,33 +13,55 @@ gulp.task('client-flow', function() {
       declarations: './app/interfaces'
     }));
 })
-// Scripts
-gulp.task('scripts', function() {
+
+function scripts(watch) {
   var browserify = require('browserify');
   var source = require('vinyl-source-stream');
   var buffer = require('vinyl-buffer');
   var reactify = require('reactify');
+  var watchify = require('watchify');
 
   var bundler = browserify({
     entries: ['./app/client/app.js'],
-    debug: true
+    debug: true,
+    cache: {}, // required for watchify
+    packageCache: {}, // required for watchify
+    fullPaths: watch, // required to be true only for watchify
+
   });
+
+  if(watch) {
+    bundler = watchify(bundler)
+  }
 
   bundler.transform('reactify', {es6: true, stripTypes: true})
 
-  var bundle = function() {
+  var rebundle = function() {
+    console.log('rebundle');
     return bundler
     .bundle()
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe($.sourcemaps.init({loadMaps: true}))
-    .pipe($.uglify())
-    .pipe($.sourcemaps.write('./'))
+    //.pipe($.uglify())
+    //  .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/scripts/'))
     .pipe($.livereload());
   };
 
-  return bundle();
+  bundler.on('update', rebundle);
+  return rebundle();
+}
+
+
+// Scripts
+gulp.task('scripts', function() {
+  return scripts(false)
+});
+
+// Scripts
+gulp.task('scripts:watch', function() {
+  return scripts(true)
 });
 
 // HTML
@@ -76,7 +98,7 @@ gulp.task('clean', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['scripts', 'less', 'bower']);
+gulp.task('bundle', ['scripts:watch', 'images', 'less', 'bower']);
 
 // Build
 gulp.task('build', ['html', 'bundle', 'images']);
@@ -159,7 +181,7 @@ gulp.task('watch', ['html', 'bundle', 'server:start'], function() {
   gulp.watch('app/less/*.less', ['less']);
 
   // Watch client .js files
-  gulp.watch('app/client/**/*.js', ['client-flow', 'scripts']);
+  gulp.watch('app/client/**/*.js', ['client-flow']);
 
   // Watch image files
   gulp.watch('app/images/**/*', ['images']);

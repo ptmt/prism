@@ -41,7 +41,8 @@
     "react": "^0.12.1",
     "reactify": "*",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0"
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.2.1"
   },
   "engines": {
     "node": ">=0.10.0"

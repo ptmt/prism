@@ -67,7 +67,7 @@ class FoursquareCalculator  {
       }
       this.calculationFunctions.push((currentCheckin, stats, p) =>
       {
-        p.apply(skill.Sociality, ExperienceConstants.Foursquare.BASE_CHECKIN);
+        p.apply(skill.Sociality, ExperienceConstants.Foursquare.BASE_CHECKIN, true);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.ONE_KILOMETER_PASSED * stats.LastDistance);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.TotalVenueCheckins > 100);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.TotalVenueCheckins > 1000);

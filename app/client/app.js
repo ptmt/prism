@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     React.render(
       <WelcomeWindow />,
-      document.querySelector('.signup-form')
+      document.querySelector('.signup-form-container')
     );
     //document.querySelectorAll('.signup-form')[0].style.display = 'block';
   }
