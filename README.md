@@ -2,7 +2,17 @@
 
 # TLDR
 
-Sandbox.
+Sandbox. And I love checkins, but it seems Foursquare doesn't anymore.
+
+# Stack
+
+- React.JS + Reflux for UI;
+- Bootstrap + Material Design;
+- Subset of ES6 for server and client (classes, lamdas);
+- Facebook Flow + React types for type checking;
+- Gulp, Browserify + Buffer + Watchify;
+- Leaflet + 
+
 
 # Getting started
 

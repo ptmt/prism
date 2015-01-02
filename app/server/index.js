@@ -15,7 +15,7 @@ var app = connect()
     next();
   })
   .use(rest.rester({
-    context: '/api'
+    context: '/api/v1'
   }))
   .use(serveStatic('dist'))
   .use(function onerror(err, req, res, next) {
@@ -24,4 +24,5 @@ var app = connect()
   });
 
 rest.get('/foursquare/iterate', foursquarePrism.iterate);
+rest.get('/foursquare/signin', foursquarePrism.signin);
 http.createServer(app).listen(9000);

@@ -98,7 +98,7 @@ gulp.task('clean', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['scripts:watch', 'images', 'less', 'bower']);
+gulp.task('bundle', ['scripts:watch', 'images', 'less', 'fonts', 'bower']);
 
 // Build
 gulp.task('build', ['html', 'bundle', 'images']);
@@ -136,6 +136,11 @@ gulp.task('bower', function() {
 
 });
 
+gulp.task('fonts', function() {
+  gulp.src('./app/fonts/*.*')
+    .pipe(gulp.dest('./dist/fonts'));
+});
+
 gulp.task('less', function () {
   gulp.src('./app/less/app.less')
     .pipe($.less({
@@ -160,13 +165,6 @@ gulp.task('server:restart', ['flow'], function () {
 
 // Watch
 gulp.task('watch', ['html', 'bundle', 'server:start'], function() {
-
-  // function restart( file ) {
-  //   $.developServer.changed( function( error ) {
-  //     gulp.task('flow');
-  //     if( ! error ) $.livereload.changed( file.path );
-  //   });
-  // }
 
   // Watch server-side js files
   gulp.watch(['app/server/**/*.js', 'app/interfaces/**/*.js'], ['server:restart']);//.on( 'change', restart );;

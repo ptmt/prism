@@ -45,7 +45,7 @@ var foursquareStore = Reflux.createStore({
   },
 
   nextIteration: function(map, layer) {
-    var endpoint: string = '/api/foursquare/iterate?debug=' + window.localStorage
+    var endpoint: string = appConfig.apiEndpoint + '/foursquare/iterate?debug=' + window.localStorage
       .getItem('debug');
     getJson(endpoint, (err, data) => {
 
