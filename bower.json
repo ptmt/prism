@@ -5,7 +5,8 @@
     "react": "^0.10.0",
     "modernizr": "^2.8.3",
     "bootstrap": "~3.3.1",
-    "leaflet.maskcanvas": "*"
+    "leaflet.maskcanvas": "*",
+    "ionicons": "~2.0.0"
   },
   "resolutions": {
     "bootstrap": "~3.3.1"

@@ -12,7 +12,33 @@ gulp.task('client-flow', function() {
     .pipe($.flowtype({
       declarations: './app/interfaces'
     }));
-})
+});
+
+
+// Workaround for https://github.com/gulpjs/gulp/issues/71
+var origSrc = gulp.src;
+gulp.src = function () {
+  return fixPipe(origSrc.apply(this, arguments));
+};
+function fixPipe(stream) {
+  var origPipe = stream.pipe;
+  stream.pipe = function (dest) {
+    arguments[0] = dest.on('error', function (error) {
+      var nextStreams = dest._nextStreams;
+      if (nextStreams) {
+        nextStreams.forEach(function (nextStream) {
+          nextStream.emit('error', error);
+        });
+      } else if (dest.listeners('error').length === 1) {
+        throw error;
+      }
+    });
+    var nextStream = fixPipe(origPipe.apply(this, arguments));
+    (this._nextStreams || (this._nextStreams = [])).push(nextStream);
+    return nextStream;
+  };
+  return stream;
+}
 
 function scripts(watch) {
   var browserify = require('browserify');
@@ -46,12 +72,16 @@ function scripts(watch) {
     //.pipe($.uglify())
     //  .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/scripts/'))
-    .pipe($.livereload());
+    .pipe($.livereload())
+    .on('error', function (error) {
+      console.error('' + error);
+    });
   };
 
   bundler.on('update', rebundle);
   return rebundle();
 }
+
 
 
 // Scripts
@@ -87,7 +117,7 @@ gulp.task('images', function() {
 });
 
 gulp.task('test', function() {
-  require('common-node').run('./node_modules/.bin/_mocha');
+  //require('common-node').run('./node_modules/.bin/_mocha');
 });
 
 // Clean
@@ -118,7 +148,10 @@ gulp.task('flow', function() {
       harmony: true
     }))
     // Output each file into the ./build/javascript/ directory
-    .pipe(gulp.dest('./app/server.compiled/'));
+    .pipe(gulp.dest('./app/server.compiled/'))
+    .on('error', function (error) {
+      console.error('' + error);
+    });
 });
 
 gulp.task( 'server:start', ['flow'], function() {

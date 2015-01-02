@@ -4,38 +4,12 @@ var L = require('leaflet');
 var appConfig = require('./../config')
 var appActions = require('./../actions')
 
-type Callback < T > = (err: any, data ? : T) => void;
-
 type IterationStep = {
   live: any;
   currentCheckin: any;
   player: any;
 }
 
-function getJson(url: string, callback: Callback < IterationStep > ) {
-  var request = new XMLHttpRequest();
-  request.open('GET', url, true);
-
-  request.onload = function() {
-    if (request.status === 200) {
-      var json = JSON.parse(request.responseText);
-      if (json.error) {
-        return callback(json.error);
-      }
-      callback(null, json);
-    } else {
-      // We reached our target server, but it returned an error
-      callback('error:' + request.responseText);
-    }
-  };
-
-  request.onerror = function() {
-    // There was a connection error of some sort
-    callback('error');
-  };
-
-  request.send();
-}
 
 var foursquareStore = Reflux.createStore({
 
@@ -47,6 +21,7 @@ var foursquareStore = Reflux.createStore({
   nextIteration: function(map, layer) {
     var endpoint: string = appConfig.apiEndpoint + '/foursquare/iterate?debug=' + window.localStorage
       .getItem('debug');
+      
     getJson(endpoint, (err, data) => {
 
       if (err || !data || (!data.player)) {

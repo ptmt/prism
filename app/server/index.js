@@ -5,7 +5,7 @@ var rest = require('connect-rest');
 var foursquarePrism = require('./foursquare');
 var http = require('http');
 var serveStatic = require('serve-static');
-var livereload = require('gulp-livereload');
+var mainController = require('./controllers/main');
 
 var app = connect()
   .use(bodyParser.urlencoded( { extended: true } ))
@@ -23,6 +23,7 @@ var app = connect()
     next();
   });
 
+rest.get('/connected', mainController.connected);
 rest.get('/foursquare/iterate', foursquarePrism.iterate);
 rest.get('/foursquare/signin', foursquarePrism.signin);
 http.createServer(app).listen(9000);

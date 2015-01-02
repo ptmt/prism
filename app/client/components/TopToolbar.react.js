@@ -19,10 +19,7 @@ var TopToolbar = React.createClass({
   },
   render: function() {
 
-    //$('.player-level').html(data.Player.Level);
-    //$('.player-exp').html(number_format_default(data.Player.Exp));
-    // var level = 1;
-    // var exp = 1000;
+    var progress = {"width": "45%"};
 
     return (
 
@@ -40,22 +37,21 @@ var TopToolbar = React.createClass({
           </div>
 
           <form className="navbar-form navbar-left" role="search">
-            <div className="form-group">
-              <input type="text" className="form-control" placeholder="Search" />
-            </div>
-            <div className="btn-group">
-              <button className="btn btn-default">
-                <span className="glyphicons glyphicons-fast-backward"></span>
+            <div className="btn-group btn-group-sm" role="group" aria-label="...">
+              <button className="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip on bottom">
+                <span className="ion-ios-skipbackward"></span>
               </button>
               <button className="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip on bottom">
-                <span className="glyphicons glyphicons-pause">&#xe178;</span>
+                <span className="ion-ios-pause"></span>
               </button>
-              <button className="btn btn-default">
-                <span className="glyphicons glyphicons-fast-forward"></span>
+              <button className="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip on bottom">
+                <span className="ion-ios-skipforward"></span>
               </button>
-
+            </div>
+            <div>
             </div>
           </form>
+
 
           <div className="collapse navbar-collapse navbar-ex1-collapse">
 
