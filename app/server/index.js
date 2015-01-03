@@ -2,7 +2,7 @@
 var connect = require('connect');
 var bodyParser = require('body-parser');
 var rest = require('connect-rest');
-var foursquarePrism = require('./foursquare');
+//var foursquarePrism = require('./foursquare');
 var http = require('http');
 var serveStatic = require('serve-static');
 var mainController = require('./controllers/main');
@@ -24,6 +24,6 @@ var app = connect()
   });
 
 rest.get('/connected', mainController.connected);
-rest.get('/foursquare/iterate', foursquarePrism.iterate);
-rest.get('/foursquare/signin', foursquarePrism.signin);
+rest.get('/gettimeline', mainController.getTimeline);
+//rest.get('/foursquare/signin', foursquarePrism.signin);
 http.createServer(app).listen(9000);

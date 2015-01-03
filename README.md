@@ -2,16 +2,17 @@
 
 # TLDR
 
-Sandbox. And I love checkins, but it seems Foursquare doesn't anymore.
+It's like TodoMVC sandbox but a bit more complex. And I love checkins, though it seems Foursquare doesn't anymore.
 
 # Stack
 
 - React.JS + Reflux for UI;
-- Bootstrap + Material Design;
-- Subset of ES6 for server and client (classes, lamdas);
+- Bootstrap + Material Design (Paper);
+- Subset of ES6 for server and client (classes, lambdas);
 - Facebook Flow + React types for type checking;
 - Gulp, Browserify + Buffer + Watchify;
-- Leaflet + 
+- Leaflet + toner;
+- Bluebird for Promises;
 
 
 # Getting started

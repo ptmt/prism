@@ -1,5 +1,5 @@
 var React = require('react');
-var foursquareStore = require('../stores/foursquareStore');
+var TimelineStore = require('../stores/TimelineStore');
 var Reflux = require('reflux');
 
 var TopToolbar = React.createClass({
@@ -15,7 +15,7 @@ var TopToolbar = React.createClass({
     };
   },
   componentDidMount: function() {
-    this.listenTo(foursquareStore, this._onChange);
+    this.listenTo(TimelineStore, this._onChange);
   },
   render: function() {
 

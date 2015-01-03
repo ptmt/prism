@@ -1,8 +1,7 @@
 var Reflux = require('reflux')
 
 var appActions = Reflux.createActions([
-  'startFoursquare',
-  'loadGame'
+  'start'
   ]);
 
 module.exports = appActions

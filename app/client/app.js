@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (isAuth || isDebug) {
     React.render(<TopToolbar />, document.querySelector('.toolbar-container'));
-    appActions.startFoursquare(map, layer);
+    appActions.start(map, layer);
   } else {
     React.render(
       <WelcomeWindow />,

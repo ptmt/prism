@@ -1,4 +1,4 @@
-/* @flow */
+/* flow */
 var CONF = require('config');
 var FoursquareService = require('./service');
 var FoursquareCalculator = require('./calculator');

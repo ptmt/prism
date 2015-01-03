@@ -64,9 +64,9 @@ function scripts(watch) {
 
   var rebundle = function() {
     console.log('rebundle');
-    return bundler
+    return fixPipe(bundler
     .bundle()
-    .pipe(source('app.js'))
+    .pipe(source('app.js')))
     .pipe(buffer())
     .pipe($.sourcemaps.init({loadMaps: true}))
     //.pipe($.uglify())

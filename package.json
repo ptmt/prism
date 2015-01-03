@@ -5,13 +5,14 @@
   "repository": "https://github.com/unknownexceptin/prism",
   "dependencies": {
     "async": "^0.9.0",
+    "bluebird": "^2.5.3",
     "body-parser": "^1.10.0",
     "config": "^1.2.1",
     "connect": "^3.3.3",
     "connect-rest": "^1.5.0",
     "leaflet": "^0.7.3",
-    "material-ui": "^0.3.2",
     "modestmaps": "^3.3.7-dev",
+    "moment": "^2.8.4",
     "node-foursquare": "^0.2.1",
     "reflux": "^0.2.1",
     "serve-static": "^1.7.1"

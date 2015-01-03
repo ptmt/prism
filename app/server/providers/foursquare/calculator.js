@@ -1,5 +1,7 @@
-var Player = require('../models/player').Player;
-var ExperienceConstants = require('../models/constants');
+/* @flow */
+
+var Player = require('../../models/player').Player;
+var ExperienceConstants = require('../../models/constants');
 
 class FoursquareCalculator  {
     calculationFunctions: any;
@@ -14,13 +16,14 @@ class FoursquareCalculator  {
 
     startRoutines(): void {
       this.initFunctions.push((stats, checkinsData) => {
-        stats.i = 0;
-        stats.processedCheckins = 0;
-        stats.topSpeed = 0;
-        stats.avgSpeed = 0;
-        stats.avgDistancePerCheckin = 0;
-        stats.totalDistance = 0;
-        stats.checkinsSize = checkinsData.checkins.items.length;
+        stats.fs = stats.fs || {};
+        stats.fs.i = 0;
+        stats.fs.processedCheckins = 0;
+        stats.fs.topSpeed = 0;
+        stats.fs.avgSpeed = 0;
+        stats.fs.avgDistancePerCheckin = 0;
+        stats.fs.totalDistance = 0;
+        stats.fs.checkinsSize = checkinsData.checkins.items.length;
       });
     }
 

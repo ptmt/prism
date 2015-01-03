@@ -1,8 +1,9 @@
 var Reflux = require('reflux')
 var path = require('../map/path');
 var L = require('leaflet');
-var appConfig = require('./../config')
-var appActions = require('./../actions')
+var appConfig = require('./../config');
+var appActions = require('./../actions');
+var xhr = require('../lib/xhr');
 
 type IterationStep = {
   live: any;
@@ -11,17 +12,25 @@ type IterationStep = {
 }
 
 
-var foursquareStore = Reflux.createStore({
+var TimelineStore = Reflux.createStore({
 
   init: function() {
     this.iterationStep = {}
-    this.listenTo(appActions.startFoursquare, this.nextIteration)
+    this.listenTo(appActions.start, this.start);
+  },
+
+  start: function(map, layer) {
+    this.map = map;
+    this.layer = layer;
+    xhr.getJson(appConfig.apiEndpoint + '/getTimeline', (err, data) => {
+      console.log(err, data);
+    });
   },
 
   nextIteration: function(map, layer) {
     var endpoint: string = appConfig.apiEndpoint + '/foursquare/iterate?debug=' + window.localStorage
-      .getItem('debug');
-      
+      .getItem('debug'); // TODO: refactor it with DEMO
+
     getJson(endpoint, (err, data) => {
 
       if (err || !data || (!data.player)) {
@@ -79,4 +88,4 @@ var foursquareStore = Reflux.createStore({
 
 })
 
-module.exports = foursquareStore
+module.exports = TimelineStore;

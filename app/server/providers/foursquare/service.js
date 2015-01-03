@@ -1,15 +1,21 @@
 /* @flow */
-'use strict';
 
+var CONF = require('config');
 var fs = require('fs');
 
 class FoursquareService {
   foursquareApi: any;
   accessToken: string;
   options: any;
-  constructor(foursquareApi:any, options?: any) {
-    this.foursquareApi = foursquareApi;
-    this.options = options;
+  constructor(options?: any) {
+    this.foursquareApi = require('node-foursquare')({
+      'secrets': {
+        'clientId': CONF.foursquare.clientId,
+        'clientSecret': CONF.foursquare.clientSecret,
+        'redirectUrl': CONF.app.host + '/api/v1/auth/foursquare/callback'
+      }
+    });
+    this.options = options || {};
   }
   auth(code:string, callback: any):void {
     this.foursquareApi.getAccessToken({
@@ -22,10 +28,10 @@ class FoursquareService {
   getCheckins(offset: number, limit: number, callback: (err: any, checkins: any) => void): any {
     offset = offset || 0;
     limit = limit || 250;
-    if (this.options.debug) {
+    if (this.options.demo) {
       callback(null, JSON.parse(
-        fs.readFileSync(__dirname + '/../../../test/mock/foursquare.' + offset + '-' + limit + '.json')
-      ));
+        fs.readFileSync(__dirname + '/../../../../test/mock/foursquare.' + offset + '-' + limit + '.json')
+      )); // TODO: move tests and mocks inside providers
     } else {
       this.foursquareApi.Users.getCheckins('self', {
         offset: offset,

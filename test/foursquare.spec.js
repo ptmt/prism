@@ -10,12 +10,14 @@ describe('Foursquare Client', function () {
 
   before(function () {
     foursquareService = new FoursquareService(null, {
-      debug: true
+      demo: true
     });
   });
 
-  it('able to get checkins', function () {
-    var checkinsData = foursquareService.getCheckins(0, 250);
-    assert.equal(checkinsData.checkins.items.length === 250, true);
+  it('able to get checkins', function (done) {
+    var checkinsData = foursquareService.getCheckins(0, 250).then(function() {
+      assert.equal(checkinsData.checkins.items.length === 250, true);
+    });
+
   });
 });
