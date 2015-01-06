@@ -2,14 +2,23 @@
 var moment = require('moment');
 var async = require('async');
 var Promise = require('bluebird');
+var Player = require('./player').Player;
 
-type IterationStep = {
-  currentGeo: any;
+type PrismPoint = {
+  source: string; // should be Enum (like Foursquare / Twitter / Instagram / etc.)
+  lng: string;
+  lat: string;
+  description: string;
+  link: string;
+}
+
+type PrismIteration = {
+  currentPoint: PrismPoint;
   stats: any;
   player: any;
 }
 
-type IterationMap = { [key:string]: IterationStep };
+type IterationMap = { [key:string]: PrismIteration };
 
 class Timeline {
   startdate: string;
@@ -18,23 +27,35 @@ class Timeline {
   providers: Array<any>;
   constructor(providers: any) {
     this.providers = providers;
+    this.iterations = {};
   };
-  fetch():void {
+  initAll(): void {
     var stats = {};
-    // var inits = providers.map((provider) => {
-    //   //return async.apply(provider.init, stats); // TODO: pseudo race conditions?
-    //   return provider.init(stats);
-    // });
     return Promise.reduce(this.providers, (s, p) => {
       return p.init(s);
     }, stats).then(s => {
-      this.stats = s;
-      return Promise.resolve({
-        stats: stats,
-        startdate: '',
-        enddate: ''
-      });
+      //this.stats = s;
+      //return this;
+      return Promise.resolve(stats);
     });
+  };
+
+  fetch():any {
+    return this
+      .initAll()
+      .then(stats => {
+        var player = new Player();
+        this.providers.forEach(provider => {
+          var iteration = provider.calculateNextIteration(stats, player);
+          while (iteration) {
+            this.iterations[iteration.key] = iteration;
+            iteration = provider.calculateNextIteration(stats, player);
+          }
+        });
+        return Promise.resolve({
+          iterations: this.iterations
+        })
+      });
   }
 }
 

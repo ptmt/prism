@@ -38,7 +38,31 @@ class FoursquareProvider extends Provider {
         }
       });
     });
+  }
 
+  calculateNextIteration(stats: any, player: any): ?PrismIteration {
+    console.log(player);
+    if (this.checkinsData.checkins.items.length > stats.fs.i) {
+      stats.fs.i++;
+    } else {
+      return null;
+    }
+
+    var currentCheckin = this.checkinsData.checkins.items[stats.fs.i - 1];
+
+    this.calculator.calculationFunctions.forEach((calcFunc) => calcFunc(currentCheckin, stats, player));
+
+    return {
+      stats: stats,
+      currentPoint: this.transformToPoint(currentCheckin),
+      player: player
+    };
+  }
+
+  transformToPoint(item:any):PrismPoint {
+    return {
+      source: 'Foursquare'
+    }
   }
 }
 

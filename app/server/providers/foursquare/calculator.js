@@ -6,6 +6,7 @@ var ExperienceConstants = require('../../models/constants');
 class FoursquareCalculator  {
     calculationFunctions: any;
     initFunctions: any;
+    temporary: any;
 
     constructor() {
       this.calculationFunctions = [];
@@ -31,10 +32,10 @@ class FoursquareCalculator  {
       this.calculationFunctions.push(function(currentCheckin, stats, socialPlayer) {
         if (currentCheckin.venue && currentCheckin.venue.location) {
           //console.log(stats.checkinsSize, stats.i);
-          currentCheckin.venue.location.colorCode = (765 / stats.checkinsSize * stats.i);
+          currentCheckin.venue.location.colorCode = (765 / stats.checkinsSize * stats.fs.i);
         }
-        stats.processedCheckins++;
-        stats.lastDistance = calculateDistanceBetweenPoints(stats.previousCheckin,
+        stats.fs.processedCheckins++;
+        stats.fs.lastDistance = calculateDistanceBetweenPoints(stats.previousCheckin,
           currentCheckin);
           stats.totalDistance += stats.lastDistance;
           stats.avgDistancePerCheckin = stats.TotalDistance / stats.totalCheckins;
@@ -71,7 +72,7 @@ class FoursquareCalculator  {
       this.calculationFunctions.push((currentCheckin, stats, p) =>
       {
         p.apply(skill.Sociality, ExperienceConstants.Foursquare.BASE_CHECKIN, true);
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.ONE_KILOMETER_PASSED * stats.LastDistance);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.ONE_KILOMETER_PASSED * stats.lastDistance);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.TotalVenueCheckins > 100);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.TotalVenueCheckins > 1000);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_10000_CHECKINS, currentCheckin.TotalVenueCheckins > 10000);
