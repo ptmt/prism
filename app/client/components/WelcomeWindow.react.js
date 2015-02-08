@@ -3,6 +3,9 @@
 var React = require('react');
 var config = require('../config');
 var xhr = require('../lib/xhr');
+var mui = require('material-ui');
+var FlatButton = mui.FlatButton;
+var Paper = mui.Paper;
 
 var WelcomeWindow = React.createClass({
 
@@ -35,16 +38,16 @@ var WelcomeWindow = React.createClass({
     //   <img width="36px" src="images/foursquare-logomark.png" /> Connected
     //   </a>;
     // }
-
+    // <div class="signup-form-container"></div>
     return (
-      <div className="signup-form">
+      <Paper>
         <div className="signup-services">
           <h1>PRISM</h1>
-          <p>Find out that makes you better</p>
-          <p>{foursquareButton}</p>
+          <p>self-surveillance</p>
+          <p><FlatButton /></p>
           <p><a href=''>Privacy</a> | <a href=''>Source code</a></p>
         </div>
-      </div>
+      </Paper>
     );
   },
 

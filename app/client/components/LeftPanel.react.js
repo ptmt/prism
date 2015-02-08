@@ -3,6 +3,7 @@ var React = require('react');
 
 var LeftPanel = React.createClass({
 
+  // <div class="leftpanel-container"></div>
   render: function(): any {
     return (
       <div className="panel panel-default">

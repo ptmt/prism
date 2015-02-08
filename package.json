@@ -11,9 +11,11 @@
     "connect": "^3.3.3",
     "connect-rest": "^1.5.0",
     "leaflet": "^0.7.3",
+    "material-ui": "^0.6.1",
     "modestmaps": "^3.3.7-dev",
     "moment": "^2.8.4",
     "node-foursquare": "^0.2.1",
+    "react-tap-event-plugin": "^0.1.3",
     "reflux": "^0.2.1",
     "serve-static": "^1.7.1"
   },
@@ -39,11 +41,12 @@
     "gulp-useref": "~0.4.4",
     "gulp-util": "~2.2.9",
     "mocha": "^1.21.4",
-    "react": "^0.12.1",
+    "react": "^0.12.2",
     "reactify": "*",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
-    "watchify": "^2.2.1"
+    "watchify": "^2.2.1",
+    "webpack": "^1.5.3"
   },
   "engines": {
     "node": ">=0.10.0"

@@ -21,7 +21,7 @@ module.exports.initMaskedLayer = function(): L.LeafletLayer {
 
 
 
-module.exports.getMap = function (): L.LeafletMap {
+module.exports.initMap = function (): L.LeafletMap {
   'use strict';
 
   var map = L.map('map').setView([55.0398, 82.902], 13);

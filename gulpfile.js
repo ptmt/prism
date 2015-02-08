@@ -140,9 +140,9 @@ gulp.task('flow', function() {
   return gulp.src([
     'app/server/**/**.js',
     ])
-    // .pipe($.flowtype({
-    //   declarations: './app/interfaces'
-    // }))
+    .pipe($.flowtype({
+      declarations: './app/interfaces'
+    }))
     .pipe($.react({
       stripTypes: true,
       harmony: true
