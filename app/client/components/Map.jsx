@@ -20,7 +20,7 @@ var Map = React.createClass({
 
     layer.setData([]);
     map.addLayer(layer);
-    this.state({
+    this.setState({
       map: map,
       layer: layer
     });

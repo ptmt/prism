@@ -1,7 +1,7 @@
 /* @flow */
 var React = require('react');
 var injectTapEventPlugin = require("react-tap-event-plugin")
-var Main = require('./components/Main.react');
+var Main = require('./components/Main');
 //var TopToolbar = require('./components/TopToolbar.react');
 var appActions = require('./actions')
 

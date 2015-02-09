@@ -128,7 +128,7 @@ gulp.task('clean', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['scripts:watch', 'images', 'less', 'fonts', 'bower']);
+gulp.task('bundle', ['images', 'less', 'fonts', 'bower']);
 
 // Build
 gulp.task('build', ['html', 'bundle', 'images']);

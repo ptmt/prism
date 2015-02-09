@@ -3,9 +3,9 @@
 var React = require('react');
 var config = require('../config');
 var mapsLib = require('../map');
-var Map = require('./Map.react');
-var TopToolbar = require('./TopToolbar.react');
-var WelcomeWindow = require('./WelcomeWindow.react');
+var Map = require('./Map');
+var TopToolbar = require('./TopToolbar');
+var WelcomeWindow = require('./WelcomeWindow');
 
 var Main = React.createClass({
 
