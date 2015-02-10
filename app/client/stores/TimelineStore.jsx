@@ -4,6 +4,7 @@ var L = require('leaflet');
 var appConfig = require('./../config');
 var appActions = require('./../actions');
 var xhr = require('../lib/xhr');
+var _ = require('lodash');
 
 type IterationStep = {
   live: any;
@@ -15,15 +16,22 @@ type IterationStep = {
 var TimelineStore = Reflux.createStore({
 
   init: function() {
-    this.iterationStep = {}
+    this.iterations = {}
     this.listenTo(appActions.start, this.start);
   },
 
-  start: function(map, layer) {
-    this.map = map;
-    this.layer = layer;
+  start: function() {
     xhr.getJson(appConfig.apiEndpoint + '/getTimeline', (err, data) => {
-      console.log(err, data);
+      if (err) {
+        // something about it
+      }
+      // TODO: immutable
+      this.iterations = data.iterations;
+      this.keys = _.keys(this.iterations);
+      var i = 0;
+      setTimeout(() => {
+        this.trigger(this.iterations[this.keys[i++]])
+      }, 2000);
     });
   },
 

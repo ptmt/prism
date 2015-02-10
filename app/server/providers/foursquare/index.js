@@ -5,6 +5,7 @@ var Provider = require('../../models/provider');
 var Promise = require('bluebird');
 var FoursquareService = require('./service.js');
 var FoursquareCalculator = require('./calculator');
+//var moment = require('moment');
 
 /*
  * Entry point for provider
@@ -55,7 +56,8 @@ class FoursquareProvider extends Provider {
     return {
       stats: stats,
       currentPoint: this.transformToPoint(currentCheckin),
-      player: player
+      player: player,
+      key: this.extractKey(currentCheckin)
     };
   }
 
@@ -63,6 +65,10 @@ class FoursquareProvider extends Provider {
     return {
       source: 'Foursquare'
     }
+  }
+
+  extractKey(item: any) {
+    return item.createdAt;
   }
 }
 

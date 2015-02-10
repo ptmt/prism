@@ -5,6 +5,7 @@
 body {
   background: black;
   color: white;
+  font-family: 'Oswald', sans-serif;
 }
 .map-container {
   top: 64px;
@@ -15,7 +16,7 @@ body {
   position: absolute;
   z-index: 5;
 }
-.signup-form {
+.welcome-screen {
   background-size: 100%;
   top: 150px;
   position: absolute;
@@ -23,36 +24,47 @@ body {
   z-index: 10;
   position: relative;
   margin: auto;
-  background-color: white;
+  background-color: black;
   background: url(/images/prism.jpg);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   text-align: center;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
+  opacity: 0.9;
+  // border: 1px solid #cccccc;
+  // border-radius: 6px;
   min-height: 400px;
+  .mui-toggle {
+    margin-bottom:10px;
+  }
+  a {
+    text-shadow: none;
+    color: #C8E5FF;
+  }
+  h1, h2 {
+    text-shadow: 1px 0px black;
+  }
+  h1, h2, p, small {
+    color: white;
+  }
+  .signup-services {
+    text-align: left;
+    width: 60%;
+    padding: 25px;
+    float: right;
+    p, label { font-size: 1.7em }
+    small { color: white }
+  }
+  .footer {
+    bottom: 0;
+    position:absolute;
+    text-align: center;
+    margin:auto;
+    width:100%;
+    p {
+      font-size: 1.5em
+    }
+  }
 }
-.signup-services {
-  text-align: left;
-  width: 60%;
-  padding: 25px;
-  float: right;
-  color: white;
-  text-shadow: 1px 0px black;
-}
-.signup-services p { font-size: 1.7em }
-.signup-services small { color: white }
-.signup-form .links {
-  color: white;
-  width: 100%;
-  margin: auto;
-  text-align: center;
-  position: absolute;
-  bottom: 10px;
-}
-.signup-form a {
-  text-shadow: none;
-  color: #C8E5FF;
-}
+
 .signup-start {
   position: absolute;
   bottom: 10px;
@@ -66,6 +78,7 @@ body {
   color: #CBCBCB;
   transition: all 1s ease-in-out;
 }
+
 .leftpanel-container {
   position: absolute;
   top: 60%;

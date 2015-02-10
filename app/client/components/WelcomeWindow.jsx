@@ -4,7 +4,7 @@ var React = require('react');
 var config = require('../config');
 var xhr = require('../lib/xhr');
 var mui = require('material-ui');
-var FlatButton = mui.FlatButton;
+var appActions = require('../actions');
 var Paper = mui.Paper;
 
 var WelcomeWindow = React.createClass({
@@ -40,16 +40,29 @@ var WelcomeWindow = React.createClass({
     // }
     // <div class="signup-form-container"></div>
     return (
-      <Paper>
+      <Paper className="welcome-screen" zDepth={4}>
         <div className="signup-services">
           <h1>PRISM</h1>
-          <p>self-surveillance</p>
-          <p><FlatButton /></p>
+          <p>Connected providers:</p>
+          <mui.Toggle name="fs" onChange="_connectFoursquare" label="Foursquare" />
+          <mui.Toggle name="insta" onChange="_connectFoursquare" label="Instagram" />
+          <mui.Toggle name="github" onChange="_connectFoursquare" label="Github" />
+          <mui.RaisedButton label="Start" onClick={this._start} />
+        </div>
+        <div className="footer">
           <p><a href=''>Privacy</a> | <a href=''>Source code</a></p>
         </div>
       </Paper>
     );
   },
+
+  _connectFoursquare: function() {
+    console.log('lets connect foursquare');
+  },
+
+  _start: function() {
+    appActions.start();
+  }
 
 });
 

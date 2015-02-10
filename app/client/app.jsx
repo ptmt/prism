@@ -15,6 +15,8 @@ React.render(
   document.body
 );
 
+appActions.welcome();
+
 // document.addEventListener('DOMContentLoaded', function() {
 //   // var map = maps.getMap();
 //   // var layer = maps.initMaskedLayer();
