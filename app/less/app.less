@@ -1,11 +1,10 @@
-@import '../bower_components/ionicons/less/ionicons.less';
+@import 'vendor/ionicons.less';
 @import "node_modules/material-ui/src/less/scaffolding.less";
 @import "node_modules/material-ui/src/less/components.less";
 @import "vendor/leaflet.less";
 body {
   background: black;
-  color: white;
-  font-family: 'Oswald', sans-serif;
+  //font-family: 'Oswald', sans-serif;
 }
 .map-container {
   top: 64px;
@@ -14,64 +13,34 @@ body {
   height: 100%;
   width: 100%;
   position: absolute;
-  z-index: 5;
+  z-index: 2;
 }
-.welcome-screen {
-  background-size: 100%;
-  top: 150px;
-  position: absolute;
-  max-width: 630px;
-  z-index: 10;
-  position: relative;
-  margin: auto;
-  background-color: black;
-  background: url(/images/prism.jpg);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  opacity: 0.9;
-  // border: 1px solid #cccccc;
-  // border-radius: 6px;
-  min-height: 400px;
-  .mui-toggle {
-    margin-bottom:10px;
+.signup-services {
+  text-align:center;
+  margin-bottom: 2em;
+  .mui-font-icon {
+    font-size:40px;
+    margin-right:20px;
   }
-  a {
-    text-shadow: none;
-    color: #C8E5FF;
-  }
-  h1, h2 {
-    text-shadow: 1px 0px black;
-  }
-  h1, h2, p, small {
-    color: white;
-  }
-  .signup-services {
-    text-align: left;
-    width: 60%;
-    padding: 25px;
-    float: right;
-    p, label { font-size: 1.7em }
-    small { color: white }
+
+}
+.welcome-window {
+  .mui-dialog-title {
+    text-align:center;
   }
   .footer {
-    bottom: 0;
-    position:absolute;
+    //bottom: 0;
+    //position:absolute;
+    a {
+      color:black;
+    }
     text-align: center;
     margin:auto;
     width:100%;
-    p {
-      font-size: 1.5em
-    }
+    font-size:1.2em;
   }
 }
 
-.signup-start {
-  position: absolute;
-  bottom: 10px;
-  text-align:center;
-  margin:0 auto;
-  width: 100%;
-}
 
 .navbar-text span { padding-right: 5px }
 .player-exp {

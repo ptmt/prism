@@ -5,7 +5,7 @@ var config = require('../config');
 var xhr = require('../lib/xhr');
 var mui = require('material-ui');
 var appActions = require('../actions');
-var Paper = mui.Paper;
+var Providers = require('./Providers');
 
 var WelcomeWindow = React.createClass({
 
@@ -26,34 +26,16 @@ var WelcomeWindow = React.createClass({
   // },
 
   render: function(): any {
-    var foursquareButton;
-
-  //  if (!this.state.foursquareConnected) {
-      foursquareButton = <a className="btn btn-primary btn-lg" href="/api/v1/foursquare/signin">
-      <img width="36px" src="images/foursquare-logomark.png" /> Connect Foursquare
-      </a>;
-    // }
-    // else {
-    //   foursquareButton = <a className="btn btn-primary btn-lg" disable href="/api/v1/foursquare/signin">
-    //   <img width="36px" src="images/foursquare-logomark.png" /> Connected
-    //   </a>;
-    // }
-    // <div class="signup-form-container"></div>
     return (
-      <Paper className="welcome-screen" zDepth={4}>
+      <mui.Dialog title="To get started choose any social network" className="welcome-window">
         <div className="signup-services">
-          <h1>PRISM</h1>
-          <p>Connected providers:</p>
-          <mui.Toggle name="fs" onChange="_connectFoursquare" label="Foursquare" />
-          <mui.Toggle name="insta" onChange="_connectFoursquare" label="Instagram" />
-          <mui.Toggle name="github" onChange="_connectFoursquare" label="Github" />
-          <mui.RaisedButton label="Start" onClick={this._start} />
+          <Providers/>
         </div>
         <div className="footer">
-          <p><a href=''>Privacy</a> | <a href=''>Source code</a></p>
+          <a href="https://github.com/unknownexception/prism">README.MD</a>
         </div>
-      </Paper>
-    );
+      </mui.Dialog>
+    )
   },
 
   _connectFoursquare: function() {

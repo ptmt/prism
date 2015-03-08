@@ -8,6 +8,7 @@ var DropDownMenu = mui.DropDownMenu;
 var IconButton = mui.IconButton;
 var Icon = mui.Icon;
 var FlatButton = mui.FlatButton;
+var Providers = require('./Providers');
 
 var TopToolbar = React.createClass({
 
@@ -20,6 +21,10 @@ var TopToolbar = React.createClass({
   //   };
   // },
 
+  // <div>
+  //   <mui.Slider name="slider1" />
+  // </div>
+
   render: function() {
 
     var progress = {"width": "45%"};
@@ -27,7 +32,7 @@ var TopToolbar = React.createClass({
     return (
       <Toolbar>
         <ToolbarGroup key={0} float="left">
-          <mui.Slider name="slider1" />
+          <Providers/>
         </ToolbarGroup>
 
         <ToolbarGroup key={1} float="right">

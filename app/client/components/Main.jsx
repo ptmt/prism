@@ -16,13 +16,13 @@ var Main = React.createClass({
 
   mixins: [Reflux.ListenerMixin],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       providers: {}
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.listenTo(TimelineStore, this._onIteration);
     this.listenTo(ProvidersStore, this._onStartup);
   },
