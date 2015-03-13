@@ -2,7 +2,7 @@
 
 # TLDR
 
-It's like a TodoMVC sandbox but a slightly more complex which operates with data in-memory only,
+PRISM is like a TodoMVC sandbox but a slightly more complex app which operates with data in-memory only
 to decrease privacy issues. Current version is written in typed ES6 for React and Node.js.
 
 # Privacy
@@ -16,16 +16,20 @@ I love checkins, though it seems Foursquare doesn't anymore.
 
 # Stack
 
-- React.js + React-hot-loader + Webpack + Reflux for client-side;
-- Material Design (Material UI);
-- Subset of React ES6 for server and client (classes, lambdas);
-- `connect` and `connect-rest` for API;
-- Facebook Flow for type checking;
-- Gulp for build pipeline;
-- Leaflet + toner;
-- Bluebird for Promises;
+- React.js + React-hot-loader + Webpack for *view*;
+- Alt as a Flux implementation for *data flow*;
+- Material Design (Material UI) for *style*;
+- Subset of React ES6 for server and client (classes, lambdas) as a *language*;
+- `connect` and `connect-rest` for server-side *API*;
+- Facebook Flow for *static type checking*;
+- Gulp for *build pipeline*;
+- Leaflet + toner for *maps*;
+- Bluebird for *promises*;
 
 # Roadmap
+
+- Immutable.js
+- Download snapshot via `alt.takeSnapshot()` (on Dropbox, for example)
 
 # Changelog
 

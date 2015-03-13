@@ -1,22 +1,38 @@
-var Reflux = require('reflux')
-var appConfig = require('./../config');
-var appActions = require('./../actions');
-var xhr = require('../lib/xhr');
+var alt = require('../alt')
+//var merge = require('object-assign')
+var service = require('../lib/service');
+var playbackActions = require('../actions')
 
-var ProvidersStore = Reflux.createStore({
-
-  init() {
-    this.listenTo(appActions.welcome, this.welcome);
-  },
-
-  welcome() {
-    // if this is debug scenario or user alredy logged in
-    // then call getTimeline() action
-    this.trigger({
-      foursquare: true
-    });
+module.exports = alt.createStore(class ProvidersStore {
+  constructor() {
+    this.bindActions(playbackActions)
+    this.isDemo = false;
   }
-  
-})
 
-module.exports = ProvidersStore;
+  onInit() {
+    // if this is demo scenario or user alredy logged in
+    // then call fetchPrismTimeline() action
+    if (document.location.href.indexOf('demo') > -1) {
+      this.isDemo = true;
+      service.fetchTimeline(true, (err, data) => {
+        if (err) {
+          playbackActions.error(err);
+        } else {
+          playbackActions.fetchTimelineCompleted(data);
+        }
+      });
+
+    } else {
+      // do nothing, just welcome screen?
+      // or check if some provider already connected?
+    }
+  }
+
+  onFetchTimelineCompleted(data) {
+    console.log('fetched');
+  }
+
+  onError() {
+    console.log('error');
+  }
+})

@@ -2,32 +2,23 @@
 
 var React = require('react');
 var config = require('../config');
-var xhr = require('../lib/xhr');
 var mui = require('material-ui');
-var appActions = require('../actions');
 var Providers = require('./Providers');
+var providersStore = require('../stores/ProvidersStore');
 
 var WelcomeWindow = React.createClass({
 
-  // getInitialState: function() {
-  //   return {
-  //     foursquareConnected: false
-  //   };
-  // },
-  //
-  // componentDidMount: function() {
-  //   xhr.getJson(config.apiEndpoint + '/connected', (error, result) => {
-  //     if (!error && this.isMounted()) {
-  //       this.setState({
-  //         foursquareConnected: true
-  //       });
-  //     }
-  //   });
-  // },
+  componentDidMount() {
+    providersStore.listen(this.onChange);
+  },
+
+  componentWillUnmount() {
+    providersStore.unlisten(this.onChange)
+  },
 
   render: function(): any {
     return (
-      <mui.Dialog title="To get started choose any social network" className="welcome-window">
+      <mui.Dialog ref="dialog" title="Select a social network to start" className="welcome-window">
         <div className="signup-services">
           <Providers/>
         </div>
@@ -38,12 +29,10 @@ var WelcomeWindow = React.createClass({
     )
   },
 
-  _connectFoursquare: function() {
-    console.log('lets connect foursquare');
-  },
-
-  _start: function() {
-    appActions.start();
+  onChange: function() {
+    if (!providersStore.getState().isDemo) {
+      this.refs.dialog.show();
+    }
   }
 
 });

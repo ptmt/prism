@@ -2,7 +2,6 @@
 var React = require('react');
 var injectTapEventPlugin = require("react-tap-event-plugin")
 var Main = require('./components/Main');
-//var TopToolbar = require('./components/TopToolbar.react');
 var appActions = require('./actions')
 
 // needed for React Developer Tools
@@ -15,7 +14,7 @@ React.render(
   document.body
 );
 
-appActions.welcome();
+appActions.init();
 
 // document.addEventListener('DOMContentLoaded', function() {
 //   // var map = maps.getMap();

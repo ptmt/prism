@@ -1,20 +1,16 @@
 /* @flow */
 
 var React = require('react');
-var Reflux = require('reflux');
+var mui = require('material-ui');
 var config = require('../config');
 var mapsLib = require('../map');
 var Map = require('./Map');
 var TopToolbar = require('./TopToolbar');
 var WelcomeWindow = require('./WelcomeWindow');
-var mui = require('material-ui');
-var Snackbar = mui.Snackbar;
-var TimelineStore = require('../stores/TimelineStore.jsx');
-var ProvidersStore = require('../stores/ProvidersStore.jsx');
+//var TimelineStore = require('../stores/TimelineStore.jsx');
+//var ProvidersStore = require('../stores/ProvidersStore.jsx');
 
 var Main = React.createClass({
-
-  mixins: [Reflux.ListenerMixin],
 
   getInitialState() {
     return {
@@ -23,8 +19,8 @@ var Main = React.createClass({
   },
 
   componentDidMount() {
-    this.listenTo(TimelineStore, this._onIteration);
-    this.listenTo(ProvidersStore, this._onStartup);
+    // this.listenTo(TimelineStore, this._onIteration);
+    // this.listenTo(ProvidersStore, this._onStartup);
   },
 
   render(): any {
@@ -33,7 +29,7 @@ var Main = React.createClass({
         <Map providers = {this.state.providers} />
         <TopToolbar iteration = {this.state.iteration}/>
         <WelcomeWindow />
-        <Snackbar message="Loading .."/>
+        <mui.Snackbar message="Loading .."/>
       </div>);
   },
 
