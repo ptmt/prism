@@ -34,8 +34,6 @@ class Timeline {
     return Promise.reduce(this.providers, (s, p) => {
       return p.init(s);
     }, stats).then(s => {
-      //this.stats = s;
-      //return this;
       return Promise.resolve(stats);
     });
   };

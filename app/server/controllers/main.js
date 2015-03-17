@@ -8,6 +8,7 @@ var Timeline = require('../models/timeline');
 
 class Request {
   query: any;
+  timeline: any;
 }
 
 // because core.js Error

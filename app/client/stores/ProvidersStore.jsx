@@ -28,11 +28,4 @@ module.exports = alt.createStore(class ProvidersStore {
     }
   }
 
-  onFetchTimelineCompleted(data) {
-    console.log('fetched');
-  }
-
-  onError() {
-    console.log('error');
-  }
 })

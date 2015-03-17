@@ -19,8 +19,6 @@ module.exports.initMaskedLayer = function(): L.LeafletLayer {
   });
 };
 
-
-
 module.exports.initMap = function (): L.LeafletMap {
   'use strict';
 

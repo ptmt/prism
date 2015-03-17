@@ -12,5 +12,5 @@ class PlaybackActions {
     )
   }
 }
-
+console.log(JSON.stringify(alt));
 module.exports = alt.createActions(PlaybackActions)

@@ -3,12 +3,9 @@
 var React = require('react');
 var mui = require('material-ui');
 var config = require('../config');
-var mapsLib = require('../map');
 var Map = require('./Map');
 var TopToolbar = require('./TopToolbar');
 var WelcomeWindow = require('./WelcomeWindow');
-//var TimelineStore = require('../stores/TimelineStore.jsx');
-//var ProvidersStore = require('../stores/ProvidersStore.jsx');
 
 var Main = React.createClass({
 
@@ -36,14 +33,14 @@ var Main = React.createClass({
   /**
   * Event handler for 'change' events coming from the stores
   */
-  _onIteration: function(data) {
-    console.log(data);
-  },
-
-  _onStartup: function(data) {
-    console.log('starting up..', data);
-    this.setState({providers: data});
-  },
+  // _onIteration: function(data) {
+  //   console.log(data);
+  // },
+  //
+  // _onStartup: function(data) {
+  //   console.log('starting up..', data);
+  //   this.setState({providers: data});
+  // },
 
 });
 

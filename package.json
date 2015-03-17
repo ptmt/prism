@@ -3,6 +3,18 @@
   "version": "1.0.0",
   "description": "Social Networks activity analyzer",
   "repository": "https://github.com/unknownexceptin/prism",
+  "scripts": {
+    "test": "jest"
+   },
+  "jest": {
+    "rootDir": "app",
+    "scriptPreprocessor": "<rootDir>/tools/jest-preprocessor.js",
+    "unmockedModulePathPatterns": ["react"],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ]
+  },
   "dependencies": {
     "alt": "^0.14.2",
     "async": "^0.9.0",
@@ -18,8 +30,9 @@
     "modestmaps": "^3.3.7-dev",
     "moment": "^2.8.4",
     "node-foursquare": "^0.2.1",
+    "react": "^0.12.2",
+    "react-tools": "*",
     "react-tap-event-plugin": "^0.1.3",
-    "reflux": "^0.2.1",
     "serve-static": "^1.7.1"
   },
   "devDependencies": {
@@ -35,8 +48,8 @@
     "gulp-react": "^2.0.0",
     "gulp-size": "~0.1.2",
     "gulp-util": "~2.2.9",
+    "jest-cli": "^0.4.0",
     "mocha": "^1.21.4",
-    "react": "^0.12.2",
     "react-hot-loader": "^1.1.4",
     "reactify": "*",
     "watchify": "^2.2.1",

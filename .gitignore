@@ -4,3 +4,4 @@ config/default.json
 .DS_Store
 app/server.compiled/
 app/bower_components
+npm-debug.log
