@@ -1,5 +1,5 @@
 /* @flow */
-var React = require('react');
+var React = require('react/addons');
 var mui = require('material-ui');
 
 var Providers = React.createClass({

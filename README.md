@@ -1,5 +1,7 @@
 ![prism project](https://raw.githubusercontent.com/unknownexception/prism/master/app/images/prism.jpg)
 
+[![Build Status](https://travis-ci.org/unknownexception/prism.svg)](https://travis-ci.org/unknownexception/prism)
+
 # TLDR
 
 PRISM is like a TodoMVC sandbox but a slightly more complex app which operates with data in-memory only
@@ -14,7 +16,9 @@ stored in memory-only.
 
 I love checkins, though it seems Foursquare doesn't anymore.
 
-# Stack
+# Buzzwords
+
+Current stack:
 
 - React.js + React-hot-loader + Webpack for *view*;
 - Alt as a Flux implementation for *data flow*;
@@ -25,6 +29,7 @@ I love checkins, though it seems Foursquare doesn't anymore.
 - Gulp for *build pipeline*;
 - Leaflet + toner for *maps*;
 - Bluebird for *promises*;
+- Jest for *tests*;
 
 # Roadmap
 

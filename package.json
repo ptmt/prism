@@ -7,8 +7,8 @@
     "test": "jest"
    },
   "jest": {
-    "rootDir": "app",
-    "scriptPreprocessor": "<rootDir>/tools/jest-preprocessor.js",
+    "rootDir": "app/client/components",
+    "scriptPreprocessor": "<rootDir>../../tools/jest-preprocessor.js",
     "unmockedModulePathPatterns": ["react"],
     "moduleFileExtensions": [
       "js",

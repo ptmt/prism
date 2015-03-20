@@ -29,7 +29,7 @@ class Timeline {
     this.providers = providers;
     this.iterations = {};
   };
-  initAll(): void {
+  initAll(): Promise {
     var stats = {};
     return Promise.reduce(this.providers, (s, p) => {
       return p.init(s);
@@ -39,8 +39,7 @@ class Timeline {
   };
 
   fetch():any {
-    return this
-      .initAll()
+    return this.initAll()
       .then(stats => {
         var player = new Player();
         this.providers.forEach(provider => {

@@ -1,7 +1,6 @@
 /* @flow */
 
-var React = require('react');
-var config = require('../config');
+var React = require('react/addons');
 var mui = require('material-ui');
 var Providers = require('./Providers');
 var providersStore = require('../stores/ProvidersStore');
@@ -30,6 +29,7 @@ var WelcomeWindow = React.createClass({
   },
 
   onChange: function() {
+    console.log('onChange');
     if (!providersStore.getState().isDemo) {
       this.refs.dialog.show();
     }

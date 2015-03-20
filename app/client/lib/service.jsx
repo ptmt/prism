@@ -25,15 +25,15 @@ type Timeline = {
   providers: Array<any>;
 }
 
-class TimelineRequest extends Request<Timeline> {};
-
-class VersionRequest extends Request<string> {};
-
-class AutocompletionRequest extends Request<Array<any>> {};
+// class TimelineRequest extends Request<Timeline> {};
+//
+// class VersionRequest extends Request<string> {};
+//
+// class AutocompletionRequest extends Request<Array<any>> {};
 
 // TODO: rewrite with promises?
 module.exports = {
   fetchTimeline: function(isDemo: boolean, callback: Function) {
-    TimelineRequest.getJson('/api/v1/gettimeline?is_demo=' + isDemo, callback);
+    Request.getJson('/api/v1/gettimeline?is_demo=' + isDemo, callback);
   }
 }
