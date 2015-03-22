@@ -1,6 +1,8 @@
 /* @flow */
 
 var Request = require('./request');
+var Cache = require('./cache');
+var cache = new Cache(window.localStorage);
 
 type PrismPoint = {
   source: string; // should be Enum (like Foursquare / Twitter / Instagram / etc.)
@@ -34,6 +36,6 @@ type Timeline = {
 // TODO: rewrite with promises?
 module.exports = {
   fetchTimeline: function(isDemo: boolean, callback: Function) {
-    Request.getJson('/api/v1/gettimeline?is_demo=' + isDemo, callback);
+    cache.setAsync('/api/v1/gettimeline?is_demo=' + isDemo, callback);
   }
 }

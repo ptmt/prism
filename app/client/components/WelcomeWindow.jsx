@@ -31,7 +31,6 @@ var WelcomeWindow = React.createClass({
   },
 
   onChange: function() {
-    console.log('onChange');
     if (!providersStore.getState().isDemo) {
       this.refs.dialog.show();
     }

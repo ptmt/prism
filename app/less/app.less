@@ -7,7 +7,7 @@ body {
   //font-family: 'Oswald', sans-serif;
 }
 .map-container {
-  top: 64px;
+  top: 57px;
   margin: 0px;
   padding: 0px;
   height: 100%;
@@ -56,10 +56,29 @@ body {
 }
 
 .navbar-text span { padding-right: 5px }
-.player-exp {
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
   color: #CBCBCB;
+  font-family: 'Anonymous Pro';
   transition: all 1s ease-in-out;
+  position: absolute;
+  right: 0px;
+  top:90px;
+  z-index: 10;
+  .box {
+    margin-left: 30px;
+  }
+  .value {
+    font-size: 6em;
+  }
+  .label {
+    text-align: center;
+    margin-top:15px;
+  }
 }
+
 
 .leftpanel-container {
   position: absolute;

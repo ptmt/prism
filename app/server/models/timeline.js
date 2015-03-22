@@ -21,8 +21,9 @@ type PrismIteration = {
 type IterationMap = { [key:string]: PrismIteration };
 
 class Timeline {
-  startdate: string;
-  enddate: string;
+  // startdate: string;
+  // enddate: string;
+  timestamps: Array<string>;
   iterations: IterationMap;
   providers: Array<any>;
   constructor(providers: any) {
@@ -42,6 +43,8 @@ class Timeline {
     return this.initAll()
       .then(stats => {
         var player = new Player();
+        // Build the iterations map, where key is a time label
+        // because different providers have different timestamps
         this.providers.forEach(provider => {
           var iteration = provider.calculateNextIteration(stats, player);
           while (iteration) {
@@ -49,8 +52,14 @@ class Timeline {
             iteration = provider.calculateNextIteration(stats, player);
           }
         });
+        // Build the timestamps array
+        // for the playback controls and for easy iterations
+        this.timestamps = Object.keys(this.iterations).sort();
+
         return Promise.resolve({
-          iterations: this.iterations
+          iterations: this.iterations,
+          timestamps: this.timestamps,
+          providers: this.providers.map(p=> p.name)
         })
       });
   }

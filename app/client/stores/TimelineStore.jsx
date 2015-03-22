@@ -10,7 +10,7 @@ module.exports = alt.createStore(class ProvidersStore {
   }
 
   onFetchTimelineCompleted(data) {
-    console.log('fetched data:', data);
+    this.timeline = data;
   }
 
   onError() {

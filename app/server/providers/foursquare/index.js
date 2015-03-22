@@ -12,15 +12,17 @@ var FoursquareCalculator = require('./calculator');
  * must implements required methods
  */
 class FoursquareProvider extends Provider {
+  name: string;
   checkinsData: any;
   service: FoursquareService;
   calculator: FoursquareCalculator;
 
   /*
    * Init function which retrieve information from remote endpoint
-   * fill the local cache and execute init calculation functions
+   * and execute init calculation functions
    */
   init(stats, cb) {
+    this.name = 'Foursquare';
     this.service = new FoursquareService({
       demo: process.NODE_ENV !== 'production'
     });

@@ -6,29 +6,59 @@ var config = require('../config');
 var Map = require('./Map');
 var TopToolbar = require('./TopToolbar');
 var WelcomeWindow = require('./WelcomeWindow');
+var StatPanel = require('./StatPanel');
+//var providersStore = require('../stores/ProvidersStore');
+var timelineStore = require('../stores/timelineStore');
 
 var Main = React.createClass({
 
   getInitialState() {
     return {
-      providers: {}
+      providers: {},
+      i: 0,
+      iteration: {
+        stats: {
+
+        },
+        player: {
+          level: 0,
+          exp: 0
+        }
+      }
     };
   },
 
   componentDidMount() {
-    // this.listenTo(TimelineStore, this._onIteration);
-    // this.listenTo(ProvidersStore, this._onStartup);
+    timelineStore.listen(this.onChange);
+  },
+
+  componentWillUnmount() {
+    timelineStore.unlisten(this.onChange)
   },
 
   render(): any {
     return (
       <div>
-        <Map providers = {this.state.providers} />
-        <TopToolbar iteration = {this.state.iteration}/>
+        <Map />
+        <TopToolbar />
+        <StatPanel player = {this.state.iteration.player}/>
         <WelcomeWindow />
         <mui.Snackbar message="Loading .."/>
       </div>);
   },
+
+  onChange(data) {
+    // TODO: move all this login into store
+
+    // 1. get the current iteration
+    var timestamp = data.timeline.timestamps[this.state.i]
+    var iteration = data.timeline.iterations[timestamp];
+
+    console.log(timestamp, iteration);
+
+    // 2. render
+    this.setState({iteration: iteration});
+  }
 
   /**
   * Event handler for 'change' events coming from the stores

@@ -30,7 +30,7 @@ var TopToolbar = React.createClass({
         </mui.ToolbarGroup>
         <PlaybackControls/>
         <mui.ToolbarGroup key={1} float="right">
-          <span></span>
+          <span>Current Date:</span>
           <span className="mui-toolbar-separator">&nbsp;</span>
           <mui.FlatButton label="Full info" primary={true} onClick={this._handleTouchTap} />
         </mui.ToolbarGroup>
