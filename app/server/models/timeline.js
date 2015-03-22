@@ -56,4 +56,4 @@ class Timeline {
   }
 }
 
-module.exports = Timeline;
+module.exports.Timeline = Timeline;

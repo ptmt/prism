@@ -1,14 +1,7 @@
 var React = require('react');
 var mui = require('material-ui');
-
-var Toolbar = mui.Toolbar;
-var ToolbarGroup = mui.ToolbarGroup;
-var Paper = mui.Paper;
-var DropDownMenu = mui.DropDownMenu;
-var IconButton = mui.IconButton;
-var Icon = mui.Icon;
-var FlatButton = mui.FlatButton;
 var Providers = require('./Providers');
+var PlaybackControls = require('./PlaybackControls');
 
 var TopToolbar = React.createClass({
 
@@ -30,17 +23,18 @@ var TopToolbar = React.createClass({
     var progress = {"width": "45%"};
 
     return (
-      <Toolbar>
-        <ToolbarGroup key={0} float="left">
+      <mui.Toolbar>
+        <mui.ToolbarGroup key={0} float="left">
           <Providers/>
-        </ToolbarGroup>
-
-        <ToolbarGroup key={1} float="right">
+          <span className="mui-toolbar-separator">&nbsp;</span>
+        </mui.ToolbarGroup>
+        <PlaybackControls/>
+        <mui.ToolbarGroup key={1} float="right">
           <span></span>
           <span className="mui-toolbar-separator">&nbsp;</span>
-          <FlatButton label="Full info" primary={true} onClick={this._handleTouchTap} />
-        </ToolbarGroup>
-      </Toolbar>
+          <mui.FlatButton label="Full info" primary={true} onClick={this._handleTouchTap} />
+        </mui.ToolbarGroup>
+      </mui.Toolbar>
     );
   },
 

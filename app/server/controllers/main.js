@@ -1,7 +1,7 @@
 /* @flow */
 
 var providers = require('../providers');
-var Timeline = require('../models/timeline');
+var Timeline = require('../models/timeline').Timeline;
 
 // TODO: add dependency injection
 // like CacheManager or something to make it testable

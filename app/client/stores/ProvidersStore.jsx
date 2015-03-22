@@ -14,13 +14,13 @@ module.exports = alt.createStore(class ProvidersStore {
     // then call fetchPrismTimeline() action
     if (document.location.href.indexOf('demo') > -1) {
       this.isDemo = true;
-      service.fetchTimeline(true, (err, data) => {
-        if (err) {
-          playbackActions.error(err);
-        } else {
-          playbackActions.fetchTimelineCompleted(data);
-        }
-      });
+      // service.fetchTimeline(true, (err, data) => {
+      //   if (err) {
+      //     playbackActions.error(err);
+      //   } else {
+      //     playbackActions.fetchTimelineCompleted(data);
+      //   }
+      // });
 
     } else {
       // do nothing, just welcome screen?
