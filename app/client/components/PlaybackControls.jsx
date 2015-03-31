@@ -5,7 +5,7 @@ var PlaybackControls = React.createClass({
 
   render: function() {
 
-    var progress = {"width": "45%"};
+    var progress = this.props.progress;
 
     return (
       <div className="mui-drop-down-menu playback-controls">
@@ -19,7 +19,7 @@ var PlaybackControls = React.createClass({
           <mui.FontIcon className="ion-ios-fastforward"/>
         </mui.IconButton>
 
-        <mui.Slider name="slider1" />
+        <mui.Slider name="timelineSlider" value={progress} />
       </div>
     );
   },

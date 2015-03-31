@@ -11,7 +11,7 @@ injectTapEventPlugin();
 
 React.render(
   <Main />,
-  document.body
+  document.body // TODO: append to <div>
 );
 
 appActions.init();

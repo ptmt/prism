@@ -5,22 +5,10 @@ var PlaybackControls = require('./PlaybackControls');
 
 var TopToolbar = React.createClass({
 
-  // getInitialState: function() {
-  //   return {
-  //     player: {
-  //       level: 0,
-  //       exp: 0
-  //     }
-  //   };
-  // },
-
-  // <div>
-  //   <mui.Slider name="slider1" />
-  // </div>
-
   render: function() {
 
     var progress = {"width": "45%"};
+    var currentDate = this.formatDate(new Date(this.props.date*1000));
 
     return (
       <mui.Toolbar>
@@ -28,11 +16,10 @@ var TopToolbar = React.createClass({
           <Providers/>
           <span className="mui-toolbar-separator">&nbsp;</span>
         </mui.ToolbarGroup>
-        <PlaybackControls/>
+        <PlaybackControls progress={this.props.progress}/>
         <mui.ToolbarGroup key={1} float="right">
-          <span>Current Date:</span>
           <span className="mui-toolbar-separator">&nbsp;</span>
-          <mui.FlatButton label="Full info" primary={true} onClick={this._handleTouchTap} />
+          <mui.FlatButton label={currentDate} primary={true} onClick={this._handleTouchTap} />
         </mui.ToolbarGroup>
       </mui.Toolbar>
     );
@@ -41,6 +28,13 @@ var TopToolbar = React.createClass({
   _onDropDownMenuChange: function(e, key, menuItem) {
     console.log('Menu Clicked: ', menuItem);
   },
+
+  formatDate(date) {
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return (monthNames[date.getMonth()]) + ' ' + date.getDate() + ' ' + date.getFullYear();
+  }
 
 });
 

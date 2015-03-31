@@ -5,6 +5,7 @@ var Provider = require('../../models/provider');
 var Promise = require('bluebird');
 var FoursquareService = require('./service.js');
 var FoursquareCalculator = require('./calculator');
+var _ = require('lodash');
 //var moment = require('moment');
 
 /*
@@ -58,7 +59,7 @@ class FoursquareProvider extends Provider {
     return {
       stats: stats,
       currentPoint: this.transformToPoint(currentCheckin),
-      player: player,
+      player: _.cloneDeep(player),
       key: this.extractKey(currentCheckin)
     };
   }

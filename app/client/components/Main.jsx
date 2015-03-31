@@ -16,6 +16,8 @@ var Main = React.createClass({
     return {
       providers: {},
       i: 0,
+      timestamp: Date.now,
+      iterationsTotal: 1,
       iteration: {
         stats: {
 
@@ -37,10 +39,12 @@ var Main = React.createClass({
   },
 
   render(): any {
+    var progress = this.state.i / this.state.iterationsTotal;
+    console.log(progress, this.state.i,  this.state.iterationsTotal);
     return (
       <div>
         <Map />
-        <TopToolbar />
+        <TopToolbar date={this.state.timestamp} progress={progress} />
         <StatPanel player = {this.state.iteration.player}/>
         <WelcomeWindow />
         <mui.Snackbar message="Loading .."/>
@@ -48,6 +52,10 @@ var Main = React.createClass({
   },
 
   onChange(data) {
+    this.renderStep(data);
+  },
+
+  renderStep(data) {
     // TODO: move all this login into store
 
     // 1. get the current iteration
@@ -56,8 +64,22 @@ var Main = React.createClass({
 
     console.log(timestamp, iteration);
 
+    if (!timestamp || !iteration) {
+      return;
+    }
+
     // 2. render
-    this.setState({iteration: iteration});
+    this.setState({
+      iteration: iteration,
+      timestamp: timestamp,
+      i: this.state.i + 1,
+      iterationsTotal: Object.keys(data.timeline.iterations).length
+    });
+
+    // 3. render point on the map
+
+    // 5. setTimeout for next step
+    this.timeout = setTimeout(() => this.renderStep(data), 500);
   }
 
   /**
