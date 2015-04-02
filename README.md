@@ -14,7 +14,7 @@ stored in memory-only.
 
 # Motivation
 
-I love checkins, though it seems Foursquare doesn't anymore.
+I love checkins even more than Foursquare.
 
 # Buzzwords
 

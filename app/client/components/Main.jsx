@@ -16,6 +16,7 @@ var Main = React.createClass({
     return {
       providers: {},
       i: 0,
+      playing: false,
       timestamp: Date.now,
       iterationsTotal: 1,
       iteration: {
@@ -40,11 +41,15 @@ var Main = React.createClass({
 
   render(): any {
     var progress = this.state.i / this.state.iterationsTotal;
-    console.log(progress, this.state.i,  this.state.iterationsTotal);
+    //console.log(progress, this.state.i,  this.state.iterationsTotal);
     return (
       <div>
         <Map />
-        <TopToolbar date={this.state.timestamp} progress={progress} />
+        <TopToolbar
+          date={this.state.timestamp}
+          progress={progress}
+          isPlaying={this.state.playing}
+          onPlaybackChange={this.onPlaybackChange}/>
         <StatPanel player = {this.state.iteration.player}/>
         <WelcomeWindow />
         <mui.Snackbar message="Loading .."/>
@@ -52,15 +57,23 @@ var Main = React.createClass({
   },
 
   onChange(data) {
-    this.renderStep(data);
+    this.setState({
+      source: data,
+      playing: true
+    })
+    this.renderStep();
   },
 
-  renderStep(data) {
+  renderStep(force) {
     // TODO: move all this login into store
 
+    // 0. check if we're not in the pause
+    if (this.state.playing === false && !force) {
+      return;
+    }
     // 1. get the current iteration
-    var timestamp = data.timeline.timestamps[this.state.i]
-    var iteration = data.timeline.iterations[timestamp];
+    var timestamp = this.state.source.timeline.timestamps[this.state.i]
+    var iteration = this.state.source.timeline.iterations[timestamp];
 
     console.log(timestamp, iteration);
 
@@ -72,27 +85,40 @@ var Main = React.createClass({
     this.setState({
       iteration: iteration,
       timestamp: timestamp,
+      playing: true,
       i: this.state.i + 1,
-      iterationsTotal: Object.keys(data.timeline.iterations).length
+      iterationsTotal: Object.keys(this.state.source.timeline.iterations).length
     });
 
     // 3. render point on the map
 
     // 5. setTimeout for next step
-    this.timeout = setTimeout(() => this.renderStep(data), 500);
-  }
+    this.timeout = setTimeout(() => this.renderStep(), 500);
+  },
 
-  /**
-  * Event handler for 'change' events coming from the stores
-  */
-  // _onIteration: function(data) {
-  //   console.log(data);
-  // },
-  //
-  // _onStartup: function(data) {
-  //   console.log('starting up..', data);
-  //   this.setState({providers: data});
-  // },
+  onPlaybackChange(e) {
+    if (e.action === 'pause') {
+      this.setState({
+        playing: false
+      })
+    }
+    if (e.action === 'play') {
+      this.setState({
+        playing: true
+      });
+      this.renderStep(true);
+    }
+    if (e.action === 'fastforward') {
+      this.setState({
+        i: this.state.i + 5
+      })
+    }
+    if (e.action === 'rewind') {
+      this.setState({
+        i: this.state.i - 5
+      })
+    }
+  }
 
 });
 

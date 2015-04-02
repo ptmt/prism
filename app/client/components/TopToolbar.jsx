@@ -16,10 +16,10 @@ var TopToolbar = React.createClass({
           <Providers/>
           <span className="mui-toolbar-separator">&nbsp;</span>
         </mui.ToolbarGroup>
-        <PlaybackControls progress={this.props.progress}/>
+        <PlaybackControls progress={this.props.progress} isPlaying={this.props.isPlaying} onChange={this.props.onPlaybackChange}/>
         <mui.ToolbarGroup key={1} float="right">
           <span className="mui-toolbar-separator">&nbsp;</span>
-          <mui.FlatButton label={currentDate} primary={true} onClick={this._handleTouchTap} />
+          <mui.RaisedButton label={currentDate} primary={true} onClick={this._handleTouchTap} />
         </mui.ToolbarGroup>
       </mui.Toolbar>
     );
