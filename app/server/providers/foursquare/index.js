@@ -22,7 +22,7 @@ class FoursquareProvider extends Provider {
    * Init function which retrieve information from remote endpoint
    * and execute init calculation functions
    */
-  init(stats, cb) {
+  init(stats: any, cb: Function) {
     this.name = 'Foursquare';
     this.service = new FoursquareService({
       demo: process.NODE_ENV !== 'production'
@@ -45,7 +45,7 @@ class FoursquareProvider extends Provider {
   }
 
   calculateNextIteration(stats: any, player: any): ?PrismIteration {
-    console.log(player);
+    //console.log(player);
     if (this.checkinsData.checkins.items.length > stats.fs.i) {
       stats.fs.i++;
     } else {
@@ -65,7 +65,18 @@ class FoursquareProvider extends Provider {
   }
 
   transformToPoint(item:any):PrismPoint {
+    //console.log(item, item.venue.photos);
+    // if (!item.venue) {
+    //   console.log('empty item', item);
+    //   return false;
+    // }
     return {
+      caption: item.shout ? item.shout : (item.venue ? item.venue.name : ''),
+      lat: item.venue ? item.venue.location.lat : 0,
+      lng: item.venue ? item.venue.location.lng : 0,
+      r: 1,
+      //photo: item.venue.photos
+      likes: item.likes,
       source: 'Foursquare'
     }
   }

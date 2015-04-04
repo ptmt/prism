@@ -79,6 +79,28 @@ body {
   }
 }
 
+@keyframes example {
+    from {background-color: white;}
+    to {background-color: black;}
+}
+
+.caption {
+  position: absolute;
+  z-index: 10;
+  background: black;
+  color: white;
+  animation-name: example;
+  animation-duration: 4s;
+  .icon {
+    font-size: 2em;
+    //color: blue;
+  }
+  .shout {
+    font-size: 1.2em;
+    font-family: 'Anonymous Pro';
+    padding-left: 10px;
+  }
+}
 
 .leftpanel-container {
   position: absolute;

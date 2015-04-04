@@ -19,6 +19,7 @@ var Main = React.createClass({
       playing: false,
       timestamp: Date.now,
       iterationsTotal: 1,
+      points: [],
       iteration: {
         stats: {
 
@@ -44,7 +45,7 @@ var Main = React.createClass({
     //console.log(progress, this.state.i,  this.state.iterationsTotal);
     return (
       <div>
-        <Map />
+        <Map points={this.state.points} />
         <TopToolbar
           date={this.state.timestamp}
           progress={progress}
@@ -71,29 +72,36 @@ var Main = React.createClass({
     if (this.state.playing === false && !force) {
       return;
     }
+
     // 1. get the current iteration
     var timestamp = this.state.source.timeline.timestamps[this.state.i]
     var iteration = this.state.source.timeline.iterations[timestamp];
 
-    console.log(timestamp, iteration);
+    //console.log(timestamp, iteration);
 
     if (!timestamp || !iteration) {
       return;
+    }
+
+    // collect points and paths
+    // TODO: trade for memory?
+    var points = [];
+    for (var j = 0; j < this.state.i; j++) {
+      var p = this.state.source.timeline.iterations[this.state.source.timeline.timestamps[j]].currentPoint;
+      points.push(p);
     }
 
     // 2. render
     this.setState({
       iteration: iteration,
       timestamp: timestamp,
-      playing: true,
       i: this.state.i + 1,
-      iterationsTotal: Object.keys(this.state.source.timeline.iterations).length
+      iterationsTotal: Object.keys(this.state.source.timeline.iterations).length,
+      points: points
     });
 
-    // 3. render point on the map
-
-    // 5. setTimeout for next step
-    this.timeout = setTimeout(() => this.renderStep(), 500);
+    // 3. setTimeout for next step
+    this.timeout = setTimeout(() => this.renderStep(), this.state.i > 1 ? 5000 : 50);
   },
 
   onPlaybackChange(e) {
@@ -111,12 +119,18 @@ var Main = React.createClass({
     if (e.action === 'fastforward') {
       this.setState({
         i: this.state.i + 5
-      })
+      });
+      if (!this.state.playing) {
+        this.renderStep(true);  // just render, but stay in pause
+      }
     }
     if (e.action === 'rewind') {
       this.setState({
-        i: this.state.i - 5
+        i: this.state.i > 5 ? this.state.i - 5 : 0
       })
+      if (!this.state.playing) {
+        this.renderStep(true); // just render, but stay in pause
+      }
     }
   }
 

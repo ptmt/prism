@@ -5,7 +5,7 @@ var extend = function (L) {
 
   return {
     options: {
-      radius: 5,
+      radius: 20,
       useAbsoluteRadius: true, // true: radius in meters, false: radius in pixels
       color: '#000',
       opacity: 0.5,
@@ -130,7 +130,7 @@ var extend = function (L) {
       coordinates.forEach(function (coords) {
         p = self._tilePoint(ctx, coords);
         g.beginPath();
-        var radius = coords[2] ? coords[2] * self._getRadius() : self._getRadius();
+        var radius = coords.r ? coords.r * self._getRadius(): self._getRadius();
         g.arc(p[0], p[1], radius, 0, Math.PI * 2, true);
         g.fill();
         if (self.options.lineColor) {

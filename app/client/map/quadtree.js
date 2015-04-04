@@ -239,7 +239,6 @@ Node.prototype.retrieveInBounds = function (bounds) {
       }
     }
   }
-
   return result;
 };
 
