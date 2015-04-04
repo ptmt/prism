@@ -4,6 +4,7 @@ var React = require('react');
 var config = require('../config');
 var mapsLib = require('../map');
 var PointCaption = require('./PointCaption');
+var NotificationBlock = require('./NotificationBlock');
 
 // this is not react-ish component
 // because it manages state internally inside layers
@@ -38,7 +39,9 @@ var Map = React.createClass({
           isVisible={pointCaptionVisible}
           x={this.state.caption.x}
           y={this.state.caption.y}
-          caption= {this.state.caption.title}/>
+          caption= {this.state.caption.title}
+          image= {this.state.caption.image}/>
+
       </div>);
   },
 
@@ -61,20 +64,17 @@ var Map = React.createClass({
 
       var p = nextProps.points[nextProps.points.length - 1];
       if (p.lat) {
-        this.placeCaption([p.lat, p.lng], p.caption);
+        var a = this.state.map.latLngToLayerPoint([p.lat, p.lng]);
+        this.setState({
+          caption: {
+            x: a.x,
+            y: a.y,
+            title: p.caption,
+            image: p.photo
+          }
+        });
       }
     }
-  },
-
-  placeCaption(coordinates: any, caption: any) {
-    var a = this.state.map.latLngToLayerPoint(coordinates);
-    this.setState({
-      caption: {
-        x: a.x,
-        y: a.y,
-        title: caption
-      }
-    });
   },
 
   drawPoints(points: Array<any>) {

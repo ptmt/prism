@@ -65,18 +65,22 @@ class FoursquareProvider extends Provider {
   }
 
   transformToPoint(item:any):PrismPoint {
-    //console.log(item, item.venue.photos);
-    // if (!item.venue) {
-    //   console.log('empty item', item);
-    //   return false;
-    // }
+    //console.log(item);
+    if (item.posts.count > 0) {
+      //console.log(item.posts);
+      //return false;
+    }
+    var caption = item.venue ? item.venue.name : '';
+    if (item.shout) {
+      caption += ' // ' + item.shout;
+    }
     return {
-      caption: item.shout ? item.shout : (item.venue ? item.venue.name : ''),
+      caption: caption,
       lat: item.venue ? item.venue.location.lat : 0,
       lng: item.venue ? item.venue.location.lng : 0,
       r: 1,
-      //photo: item.venue.photos
-      likes: item.likes,
+      photo: item.photos.count > 0 ?item.photos.items[0].prefix + '680x680' + item.photos.items[0].suffix : '',
+      likes: item.likes.count,
       source: 'Foursquare'
     }
   }

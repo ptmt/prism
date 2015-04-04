@@ -101,7 +101,7 @@ var Main = React.createClass({
     });
 
     // 3. setTimeout for next step
-    this.timeout = setTimeout(() => this.renderStep(), this.state.i > 1 ? 5000 : 50);
+    this.timeout = setTimeout(() => this.renderStep(), this.state.i > 1 ? 1000 : 50);
   },
 
   onPlaybackChange(e) {
@@ -127,6 +127,14 @@ var Main = React.createClass({
     if (e.action === 'rewind') {
       this.setState({
         i: this.state.i > 5 ? this.state.i - 5 : 0
+      })
+      if (!this.state.playing) {
+        this.renderStep(true); // just render, but stay in pause
+      }
+    }
+    if (e.action === 'setStep') {
+      this.setState({
+        i: Math.round(e.value * this.state.iterationsTotal)
       })
       if (!this.state.playing) {
         this.renderStep(true); // just render, but stay in pause

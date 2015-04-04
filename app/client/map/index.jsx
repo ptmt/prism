@@ -10,7 +10,7 @@ module.exports.initMaskedLayer = function(): L.LeafletLayer {
 
   return new MaskLayer(L, {
     debug:true,
-    radius: 200, // radius in pixels or in meters (see useAbsoluteRadius)
+    radius: 500, // radius in pixels or in meters (see useAbsoluteRadius)
     useAbsoluteRadius: true, // true: r in meters, false: r in pixels
     color: '#000', // the color of the layer
     opacity: 0.8, // opacity of the not covered area
@@ -23,7 +23,7 @@ module.exports.initMap = function (): L.LeafletMap {
   'use strict';
 
   var map = L.map('map').setView([55.0398, 82.902], 13);
-  map.addLayer(new L.StamenTileLayer('toner'));
+  map.addLayer(new L.StamenTileLayer('watercolor'));
   return map;
 
 };
