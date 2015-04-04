@@ -7,8 +7,7 @@ var TopToolbar = React.createClass({
 
   render: function() {
 
-    var progress = {"width": "45%"};
-    var currentDate = this.formatDate(new Date(this.props.date*1000));
+    var currentDate = this.props.date ? this.formatDate(new Date(this.props.date*1000)) : this.formatDate(new Date());
 
     return (
       <mui.Toolbar>

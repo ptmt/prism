@@ -17,7 +17,7 @@ var Main = React.createClass({
       providers: {},
       i: 0,
       playing: false,
-      timestamp: Date.now,
+      timestamp: null,
       iterationsTotal: 1,
       points: [],
       iteration: {
@@ -72,6 +72,7 @@ var Main = React.createClass({
     if (this.state.playing === false && !force) {
       return;
     }
+    console.log(this.state.i);
 
     // 1. get the current iteration
     var timestamp = this.state.source.timeline.timestamps[this.state.i]

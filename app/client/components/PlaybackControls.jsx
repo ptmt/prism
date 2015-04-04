@@ -21,7 +21,7 @@ var PlaybackControls = React.createClass({
           <mui.FontIcon className="ion-ios-fastforward"/>
         </mui.IconButton>
 
-        <mui.Slider ref="slider" name="timelineSlider" value={progress} onChange={this.onSliderChange}/>
+        <mui.Slider ref="slider" name="timelineSlider" value={progress} onDragStop={this.onSliderChange}/>
       </div>
     );
   },

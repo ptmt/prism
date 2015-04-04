@@ -5,6 +5,7 @@ var config = require('../config');
 var mapsLib = require('../map');
 var PointCaption = require('./PointCaption');
 var NotificationBlock = require('./NotificationBlock');
+var path = require('../map/path');
 
 // this is not react-ish component
 // because it manages state internally inside layers
@@ -73,6 +74,16 @@ var Map = React.createClass({
             image: p.photo
           }
         });
+      }
+
+    if (nextProps.points.length > 1
+      && nextProps.points[nextProps.points.length - 1].lat
+      && nextProps.points[nextProps.points.length - 2].lat) {
+         path.drawLine(
+           nextProps.points.length
+           , nextProps.points[nextProps.points.length - 1]
+           , nextProps.points[nextProps.points.length - 2]
+           , this.state.map);
       }
     }
   },
