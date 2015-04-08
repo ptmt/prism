@@ -45,7 +45,7 @@ var Main = React.createClass({
     //console.log(progress, this.state.i,  this.state.iterationsTotal);
     return (
       <div>
-        <Map points={this.state.points} />
+        <Map points={this.state.points} onPointAdded={this.onPointAdded}/>
         <TopToolbar
           date={this.state.timestamp}
           progress={progress}
@@ -80,6 +80,7 @@ var Main = React.createClass({
 
     //console.log(timestamp, iteration);
 
+    // stop if this is the end and all data has been processed
     if (!timestamp || !iteration) {
       return;
     }
@@ -141,6 +142,10 @@ var Main = React.createClass({
         this.renderStep(true); // just render, but stay in pause
       }
     }
+  },
+
+  onPointAdded(e) {
+    console.log(e);
   }
 
 });

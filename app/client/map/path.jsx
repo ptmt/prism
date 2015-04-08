@@ -22,27 +22,33 @@ module.exports.drawLine = function(colorCode: number, point: Point, prevpoint: P
   var color = 'rgb(' + red + ',' + green + ',' + blue + ')';
   //if (typeof this.ctx.setLineDash == 'function')
   //  this.ctx.setLineDash([5]);
-  var polyline = L.polyline([
+  if (map.polyline) {
+    if (map.ppolyline) {
+      map.removeLayer(map.ppolyline);
+    }
+    map.ppolyline = map.polyline;
+  }
+  map.polyline = L.polyline([
   ], {
     color: color,
-    weight: 2,
+    weight: 4,
     opacity: 0.3
   });
-  polyline.addTo(map);
+  map.polyline.addTo(map);
   // [prevpoint.lat, prevpoint.lng],
   // [point.lat, point.lng]
   //var i = 0;
   //polyline.addLatLng(L.latLng(prevpoint.lat, prevpoint.lng));
 
   var i = 0;
-  nextStep(polyline, prevpoint, point, i);
+  nextStep(map.polyline, prevpoint, point, i);
 
   //polyline.showExtremities('arrowM');
 
 };
 
 function nextStep(polyline, p1, p2, i) {
-  var RENDER_FRAMES = 10;
+  var RENDER_FRAMES = 15;
   requestAnimationFrame(() => {
     polyline.addLatLng(
       L.latLng(
