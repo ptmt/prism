@@ -4,7 +4,8 @@
   "description": "Social Networks activity analyzer",
   "repository": "https://github.com/unknownexceptin/prism",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "./node_modules/.bin/gulp build"
    },
   "jest": {
     "rootDir": "app/client/components",
@@ -30,22 +31,23 @@
     "modestmaps": "^3.3.7-dev",
     "moment": "^2.8.4",
     "node-foursquare": "^0.2.1",
-    "react": "^0.12.2",
+    "react": "*",
     "react-tools": "*",
-    "react-tap-event-plugin": "^0.1.3",
-    "serve-static": "^1.7.1"
+    "react-tap-event-plugin": "^0.1.6",
+    "serve-static": "^1.7.1",
+    "gulp": "*",
+    "gulp-react": "^2.0.0",
+    "webpack": "^1.5.3"
   },
   "devDependencies": {
-    "gulp": "*",
     "gulp-bower": "0.0.3",
+    "gulp-livereload": "*",
     "gulp-clean": "~0.2.4",
     "gulp-develop-server": "^0.2.5",
     "gulp-flowtype": "*",
     "gulp-imagemin": "~0.1.4",
     "gulp-less": "^1.3.6",
-    "gulp-livereload": "^3.0.2",
     "gulp-load-plugins": "~0.3.0",
-    "gulp-react": "^2.0.0",
     "gulp-size": "~0.1.2",
     "gulp-util": "~2.2.9",
     "jest-cli": "^0.4.0",
@@ -53,7 +55,6 @@
     "react-hot-loader": "^1.1.4",
     "reactify": "*",
     "watchify": "^2.2.1",
-    "webpack": "^1.5.3",
     "webpack-dev-server": "^1.7.0"
   },
   "engines": {
