@@ -4,17 +4,25 @@
 
 # TLDR
 
-PRISM is like a TodoMVC sandbox but a slightly more complex app which operates with data in-memory only
-to decrease privacy issues. Current version is written in typed ES6 for React and Node.js.
+PRISM is like a TodoMVC sandbox but a slightly more complex. Current version is written in typed ES6 using React and Node.js.
 
 # Privacy
 
-There is no databases yet. All data obtained from third-party providers
-stored in memory-only.
+There is no databases yet. All data obtained from third-party providers stored in memory-only.
 
 # Motivation
 
-I love checkins even more than Foursquare.
+I love checkins even more than Foursquare do. Blog post coming.
+
+
+# Self-hosted version
+
+To build and run PRISM inside docker container:
+```
+make
+make run
+```
+See [this blog]() post about hosting it into your cloud.
 
 # Buzzwords
 

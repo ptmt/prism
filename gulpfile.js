@@ -3,7 +3,13 @@
 var gulp = require('gulp');
 
 // Load plugins
-var $ = require('gulp-load-plugins')();
+var scope = process.env.NODE_ENV === 'PRODUCTION' ? ['dependencies'] : ['dependencies', 'devDependencies'];
+var $ = require('gulp-load-plugins')({
+    scope: scope, // which keys in the config to look within
+});
+console.log( process.env.NODE_ENV, process.env.NODE_ENV === 'PRODUCTION')
+var livereload = process.env.NODE_ENV === 'PRODUCTION' ? $.size : $.livereload;
+
 
 gulp.task('client-flow', function() {
   return gulp.src([
@@ -14,93 +20,13 @@ gulp.task('client-flow', function() {
     }));
 });
 
-
-// Workaround for https://github.com/gulpjs/gulp/issues/71
-var origSrc = gulp.src;
-gulp.src = function () {
-  return fixPipe(origSrc.apply(this, arguments));
-};
-function fixPipe(stream) {
-  var origPipe = stream.pipe;
-  stream.pipe = function (dest) {
-    arguments[0] = dest.on('error', function (error) {
-      var nextStreams = dest._nextStreams;
-      if (nextStreams) {
-        nextStreams.forEach(function (nextStream) {
-          nextStream.emit('error', error);
-        });
-      } else if (dest.listeners('error').length === 1) {
-        throw error;
-      }
-    });
-    var nextStream = fixPipe(origPipe.apply(this, arguments));
-    (this._nextStreams || (this._nextStreams = [])).push(nextStream);
-    return nextStream;
-  };
-  return stream;
-}
-
-function scripts(watch) {
-  var browserify = require('browserify');
-  var source = require('vinyl-source-stream');
-  var buffer = require('vinyl-buffer');
-  var reactify = require('reactify');
-  var watchify = require('watchify');
-
-  var bundler = browserify({
-    entries: ['./app/client/app.js'],
-    debug: true,
-    cache: {}, // required for watchify
-    packageCache: {}, // required for watchify
-    fullPaths: watch, // required to be true only for watchify
-
-  });
-
-  if(watch) {
-    bundler = watchify(bundler)
-  }
-
-  bundler.transform('reactify', {es6: true, stripTypes: true})
-
-  var rebundle = function() {
-    console.log('rebundle');
-    return fixPipe(bundler
-    .bundle()
-    .pipe(source('app.js')))
-    .pipe(buffer())
-    .pipe($.sourcemaps.init({loadMaps: true}))
-    //.pipe($.uglify())
-    //  .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('./dist/scripts/'))
-    .pipe($.livereload())
-    .on('error', function (error) {
-      console.error('' + error);
-    });
-  };
-
-  bundler.on('update', rebundle);
-  return rebundle();
-}
-
-
-
-// Scripts
-gulp.task('scripts', function() {
-  return scripts(false)
-});
-
-// Scripts
-gulp.task('scripts:watch', function() {
-  return scripts(true)
-});
-
 // HTML
 gulp.task('html', function() {
   return gulp.src('app/*.html')
     //.pipe($.useref())
     .pipe(gulp.dest('dist'))
     .pipe($.size())
-    .pipe($.livereload());
+    .pipe(livereload());
 });
 
 // Images
@@ -113,12 +39,9 @@ gulp.task('images', function() {
     }))
     .pipe(gulp.dest('dist/images'))
     .pipe($.size())
-    .pipe($.livereload());
+    .pipe(livereload());
 });
 
-gulp.task('test', function() {
-  //require('common-node').run('./node_modules/.bin/_mocha');
-});
 
 // Clean
 gulp.task('clean', function() {
@@ -127,22 +50,17 @@ gulp.task('clean', function() {
   }).pipe($.clean());
 });
 
-// Bundle
-gulp.task('bundle', ['images', 'less', 'fonts', 'bower']);
-
-// Build
-gulp.task('build', ['html', 'bundle', 'images']);
 
 // Default task
 gulp.task('default', ['watch']);
 
-gulp.task('flow', function() {
+gulp.task('server-compile', function() {
   return gulp.src([
     'app/server/**/**.js',
     ])
-    .pipe($.flowtype({
-      declarations: './app/interfaces'
-    }))
+    // .pipe($.flowtype({
+    //   declarations: './app/interfaces'
+    // }))
     .pipe($.react({
       stripTypes: true,
       harmony: true
@@ -154,7 +72,7 @@ gulp.task('flow', function() {
     });
 });
 
-gulp.task( 'server:start', ['flow'], function() {
+gulp.task( 'server:start', ['server-compile'], function() {
   $.developServer.listen({
     path: './app/server.compiled/index.js'
   }, $.livereload.listen );
@@ -180,19 +98,20 @@ gulp.task('less', function () {
       paths: ['./app/less/app.less' ] //require('path').join(__dirname, 'less', 'includes')
     }))
     .pipe(gulp.dest('./dist/styles'))
-    .pipe($.livereload());
+    .pipe(livereload());
 });
 
 
-gulp.task('server:restart', ['flow'], function () {
+// Bundle
+gulp.task('bundle', ['images', 'less', 'fonts', 'bower']);
+
+// Build
+gulp.task('build', ['html', 'bundle', 'images', 'server-compile']);
+
+gulp.task('server:restart', ['server-compile'], function () {
   $.developServer.changed( function( error ) {
     if( ! error ) $.livereload.changed();
   });
-  // gulp.src('./app/server.compiled/app.js')
-  //   .pipe($.developServer({
-  //     path: './app/server.compiled/index.js'
-  //   }))
-  //   .pipe($.livereload());
 });
 
 
