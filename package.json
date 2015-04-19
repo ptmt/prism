@@ -6,11 +6,13 @@
   "scripts": {
     "test": "jest",
     "postinstall": "./node_modules/.bin/gulp build"
-   },
+  },
   "jest": {
     "rootDir": "app/client/components",
     "scriptPreprocessor": "<rootDir>../../tools/jest-preprocessor.js",
-    "unmockedModulePathPatterns": ["react"],
+    "unmockedModulePathPatterns": [
+      "react"
+    ],
     "moduleFileExtensions": [
       "js",
       "jsx"
@@ -24,6 +26,14 @@
     "config": "^1.2.1",
     "connect": "^3.3.3",
     "connect-rest": "^1.5.0",
+    "gulp": "*",
+    "gulp-bower": "0.0.3",
+    "gulp-imagemin": "~0.1.4",
+    "gulp-less": "^3.0.2",
+    "gulp-load-plugins": "~0.3.0",
+    "gulp-react": "^2.0.0",
+    "gulp-size": "~0.1.2",
+    "gulp-util": "~2.2.9",
     "jsx-loader": "^0.12.2",
     "leaflet": "^0.7.3",
     "lodash": "^3.1.0",
@@ -32,18 +42,11 @@
     "moment": "^2.8.4",
     "node-foursquare": "^0.2.1",
     "react": "*",
-    "react-tools": "*",
     "react-tap-event-plugin": "^0.1.6",
+    "react-tools": "*",
+    "react-tween-state": "0.0.5",
     "serve-static": "^1.7.1",
-    "gulp": "*",
-    "gulp-react": "^2.0.0",
-    "webpack": "^1.5.3",
-    "gulp-load-plugins": "~0.3.0",
-    "gulp-size": "~0.1.2",
-    "gulp-util": "~2.2.9",
-    "gulp-imagemin": "~0.1.4",
-    "gulp-less": "^3.0.2",
-    "gulp-bower": "0.0.3"
+    "webpack": "^1.5.3"
   },
   "devDependencies": {
     "gulp-livereload": "*",

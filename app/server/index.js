@@ -42,4 +42,5 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 rest.get('/connected', mainController.connected);
 rest.get('/gettimeline', mainController.getTimeline);
 //rest.get('/foursquare/signin', foursquarePrism.signin);
-http.createServer(app).listen(9000);
+var port = process.env.NODE_PORT || 9000;
+http.createServer(app).listen(port);

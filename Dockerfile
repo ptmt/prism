@@ -5,6 +5,7 @@ RUN apk update && \
     apk add python make
 
 ENV NODE_ENV PRODUCTION
+ENV NODE_PORT 8080
 
 WORKDIR /src
 ADD . .

@@ -12,10 +12,16 @@ start:
 debug:
 	docker run -ti unknownexception/prism sh
 
+deploy:
+	docker tag unknownexception/prism tutum.co/unknownexception/prism
+	docker push tutum.co/unknownexception/prism
+
+
 clean:
 	echo "Cleaning docker containers and images..."
 	docker ps -aq | xargs docker rm
 	docker rmi unknownexception/prism
+	docker rmi tutum.co/unknownexception/prism
 	docker images -a | grep "^<none>" | awk '{print $$3}' | xargs docker rmi
 
 .PHONY: build

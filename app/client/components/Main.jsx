@@ -6,13 +6,19 @@ var config = require('../config');
 var Map = require('./Map');
 var TopToolbar = require('./TopToolbar');
 var WelcomeWindow = require('./WelcomeWindow');
+var NotificationBlock = require('./NotificationBlock');
 var StatPanel = require('./StatPanel');
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 //var providersStore = require('../stores/ProvidersStore');
 var timelineStore = require('../stores/timelineStore');
+var tweenState = require('react-tween-state');
 
 var Main = React.createClass({
-
+  mixins: [tweenState.Mixin],
   getInitialState() {
+    /*
+      * move to Flux
+    */
     return {
       providers: {},
       i: 0,
@@ -42,16 +48,27 @@ var Main = React.createClass({
 
   render(): any {
     var progress = this.state.i / this.state.iterationsTotal;
+    var notifications = this.state.points.slice(-3).map(point => {
+      return <NotificationBlock point= {point} />
+    })
+    //var point = this.state.points[this.state.points.length - 1];
     //console.log(progress, this.state.i,  this.state.iterationsTotal);
     return (
       <div>
-        <Map points={this.state.points} onPointAdded={this.onPointAdded}/>
+        <Map
+          points={this.state.points}
+          onPointAdded={this.onPointAdded} />
         <TopToolbar
           date={this.state.timestamp}
           progress={progress}
           isPlaying={this.state.playing}
           onPlaybackChange={this.onPlaybackChange}/>
-        <StatPanel player = {this.state.iteration.player}/>
+        <StatPanel player = {this.state.iteration.player} />
+        {this.state.points.length &&
+          <ReactCSSTransitionGroup transitionName="example" className="notifications-right">
+            {notifications}
+          </ReactCSSTransitionGroup>
+        }
         <WelcomeWindow />
         <mui.Snackbar message="Loading .."/>
       </div>);
@@ -72,7 +89,6 @@ var Main = React.createClass({
     if (this.state.playing === false && !force) {
       return;
     }
-    console.log(this.state.i);
 
     // 1. get the current iteration
     var timestamp = this.state.source.timeline.timestamps[this.state.i]
@@ -90,6 +106,7 @@ var Main = React.createClass({
     var points = [];
     for (var j = 0; j < this.state.i; j++) {
       var p = this.state.source.timeline.iterations[this.state.source.timeline.timestamps[j]].currentPoint;
+      p.timestamp = this.state.source.timeline.timestamps[j];
       points.push(p);
     }
 

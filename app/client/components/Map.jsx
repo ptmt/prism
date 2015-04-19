@@ -4,11 +4,7 @@ var React = require('react');
 var config = require('../config');
 var mapsLib = require('../map');
 var PointCaption = require('./PointCaption');
-var NotificationBlock = require('./NotificationBlock');
 var path = require('../map/path');
-
-// this is not react-ish component
-// because it manages state internally inside layers
 
 var Map = React.createClass({
 
@@ -41,13 +37,13 @@ var Map = React.createClass({
           x={this.state.caption.x}
           y={this.state.caption.y}
           caption= {this.state.caption.title}
-          image= {this.state.caption.image}/>
+          image= {this.state.caption.image} />
 
       </div>);
   },
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.points && nextProps.points.length != this.props.points.length) {
+    if (nextProps.points.length > 0 && nextProps.points.length != this.props.points.length) {
       // make a diff between props
       // and draw on the map
       this.drawPoints(
@@ -62,17 +58,21 @@ var Map = React.createClass({
          });
       }
 
-
       var p = nextProps.points[nextProps.points.length - 1];
       if (p.lat) {
         var a = this.state.map.latLngToLayerPoint([p.lat, p.lng]);
         this.setState({
           caption: {
             x: a.x,
-            y: a.y,
-            title: p.caption,
-            image: p.photo
+            y: a.y
+          //  title: p.caption,
+          //  image: p.photo
           }
+        });
+        this.props.onPointAdded({
+          left: true,
+          caption: p.caption,
+          image: p.photo
         });
       }
 

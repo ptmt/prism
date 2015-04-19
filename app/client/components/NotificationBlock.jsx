@@ -4,16 +4,24 @@ var mui = require('material-ui');
 
 var NotificationBlock = React.createClass({
   render: function(): any {
-    var style = {
-      display: this.props.isVisible ? 'block': 'none'
-    }
     var icon = 'icon ion-social-foursquare-outline'
+    var time = new Date(this.props.point.timestamp*1000);
 
     return (
-      <div style={style} className="notification-block">
+      <div className="notification-block">
         <div className="box">
-          <div className="value"><img width="300px" src="https://irs1.4sqi.net/img/general/680x680/17907214_ElNkxKh7wz3a1rGzbTa--Nhv0tMJgqcwznnKyBF70Jc" /></div>
-          <div className="label">Level</div>
+          {this.props.photo &&
+            <div className="value"><img width="300px" src={this.props.point.photo} /></div>
+          }
+          <div className="label">{time.toTimeString()} - {this.props.point.caption}
+          {this.props.likes &&
+            <span>(likes: {this.props.likes})</span>
+          }
+          {this.props.comments &&
+            <span>(comments: {this.props.comments})</span>
+          }
+          </div>
+
         </div>
       </div>
     );
