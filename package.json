@@ -4,7 +4,7 @@
   "description": "Social Networks activity analyzer",
   "repository": "https://github.com/unknownexceptin/prism",
   "scripts": {
-    "test": "jest",
+    "test": "mocha",
     "postinstall": "./node_modules/.bin/gulp build"
   },
   "jest": {
@@ -23,6 +23,7 @@
     "async": "^0.9.0",
     "bluebird": "^2.5.3",
     "body-parser": "^1.10.0",
+    "chai": "^2.2.0",
     "config": "^1.2.1",
     "connect": "^3.3.3",
     "connect-rest": "^1.5.0",

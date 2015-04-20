@@ -21,8 +21,6 @@ type PrismIteration = {
 type IterationMap = { [key:string]: PrismIteration };
 
 class Timeline {
-  // startdate: string;
-  // enddate: string;
   timestamps: Array<string>;
   iterations: IterationMap;
   providers: Array<any>;

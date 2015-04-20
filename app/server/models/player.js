@@ -1,12 +1,5 @@
 /* @flow */
 var ExperienceConstants = require('./constants');
-  // public enum PlayerSkill :
-  // {
-  //   Sociality // This skills is only about likes and friends you have and related activity.
-  //   , Curiosity // Total kilometers and total diffirent places
-  //   , Сharisma  // Likes+Retweets/TotalFriends
-  //
-  // }
 
 class SocialPlayer
 {
@@ -38,7 +31,7 @@ class SocialPlayer
 
     if (points > 0 && conditions) {
       this.exp += points;
-      this.level = Math.floor(Math.log(this.exp + 1, ExperienceConstants.LEVELFX_LOGARITHM_BASE));
+      this.level = Math.floor(Math.log(this.exp + 1, ExperienceConstants.LEVELFX_LOGARITHM_BASE) - 1);
       this.addSkill(skill, points);
     }
   }

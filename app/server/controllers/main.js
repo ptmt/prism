@@ -22,7 +22,7 @@ class MainController {
   }
   static getTimeline(req: Request, content: any, render: () => void) {
     // get data from each provider and recalculate timeline
-    console.log('loaded ', providers.length, ' providers');
+    //console.log('loaded ', providers.length, ' providers');
     req.timeline = new Timeline(providers);
     req.timeline.fetch().then(function(result) {
       render(null, result);

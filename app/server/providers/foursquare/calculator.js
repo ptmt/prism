@@ -19,48 +19,61 @@ class FoursquareCalculator  {
       this.initFunctions.push((stats, checkinsData) => {
         stats.fs = stats.fs || {};
         stats.fs.i = 0;
-        stats.fs.processedCheckins = 0;
-        stats.fs.topSpeed = 0;
-        stats.fs.avgSpeed = 0;
-        stats.fs.avgDistancePerCheckin = 0;
-        stats.fs.totalDistance = 0;
-        stats.fs.checkinsSize = checkinsData.checkins.items.length;
+        stats.processedCheckins = 0;
+        stats.checkinsSize = checkinsData.checkins.items.length;
+        stats.topSpeed = 0;
+        stats.avgSpeed = 0;
+        stats.avgDistancePerCheckin = 0;
+        stats.totalDistance = 0;
+        stats.lastDistance = 0;
+        stats.avgInterval = 0;
       });
     }
 
     inProcessRoutines(): void {
       this.calculationFunctions.push(function(currentCheckin, stats, socialPlayer) {
+        stats.processedCheckins++;
+
         if (currentCheckin.venue && currentCheckin.venue.location) {
-          //console.log(stats.checkinsSize, stats.i);
-          currentCheckin.venue.location.colorCode = (765 / stats.checkinsSize * stats.fs.i);
+          currentCheckin.venue.location.colorCode = (765 / stats.checkinsSize * stats.processedCheckins);
+          if (stats.previousCheckin && stats.previousCheckin.venue) {
+            stats.lastDistance = Math.floor(calculateDistanceBetweenPoints(stats.previousCheckin.venue.location, currentCheckin.venue.location));
+          }
         }
-        stats.fs.processedCheckins++;
-        stats.fs.lastDistance = calculateDistanceBetweenPoints(stats.previousCheckin,
-          currentCheckin);
-          stats.totalDistance += stats.lastDistance;
-          stats.avgDistancePerCheckin = stats.TotalDistance / stats.totalCheckins;
-          if (stats.previousCheckin != null) {
-            // var deltaTime = (currentCheckin.CreatedAt - stats.previousCheckin.CreatedAt);
-            // if (Math.Abs(delta.TotalMinutes) > 0)
-            // {
-            //     stats.KeyValue["CurrentSpeed"] = (double)stats.LastDistance / Math.Abs(delta.TotalMinutes) * 60d;
-            //     if ((double)stats.KeyValue["CurrentSpeed"] > (double)stats.KeyValue["TopSpeed"])
-            //         stats.KeyValue["TopSpeed"] = stats.KeyValue["CurrentSpeed"];
-            //     stats.KeyValue["AvgSpeed"] = ((double)stats.KeyValue["AvgSpeed"] + (double)stats.KeyValue["CurrentSpeed"]) / 2;
-            // }
-          }
-        });
 
-        this.calculationFunctions.push(function(currentCheckin, stats, socialPlayer) {
-          if (currentCheckin.lat != 0 || currentCheckin.lng != 0) {
-            if (stats.previousCheckin) {
-              stats.prevprevCheckin = JSON.parse(JSON.stringify(stats.previousCheckin));
-            }
-            stats.previousCheckin = currentCheckin;
-          }
-        });
+        stats.totalDistance += stats.lastDistance;
 
-        this.addExperienceAccumulationTasks();
+        if (stats.previousCheckin) {
+          stats.avgDistancePerCheckin = Math.floor(stats.totalDistance / (stats.processedCheckins - 1));
+          var deltaHours = (currentCheckin.createdAt - stats.previousCheckin.createdAt) / 3600;
+          stats.avgInterval = stats.avgInterval ? Math.ceil((stats.avgInterval + deltaHours) / 2) : Math.round(deltaHours);
+          stats.currentSpeed = Math.round(stats.lastDistance / deltaHours);
+          if (stats.currentSpeed > stats.topSpeed) {
+            stats.topSpeed = stats.currentSpeed;
+          }
+          stats.avgSpeed = Math.round(stats.avgDistancePerCheckin / stats.avgInterval); // not exactly avg speed
+          //
+          // var deltaTime = (currentCheckin.CreatedAt - stats.previousCheckin.CreatedAt);
+          // if (Math.Abs(delta.TotalMinutes) > 0)
+          // {
+          //     stats.KeyValue["CurrentSpeed"] = (double)stats.LastDistance / Math.Abs(delta.TotalMinutes) * 60d;
+          //     if ((double)stats.KeyValue["CurrentSpeed"] > (double)stats.KeyValue["TopSpeed"])
+          //         stats.KeyValue["TopSpeed"] = stats.KeyValue["CurrentSpeed"];
+          //     stats.KeyValue["AvgSpeed"] = ((double)stats.KeyValue["AvgSpeed"] + (double)stats.KeyValue["CurrentSpeed"]) / 2;
+          // }
+        }
+      });
+
+      this.calculationFunctions.push(function(currentCheckin, stats, socialPlayer) {
+        if (currentCheckin.lat != 0 || currentCheckin.lng != 0) {
+          if (stats.previousCheckin) {
+            stats.prevprevCheckin = JSON.parse(JSON.stringify(stats.previousCheckin));
+          }
+          stats.previousCheckin = currentCheckin;
+        }
+      });
+
+      this.addExperienceAccumulationTasks();
     }
 
     addExperienceAccumulationTasks(): void
@@ -100,10 +113,10 @@ function toRad(angle) {
 }
 
 function calculateDistanceBetweenPoints(previous, current) {
-  if (previous == null) return 0;
+  if (!previous) return 0;
   if (current.lat == 0 && current.lng == 0) return 0;
-
-  var R = 6371; // km
+  //console.log('calculate distanse between points', previous, current);
+  var R = 6371; // radius in km
   var dLat = toRad(current.lat - previous.lat);
   var dLon = toRad(current.lng - previous.lng);
   var lat1 = toRad(current.lat);

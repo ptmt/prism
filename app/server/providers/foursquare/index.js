@@ -57,7 +57,7 @@ class FoursquareProvider extends Provider {
     this.calculator.calculationFunctions.forEach((calcFunc) => calcFunc(currentCheckin, stats, player));
 
     return {
-      stats: stats,
+      stats: _.cloneDeep(stats),
       currentPoint: this.transformToPoint(currentCheckin),
       player: _.cloneDeep(player),
       key: this.extractKey(currentCheckin)
