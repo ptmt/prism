@@ -1,0 +1,36 @@
+
+.current-point {
+  position: absolute;
+  z-index: 10;
+  color: white;
+
+  animation-name: example;
+  animation-duration: 4s;
+  .shout {
+    vertical-align: center;
+    font-family: 'Anonymous Pro';
+    padding-left: 10px;
+  }
+}
+
+@ringwidth: 300px;
+
+.gps-ring {
+    border: 3px solid #999;
+    -webkit-border-radius: @ringwidth;
+    border-radius: @ringwidth;
+    margin-left:-@ringwidth/2;
+    margin-top:-@ringwidth/2;
+    height: @ringwidth;
+    width: @ringwidth;
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+    opacity: 0.0
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
+}

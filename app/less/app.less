@@ -1,135 +1,14 @@
-@import 'vendor/ionicons.less';
+
 @import "node_modules/material-ui/src/less/scaffolding.less";
 @import "node_modules/material-ui/src/less/components.less";
+@import 'vendor/ionicons.less';
 @import "vendor/leaflet.less";
+@import "welcome.less";
+@import "map.less";
+@import "mui-extend.less";
+@import "point.less";
+@import "stats.less";
+
 body {
   background: black;
-  //font-family: 'Oswald', sans-serif;
-}
-.mui-toolbar {
-  bottom:0;
-  z-index: 5;
-  position:absolute;
-}
-.map-container {
-  top: 0;
-  margin: 0px;
-  padding: 0px;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 2;
-}
-.signup-services {
-  text-align:center;
-  margin-bottom: 2em;
-  .mui-font-icon {
-    font-size:40px;
-    margin-right:20px;
-  }
-
-}
-.welcome-window {
-  .mui-dialog-title {
-    text-align:center;
-  }
-  .footer {
-    //bottom: 0;
-    //position:absolute;
-    a {
-      color:black;
-    }
-    text-align: center;
-    margin:auto;
-    width:100%;
-    font-size:1.2em;
-  }
-}
-
-.playback-controls {
-  padding-left: 24px;
-  top:3px;
-  .mui-input {
-    display:inline-block;
-    top: 4px; // AUCH! URLY
-    margin: 0;
-    padding-left: 24px;
-  }
-}
-.mui-tooltip {
-  z-index:3;
-}
-
-.navbar-text span { padding-right: 5px }
-
-.stats {
-  display: flex;
-  flex-wrap: wrap;
-  color: #CBCBCB;
-  font-family: 'Anonymous Pro';
-  transition: all 1s ease-in-out;
-  position: absolute;
-  right: 0px;
-  top: 40px;
-  z-index: 10;
-  .box {
-    margin-left: 30px;
-  }
-  .value {
-    font-size: 6em;
-  }
-  .label {
-    text-align: center;
-    margin-top:15px;
-  }
-}
-
-@keyframes example {
-    from {background-color: white;}
-    to {background-color: black;}
-}
-
-.caption {
-  position: absolute;
-  z-index: 10;
-  color: white;
-
-  animation-name: example;
-  animation-duration: 4s;
-  .icon {
-    font-size: 2em;
-  }
-  .shout {
-    vertical-align: center;
-    font-family: 'Anonymous Pro';
-    padding-left: 10px;
-  }
-}
-
-.notifications-right {
-  position: absolute;
-  bottom: 57px;
-  right: 0px;
-  margin: 10px;
-  width: 40%;
-  max-height: 50%;
-  //opacity: 0.2;
-  z-index: 10;
-  .box {
-    padding: 20px;
-  }
-  .label {
-    font-family: 'Anonymous Pro';
-    color: white;
-  }
-}
-
-.leftpanel-container {
-  position: absolute;
-  top: 60%;
-  width: 200px;
-  left: 10px;
-  z-index: 10;
-  opacity: 0.6;
-  height: 80%;
 }

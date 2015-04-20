@@ -1,0 +1,59 @@
+
+.stats {
+  display: flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  flex-wrap: wrap;
+  color: #CBCBCB;
+  font-family: 'Anonymous Pro';
+  transition: all 1s ease-in-out;
+  position: absolute;
+  right: 0px;
+  top: 40px;
+  z-index: 10;
+  .box {
+    margin-left: 30px;
+  }
+  .value {
+    font-size: 6em;
+  }
+  .label {
+    text-align: center;
+    margin-top:15px;
+  }
+}
+
+
+@keyframes typewriter{
+  from { width: 0; }
+}
+@-webkit-keyframes typewriter {
+  from { width: 0; }
+}
+
+.notifications-right {
+  position: absolute;
+  bottom: 57px;
+  right: 0px;
+  margin: 10px;
+  width: 40%;
+  //max-height: 50%;
+  //opacity: 0.2;
+  z-index: 10;
+  .box {
+    padding: 10px;
+  }
+  .icon {
+    font-size: 1.2em;
+  }
+  .label {
+    overflow: hidden;
+    width:100%;
+    white-space: nowrap;
+    font-family: 'Anonymous Pro';
+    color: white;
+    animation: typewriter 0.8s steps(60, end);
+    -webkit-animation: typewriter 0.8s steps(60, end);
+  }
+}

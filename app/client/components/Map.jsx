@@ -69,11 +69,11 @@ var Map = React.createClass({
           //  image: p.photo
           }
         });
-        this.props.onPointAdded({
-          left: true,
-          caption: p.caption,
-          image: p.photo
-        });
+        // this.props.onPointAdded({
+        //   left: true,
+        //   caption: p.caption,
+        //   image: p.photo
+        // });
       }
 
     if (nextProps.points.length > 1

@@ -48,9 +48,10 @@ var Main = React.createClass({
 
   render(): any {
     var progress = this.state.i / this.state.iterationsTotal;
-    var notifications = this.state.points.slice(-3).map(point => {
-      return <NotificationBlock point= {point} />
-    })
+    var lastPoints = this.state.points.slice(-4);
+    // var notifications = this.state.points.slice(-3).map(point => {
+    //   return <NotificationBlock point= {point} />
+    // })
     //var point = this.state.points[this.state.points.length - 1];
     //console.log(progress, this.state.i,  this.state.iterationsTotal);
     return (
@@ -64,11 +65,7 @@ var Main = React.createClass({
           isPlaying={this.state.playing}
           onPlaybackChange={this.onPlaybackChange}/>
         <StatPanel player = {this.state.iteration.player} />
-        {this.state.points.length &&
-          <ReactCSSTransitionGroup transitionName="example" className="notifications-right">
-            {notifications}
-          </ReactCSSTransitionGroup>
-        }
+        <NotificationBlock points= {lastPoints} />
         <WelcomeWindow />
         <mui.Snackbar message="Loading .."/>
       </div>);

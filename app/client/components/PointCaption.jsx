@@ -13,8 +13,8 @@ var PointCaption = React.createClass({
     var icon = 'icon ion-social-foursquare-outline'
 
     return (
-      <div style={style} className="caption">
-        <span className= {icon}></span>
+      <div style={style} className="current-point gps-ring">
+        <div></div>
       </div>
 
     );
