@@ -97,6 +97,7 @@ gulp.task('less', function () {
     .pipe($.less({
       paths: ['./app/less/app.less' ] //require('path').join(__dirname, 'less', 'includes')
     }))
+    .pipe($.autoprefixer({cascade: false, browsers: ['last 2 versions']}))
     .pipe(gulp.dest('./dist/styles'))
     .pipe(livereload());
 });
