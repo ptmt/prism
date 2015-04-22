@@ -11,13 +11,13 @@ var PlaybackControls = React.createClass({
 
     return (
       <div className="mui-drop-down-menu playback-controls">
-        <mui.IconButton tooltip="Prev Point" onClick={this.onRewind}>
+        <mui.IconButton onClick={this.onRewind}>
           <mui.FontIcon className="ion-ios-rewind"/>
         </mui.IconButton>
-        <mui.IconButton tooltip={playTip} onClick={this.onPlayPauseHandler}>
+        <mui.IconButton onClick={this.onPlayPauseHandler}>
           <mui.FontIcon className={play}/>
         </mui.IconButton>
-        <mui.IconButton tooltip="Next Point" onClick={this.onFastForward}>
+        <mui.IconButton onClick={this.onFastForward}>
           <mui.FontIcon className="ion-ios-fastforward"/>
         </mui.IconButton>
 

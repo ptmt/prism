@@ -49,7 +49,7 @@ var NotificationBlock = React.createClass({
     );
   },
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.points.length);
+
     if (nextProps.points.length > 3) {
       this.setState({
         points: nextProps.points

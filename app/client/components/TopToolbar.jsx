@@ -18,7 +18,8 @@ var TopToolbar = React.createClass({
         <PlaybackControls progress={this.props.progress} isPlaying={this.props.isPlaying} onChange={this.props.onPlaybackChange}/>
         <mui.ToolbarGroup key={1} float="right">
           <span className="mui-toolbar-separator">&nbsp;</span>
-          <mui.RaisedButton label={currentDate} primary={true} onClick={this._handleTouchTap} />
+          <span className="mui-drop-down-menu toolbar-text">0/433</span>
+          <span className="mui-drop-down-menu toolbar-text">{currentDate}</span>
         </mui.ToolbarGroup>
       </mui.Toolbar>
     );
@@ -26,13 +27,14 @@ var TopToolbar = React.createClass({
 
   _onDropDownMenuChange: function(e, key, menuItem) {
     console.log('Menu Clicked: ', menuItem);
+    //<mui.RaisedButton label={currentDate} primary={true} onClick={this._handleTouchTap} />
   },
 
   formatDate(date) {
     var monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
-    return (monthNames[date.getMonth()]) + ' ' + date.getDate() + ' ' + date.getFullYear();
+    return (monthNames[date.getMonth()]) + ' ' + date.getDate() + ', ' + date.getFullYear();
   }
 
 });
