@@ -27,6 +27,7 @@ class FoursquareCalculator  {
         stats.totalDistance = 0;
         stats.lastDistance = 0;
         stats.avgInterval = 0;
+        stats.fs.topClients = {};
       });
     }
 
@@ -52,15 +53,6 @@ class FoursquareCalculator  {
             stats.topSpeed = stats.currentSpeed;
           }
           stats.avgSpeed = Math.round(stats.avgDistancePerCheckin / stats.avgInterval); // not exactly avg speed
-          //
-          // var deltaTime = (currentCheckin.CreatedAt - stats.previousCheckin.CreatedAt);
-          // if (Math.Abs(delta.TotalMinutes) > 0)
-          // {
-          //     stats.KeyValue["CurrentSpeed"] = (double)stats.LastDistance / Math.Abs(delta.TotalMinutes) * 60d;
-          //     if ((double)stats.KeyValue["CurrentSpeed"] > (double)stats.KeyValue["TopSpeed"])
-          //         stats.KeyValue["TopSpeed"] = stats.KeyValue["CurrentSpeed"];
-          //     stats.KeyValue["AvgSpeed"] = ((double)stats.KeyValue["AvgSpeed"] + (double)stats.KeyValue["CurrentSpeed"]) / 2;
-          // }
         }
       });
 
@@ -71,6 +63,47 @@ class FoursquareCalculator  {
           }
           stats.previousCheckin = currentCheckin;
         }
+      });
+
+      /// MOST LIKED & MOST POPULAR
+      this.calculationFunctions.push((currentCheckin, stats, socialPlayer) => {
+        currentCheckin.likesCount = currentCheckin.likes.count;
+        currentCheckin.totalVenueCheckins = currentCheckin.venue ?
+          currentCheckin.venue.stats.checkinsCount :
+          0;
+        if (stats.mostLikedCheckin == null) stats.mostLikedCheckin = currentCheckin;
+        if (stats.mostPopularCheckin == null) stats.mostPopularCheckin = currentCheckin;
+        if (stats.mostPopularCheckin.likesCount < currentCheckin.likesCount)
+          stats.mostLikedCheckin = currentCheckin;
+        if (stats.mostPopularCheckin.totalVenueCheckins < currentCheckin.totalVenueCheckins)
+          stats.mostPopularCheckin = currentCheckin;
+      });
+
+      /// MY HOTTEST PLACE
+      this.calculationFunctions.push((currentCheckin, stats, socialPlayer) =>
+      {
+         // current
+         // rate = my_checkins * total_in_venue
+         // TODO: calibrate it
+
+         currentCheckin.myVenueCheckins = currentCheckin.venue &&  currentCheckin.venue.beenHere ? currentCheckin.venue.beenHere.count : 0;
+         currentCheckin.t1Rate = currentCheckin.myVenueCheckins * currentCheckin.totalVenueCheckins;
+         if (stats.hottestPlace == null) stats.hottestPlace = currentCheckin;
+         if (stats.hottestPlace.t1Rate < currentCheckin.t1Rate) stats.hottestPlace = currentCheckin;
+      });
+
+      /// MY TOP CLIENT
+      this.calculationFunctions.push((currentCheckin, stats, socialPlayer) =>
+      {
+        var clientName = currentCheckin.source.name;
+        if (stats.fs.topClients[clientName]) {
+          stats.fs.topClients[clientName]++;
+        } else {
+          stats.fs.topClients[clientName] = 1;
+          socialPlayer.apply('geeks', ExperienceConstants.Foursquare.CHECKIN_WITH_NEW_FOURSQUARE_CLIENT);
+          socialPlayer.achieve(currentCheckin.createdAt, "Check-in with a new client: " + clientName);
+        }
+          //stats.topClients = topClients.OrderByDescending(c => c.Value).First().Key;
       });
 
       this.addExperienceAccumulationTasks();
@@ -86,20 +119,20 @@ class FoursquareCalculator  {
       {
         p.apply(skill.Sociality, ExperienceConstants.Foursquare.BASE_CHECKIN, true);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.ONE_KILOMETER_PASSED * stats.lastDistance);
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.TotalVenueCheckins > 100);
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.TotalVenueCheckins > 1000);
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_10000_CHECKINS, currentCheckin.TotalVenueCheckins > 10000);
-        p.apply(skill.Sociality, ExperienceConstants.Foursquare.ONE_LIKE_TO_CHECKIN * currentCheckin.LikesCount);
-        p.apply(skill.Sociality, ExperienceConstants.Foursquare.MAYORSHIP_CHECKIN, currentCheckin.IsMayor);
-        p.apply(skill.Sociality, ExperienceConstants.Foursquare.ONE_COMMENT_TO_CHECKIN * currentCheckin.CommentsCount);
-        p.apply(skill.Sociality, ExperienceConstants.Foursquare.CHECKIN_WITH_PHOTO * currentCheckin.PhotosCount);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS, currentCheckin.totalVenueCheckins > 100);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS, currentCheckin.totalVenueCheckins > 1000);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_WITH_MORE_THAN_10000_CHECKINS, currentCheckin.totalVenueCheckins > 10000);
+        p.apply(skill.Sociality, ExperienceConstants.Foursquare.ONE_LIKE_TO_CHECKIN * currentCheckin.likesCount);
+        p.apply(skill.Sociality, ExperienceConstants.Foursquare.MAYORSHIP_CHECKIN, currentCheckin.isMayor);
+        p.apply(skill.Sociality, ExperienceConstants.Foursquare.ONE_COMMENT_TO_CHECKIN * currentCheckin.commentsCount);
+        p.apply(skill.Sociality, ExperienceConstants.Foursquare.CHECKIN_WITH_PHOTO * currentCheckin.photosCount);
 
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.LastDistance > 1000);
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.LastDistance > 5000);
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.LastDistance > 10000);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM, stats.lastDistance > 1000);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM, stats.lastDistance > 5000);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM, stats.lastDistance > 10000);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_100KMH, stats.topSpeed > 100);
         p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH, stats.topSpeed > 500);
-        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.TotalVenueCheckins == 0);
+        p.apply(skill.Curiosity, ExperienceConstants.Foursquare.CHECKIN_AT_JUST_CREATED_PLACE, currentCheckin.totalVenueCheckins == 0);
         //console.log('PLAYER', ExperienceConstants, p);
       });
   }

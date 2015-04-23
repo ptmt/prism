@@ -8,17 +8,17 @@ var TopToolbar = React.createClass({
   render: function() {
 
     var currentDate = this.props.date ? this.formatDate(new Date(this.props.date*1000)) : this.formatDate(new Date());
-
+    var progress = this.props.currentI / this.props.totalI;
     return (
       <mui.Toolbar>
         <mui.ToolbarGroup key={0} float="left">
           <Providers/>
           <span className="mui-toolbar-separator">&nbsp;</span>
         </mui.ToolbarGroup>
-        <PlaybackControls progress={this.props.progress} isPlaying={this.props.isPlaying} onChange={this.props.onPlaybackChange}/>
+        <PlaybackControls progress={progress} isPlaying={this.props.isPlaying} onChange={this.props.onPlaybackChange}/>
         <mui.ToolbarGroup key={1} float="right">
           <span className="mui-toolbar-separator">&nbsp;</span>
-          <span className="mui-drop-down-menu toolbar-text">0/433</span>
+          <span className="mui-drop-down-menu toolbar-text">{this.props.currentI}/{this.props.totalI}</span>
           <span className="mui-drop-down-menu toolbar-text">{currentDate}</span>
         </mui.ToolbarGroup>
       </mui.Toolbar>

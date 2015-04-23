@@ -18,13 +18,23 @@ class SocialPlayer
   level: number;
 
   constructor() {
-    this.skills = [];
+    this.skills = {};
+    this.achievements = [];
     this.exp = 0;
     this.level = 0;
   }
 
   addSkill(skill: any, points: number) {
-    this.skills[skill] = points;
+    if (this.skills[skill]) {
+      this.skills[skill] += points;
+    } else {
+      this.skills[skill] = points;
+    }
+
+  }
+
+  achieve(date: Date, achieveName: string) {
+    this.achievements.push(date + ' : ' + achieveName);
   }
 
   apply(skill: any, points: number, conditions?: bool) {

@@ -33,7 +33,11 @@ var Main = React.createClass({
         },
         player: {
           level: 0,
-          exp: 0
+          exp: 0,
+          skills: {
+            curiosity: 0,
+            sociality: 0
+          }
         }
       }
     };
@@ -48,7 +52,6 @@ var Main = React.createClass({
   },
 
   render(): any {
-    var progress = this.state.i / this.state.iterationsTotal;
     var lastPoints = this.state.points.slice(-4);
     return (
       <div>
@@ -58,12 +61,13 @@ var Main = React.createClass({
           onPointAdded={this.onPointAdded} />
         <TopToolbar
           date={this.state.timestamp}
-          progress={progress}
+          currentI={this.state.i}
+          totalI={this.state.iterationsTotal}
           isPlaying={this.state.playing}
           onPlaybackChange={this.onPlaybackChange}/>
         <StatPanel player = {this.state.iteration.player} stat={this.state.iteration.stats}/>
         <NotificationBlock points= {lastPoints} />
-        <LeftPanel stats = {this.state.iteration.stats}/>
+        <LeftPanel stats = {this.state.iteration.stats} player={this.state.iteration.player}/>
         <mui.Snackbar message="Loading .."/>
       </div>);
   },

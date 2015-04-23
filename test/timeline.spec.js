@@ -23,14 +23,14 @@ describe('Test levels', function () {
     assert.notEqual(fetchedTimeline.providers, undefined);
   });
 
-  it('first iteration stats should be almost empty, except the point', function () {
+  it('first iteration stats should be almost empty', function () {
     var firstIteration = fetchedTimeline.iterations[fetchedTimeline.timestamps[0]];
     //console.log(firstIteration);
     assert.equal(firstIteration.currentPoint.caption, 'Академия Вкуса');
     assert.equal(firstIteration.currentPoint.source, 'Foursquare');
-    assert.equal(firstIteration.player.exp, 10);
-    assert.equal(firstIteration.player.level, 1);
-    assert.equal(firstIteration.player.skills.length, 0);
+    assert.equal(firstIteration.player.exp, 70);
+    assert.equal(firstIteration.player.level, 3, 'level');
+    assert.equal(JSON.stringify(firstIteration.player.skills), '{"sociality":10,"curiosity":60}');
     assert.equal(firstIteration.stats.totalDistance, 0);
     assert.equal(firstIteration.stats.avgDistancePerCheckin, 0);
     assert.equal(firstIteration.stats.topSpeed, 0);
@@ -43,9 +43,9 @@ describe('Test levels', function () {
     //console.log(firstIteration);
     assert.equal(firstIteration.currentPoint.caption, 'ТОЦ «Версаль»');
     assert.equal(firstIteration.currentPoint.source, 'Foursquare');
-    assert.equal(firstIteration.player.exp, 20);
-    assert.equal(firstIteration.player.level, 2, 'level');
-    assert.equal(firstIteration.player.skills.length, 0, 'skills');
+    assert.equal(firstIteration.player.exp, 140);
+    assert.equal(firstIteration.player.level, 3, 'level');
+    assert.equal(firstIteration.player.skills.sociality, 20, 'skills - sociality');
     assert.equal(firstIteration.stats.totalDistance, 18, 'totalDistance');
     assert.equal(firstIteration.stats.avgDistancePerCheckin, 18);
     assert.equal(firstIteration.stats.avgSpeed, 1, 'avgSpeed');
@@ -57,15 +57,16 @@ describe('Test levels', function () {
 
   it('last iteration stats should give valid total stats', function () {
     var lastIteration = fetchedTimeline.iterations[fetchedTimeline.timestamps[fetchedTimeline.timestamps.length - 1]];
-    console.log(lastIteration);
-    assert.equal(lastIteration.player.exp, 14650);
-    assert.equal(lastIteration.player.level, 8, 'level');
-    assert.equal(lastIteration.player.skills.length, 0, 'skills');
+    console.log(lastIteration.stats.fs);
+    assert.equal(lastIteration.player.exp, 31340);
+    assert.equal(lastIteration.player.level, 9, 'level');
+    assert.equal(lastIteration.player.skills.sociality, 2500, 'skills - sociality');
+    assert.equal(lastIteration.player.skills.curiosity, 28840, 'skills - curiosity');
     assert.equal(lastIteration.stats.totalDistance, 34368, 'totalDistance');
     assert.equal(lastIteration.stats.avgDistancePerCheckin, 138, 'avgDistancePerCheckin');
     assert.equal(lastIteration.stats.topSpeed, 462, 'topSpeed');
     assert.equal(lastIteration.stats.avgSpeed, 8, 'avgSpeed');
     assert.equal(lastIteration.stats.lastDistance, 3642);
-
+    assert.equal(lastIteration.stats.mostLikedCheckin.id, '51131a05e4b0c374a6b112f2');
   });
 });
