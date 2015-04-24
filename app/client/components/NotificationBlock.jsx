@@ -30,14 +30,15 @@ var NotificationBlock = React.createClass({
             <div className="value"><img width="200px" src={point.photo} /></div>
           }
 
-          <div className="label"><span className= {icon}></span> {hours}:{minutes} {point.caption}
-          {point.likes.length &&
-            <span>(likes: {point.likes})</span>
-          }
-          {point.comments &&
-            <span>(comments: {point.comments})</span>
-          }
+          <div className="label">
+            <span className="icons">
+              <span className= {icon}></span>
+              <span className="icon ion-android-favorite"></span>{point.likes}
+              <span className="icon ion-chatbubble-working"></span>{point.comments}
+            </span>
+           {hours}:{minutes} {point.caption}
           </div>
+
 
         </div>
       </div>

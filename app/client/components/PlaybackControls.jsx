@@ -1,5 +1,6 @@
 var React = require('react');
 var mui = require('material-ui');
+var keymaster = require('keymaster');
 
 var PlaybackControls = React.createClass({
 
@@ -21,10 +22,30 @@ var PlaybackControls = React.createClass({
           <mui.FontIcon className="ion-ios-fastforward"/>
         </mui.IconButton>
 
-        <mui.Slider ref="slider" name="timelineSlider" value={progress} onDragStop={this.onSliderChange} />
+        <mui.Slider ref="slider" name="timelineSlider"
+          value={progress}
+          onDragStart={this.onDragSart}
+          onDragStop={this.onSliderChange} />
       </div>
     );
   },
+
+  componentDidMount: function() {
+    keymaster('space', this.onPlayPauseHandler)
+  },
+
+  componentWillUnmount: function() {
+    keymaster.unbind('space', this.onPlayPauseHandler)
+  },
+
+  onDragSart() {
+    if (this.props.onChange) {
+      this.props.onChange({
+        action: 'pause'
+      });
+    }
+  },
+
   onPlayPauseHandler() {
     if (this.props.onChange) {
       this.props.onChange({

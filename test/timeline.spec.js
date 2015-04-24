@@ -4,6 +4,7 @@
 var chai = require('chai');
 var assert = chai.assert;
 var MainController = require('../app/server.compiled/controllers/main');
+var _ = require('lodash');
 
 describe('Test levels', function () {
 
@@ -57,7 +58,7 @@ describe('Test levels', function () {
 
   it('last iteration stats should give valid total stats', function () {
     var lastIteration = fetchedTimeline.iterations[fetchedTimeline.timestamps[fetchedTimeline.timestamps.length - 1]];
-    console.log(lastIteration.stats.fs);
+    console.log(lastIteration);
     assert.equal(lastIteration.player.exp, 31340);
     assert.equal(lastIteration.player.level, 9, 'level');
     assert.equal(lastIteration.player.skills.sociality, 2500, 'skills - sociality');
@@ -67,6 +68,14 @@ describe('Test levels', function () {
     assert.equal(lastIteration.stats.topSpeed, 462, 'topSpeed');
     assert.equal(lastIteration.stats.avgSpeed, 8, 'avgSpeed');
     assert.equal(lastIteration.stats.lastDistance, 3642);
-    assert.equal(lastIteration.stats.mostLikedCheckin.id, '51131a05e4b0c374a6b112f2');
+    assert.equal(lastIteration.stats.mostLikedCheckin.caption, 'Международный аэропорт Домодедово / Domodedovo International Airport (DME)');
   });
+
+  it('should be calculate client usage', function() {
+    var iteration = fetchedTimeline.iterations[fetchedTimeline.timestamps[fetchedTimeline.timestamps.length - 1]];
+
+    assert.equal(iteration.stats.fs.clients, '4th & Mayor(192), Foursquare for WP7(50), foursquare for Android(8)');
+
+
+  })
 });

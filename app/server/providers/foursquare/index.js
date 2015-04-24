@@ -80,8 +80,20 @@ class FoursquareProvider extends Provider {
       lng: item.venue ? item.venue.location.lng : 0,
       r: 1,
       photo: item.photos.count > 0 ?item.photos.items[0].prefix + '680x680' + item.photos.items[0].suffix : '',
-      likes: item.likes.count,
+      likes: item.likesCount,
+      comments: item.commentsCount,
       source: 'Foursquare'
+    }
+  }
+
+  cleanup(iterations: any) {
+    for (var key in iterations) {
+      var i = iterations[key];
+      i.stats.prevprevCheckin = null;
+      i.stats.previousCheckin = null;
+      i.stats.hottestPlace = this.transformToPoint(i.stats.hottestPlace);
+      i.stats.mostPopularCheckin = this.transformToPoint(i.stats.mostPopularCheckin);
+      i.stats.mostLikedCheckin = this.transformToPoint(i.stats.mostLikedCheckin);
     }
   }
 

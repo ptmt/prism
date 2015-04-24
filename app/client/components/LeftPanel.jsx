@@ -16,21 +16,22 @@ var LeftPanel = React.createClass({
     var icon = !this.state.open ? 'icon ion-chevron-right': 'icon ion-chevron-left';
     var stats = this.props.stats;
     var player = this.props.player;
-    var clients = this.props.stats.fs ? Object.keys(sortBy(this.props.stats.fs.topClients, t=> t)).join('') : '';
-
     return (
       <div className={classes}>
       <div className="info">
           <h3>Common statistics</h3>
           Avg Distance Between Checkins: <span className="accent">{stats.avgDistancePerCheckin}</span> km
-          Most liked: <span className="accent">{stats.mostLikedCheckin && stats.mostLikedCheckin.venue.name}</span><br/>
-          Most popular place: <span className="accent">{stats.mostPopularCheckin && stats.mostPopularCheckin.venue.name}</span><br/>
-          Hottest place: <span className="accent">{stats.hottestPlace && stats.hottestPlace.venue.name}</span><br/>
+          Most liked: <span className="accent">{stats.mostLikedCheckin && stats.mostLikedCheckin.caption}</span><br/>
+          Most popular place: <span className="accent">{stats.mostPopularCheckin && stats.mostPopularCheckin.caption}</span><br/>
+          Hottest place: <span className="accent">{stats.hottestPlace && stats.hottestPlace.caption}</span><br/>
           <h3>Skills</h3>
           Curiosity: <span className="accent">{player.skills.curiosity}</span><br/>
           Sociality: <span className="accent">{player.skills.sociality}</span>
           <h3>System</h3>
-          Top Foursquare Clients: <span className="accent">{clients}</span>
+          {this.props.stats.fs &&
+            <span>Foursquare Clients: <span className="accent">{this.props.stats.fs.clients}</span></span>
+          }
+
       </div>
         <div className="overlay-background">
           <div className="toggler" onClick={this.toggleStatPanel}>

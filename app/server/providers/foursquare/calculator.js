@@ -67,7 +67,8 @@ class FoursquareCalculator  {
 
       /// MOST LIKED & MOST POPULAR
       this.calculationFunctions.push((currentCheckin, stats, socialPlayer) => {
-        currentCheckin.likesCount = currentCheckin.likes.count;
+        currentCheckin.likesCount = currentCheckin.likes.count || 0;
+        currentCheckin.commentsCount = currentCheckin.comments.count || 0;
         currentCheckin.totalVenueCheckins = currentCheckin.venue ?
           currentCheckin.venue.stats.checkinsCount :
           0;
@@ -103,7 +104,14 @@ class FoursquareCalculator  {
           socialPlayer.apply('geeks', ExperienceConstants.Foursquare.CHECKIN_WITH_NEW_FOURSQUARE_CLIENT);
           socialPlayer.achieve(currentCheckin.createdAt, "Check-in with a new client: " + clientName);
         }
-          //stats.topClients = topClients.OrderByDescending(c => c.Value).First().Key;
+        var sortable = [];
+        for (var k in stats.fs.topClients) {
+          sortable.push([k, stats.fs.topClients[k]])
+        }
+        sortable.sort(function(a, b) {return b[1] - a[1]})
+        stats.fs.clients = sortable.map(function(s) {
+          return s[0] + '(' + s[1] + ')';
+        }).join(', ')
       });
 
       this.addExperienceAccumulationTasks();

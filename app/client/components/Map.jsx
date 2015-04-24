@@ -13,7 +13,7 @@ var Map = React.createClass({
       caption: {
         x: 0,
         y: 0,
-        title: ''
+        visible: false
       }
     };
   },
@@ -23,6 +23,19 @@ var Map = React.createClass({
     var layer = mapsLib.initMaskedLayer();
     layer.setData([]);
     map.addLayer(layer);
+    map.on('moveend, zoomend', () => {
+      this.locatePoint(this.props.points[this.props.points.length - 1], map);
+    });
+    map.on('movestart', () => {
+      if (this.state.caption.visible)
+      {
+        this.setState({
+          caption: {
+            visible: false
+          }
+        })
+      }
+    });
     this.setState({
       map: map,
       layer: layer
@@ -30,10 +43,10 @@ var Map = React.createClass({
   },
 
   render(): any {
-    var pointCaptionVisible = this.props.points ? this.props.points.length > 0 : false;
+    console.log(this.state);
     return (<div className="map-container" id="map">
         <PointCaption
-          isVisible={pointCaptionVisible}
+          isVisible={this.state.caption.visible }
           x={this.state.caption.x}
           y={this.state.caption.y}
           caption= {this.state.caption.title}
@@ -59,32 +72,30 @@ var Map = React.createClass({
       }
 
       var p = nextProps.points[nextProps.points.length - 1];
-      if (p.lat) {
-        var a = this.state.map.latLngToLayerPoint([p.lat, p.lng]);
-        this.setState({
-          caption: {
-            x: a.x,
-            y: a.y
-          //  title: p.caption,
-          //  image: p.photo
-          }
-        });
-        // this.props.onPointAdded({
-        //   left: true,
-        //   caption: p.caption,
-        //   image: p.photo
-        // });
-      }
+      this.locatePoint(p, this.state.map);
 
-    if (nextProps.points.length > 1
-      && nextProps.points[nextProps.points.length - 1].lat
-      && nextProps.points[nextProps.points.length - 2].lat) {
-         path.drawLine(
-           nextProps.points.length
-           , nextProps.points[nextProps.points.length - 1]
-           , nextProps.points[nextProps.points.length - 2]
-           , this.state.map);
+      if (nextProps.points.length > 1
+        && nextProps.points[nextProps.points.length - 1].lat
+        && nextProps.points[nextProps.points.length - 2].lat) {
+           path.drawLine(
+             nextProps.points.length
+             , nextProps.points[nextProps.points.length - 1]
+             , nextProps.points[nextProps.points.length - 2]
+             , this.state.map);
+        }
       }
+  },
+
+  locatePoint(p, map) {
+    if (p && p.lat) {
+      var a = map.latLngToContainerPoint([p.lat, p.lng]);
+      this.setState({
+        caption: {
+          x: a.x,
+          y: a.y,
+          visible: true
+        }
+      });
     }
   },
 

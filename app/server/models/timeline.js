@@ -49,6 +49,8 @@ class Timeline {
             this.iterations[iteration.key] = iteration;
             iteration = provider.calculateNextIteration(stats, player);
           }
+          // Cleanup for each providers
+          provider.cleanup(this.iterations);
         });
         // Build the timestamps array
         // for the playback controls and for easy iterations

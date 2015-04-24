@@ -5,7 +5,7 @@
   display: -moz-box;
   display: -ms-flexbox;
   flex-wrap: wrap;
-  color: #CBCBCB;
+  color: #bbb;
   font-family: 'Anonymous Pro';
   transition: all 1s ease-in-out;
   position: absolute;
@@ -21,6 +21,9 @@
   .label {
     text-align: center;
     margin-top:15px;
+  }
+  .accent {
+    color: white;
   }
 }
 
@@ -41,7 +44,7 @@
   bottom: 57px;
   right: 0px;
   margin: 10px;
-  width: 30%;
+  width: 35%;
   //max-height: 50%;
   //opacity: 0.2;
   z-index: 10;
@@ -50,15 +53,22 @@
   }
   .icon {
     font-size: 1.2em;
+    padding-left: 8px;
+    padding-right: 3px;
   }
   .label {
     overflow: hidden;
     width:100%;
     white-space: nowrap;
-    font-family: 'Anonymous Pro';
+    //font-family: 'Anonymous Pro';
     color: white;
     animation: typewriter 0.8s steps(60, end);
-    //-webkit-animation: typewriter 0.8s steps(60, end);
+  }
+  .icons {
+    padding-right: 10px;
+  }
+  img {
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
   }
 }
 
@@ -100,7 +110,7 @@
   }
   .info {
     position: absolute;
-    margin-top: 60px;
+    margin-top: 20px;
     padding: 10px;
     color: #bbb;
   }
