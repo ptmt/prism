@@ -67,7 +67,8 @@ var Map = React.createClass({
 
       if (nextProps.points.length > 0 && !this.state.map.getBounds().contains(this.state.layer.bounds20)) {
          this.state.map.fitBounds(this.state.layer.bounds20, {
-           animate: true
+           animate: true,
+           padding: [200, 200]
          });
       }
 

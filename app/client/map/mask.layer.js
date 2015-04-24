@@ -55,7 +55,7 @@ var extend = function (L) {
 
       this.bounds = new L.LatLngBounds(dataset);
 
-      this.bounds20 = new L.LatLngBounds(dataset.slice(-20));
+      this.bounds20 = new L.LatLngBounds(dataset.slice(-10));
       // if (dataset.length > 1) {
       //   this.centerView = [(bounds20.getSouthWest().lat + bounds20.getNorthEast().lat) /
       //     2,
