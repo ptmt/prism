@@ -4,7 +4,6 @@ var mui = require('material-ui');
 
 var PointCaption = React.createClass({
   render: function(): any {
-    console.log(this.props.isVisible);
     var style = {
       top: this.props.y,
       left: this.props.x,

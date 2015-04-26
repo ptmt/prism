@@ -10,7 +10,7 @@ var NotificationBlock = require('./NotificationBlock');
 var StatPanel = require('./StatPanel');
 var LeftPanel = require('./LeftPanel');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-//var providersStore = require('../stores/ProvidersStore');
+var providersStore = require('../stores/ProvidersStore');
 var timelineStore = require('../stores/timelineStore');
 var tweenState = require('react-tween-state');
 
@@ -45,10 +45,12 @@ var Main = React.createClass({
 
   componentDidMount() {
     timelineStore.listen(this.onChange);
+    providersStore.listen(this.onWelcomeAction);
   },
 
   componentWillUnmount() {
-    timelineStore.unlisten(this.onChange)
+    timelineStore.unlisten(this.onChange);
+    providersStore.unlisten(this.onWelcomeAction);
   },
 
   render(): any {
@@ -68,12 +70,20 @@ var Main = React.createClass({
         <StatPanel player = {this.state.iteration.player} stat={this.state.iteration.stats}/>
         <NotificationBlock points= {lastPoints} />
         <LeftPanel stats = {this.state.iteration.stats} player={this.state.iteration.player}/>
-        <mui.Snackbar message="Loading .."/>
+        <mui.Snackbar ref="loader" message="Loading..."/>
       </div>);
   },
 
+  onWelcomeAction(data) {
+    if (data.isLoading) {
+      this.refs.loader.show();
+    }
+  },
+
   onChange(data) {
+    this.refs.loader.dismiss();
     this.setState({
+      loading: false,
       source: data,
       playing: true
     })

@@ -43,7 +43,6 @@ var Map = React.createClass({
   },
 
   render(): any {
-    console.log(this.state);
     return (<div className="map-container" id="map">
         <PointCaption
           isVisible={this.state.caption.visible }

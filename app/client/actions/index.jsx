@@ -1,16 +1,15 @@
 var alt = require('../alt')
 
-class PlaybackActions {
+class PrismActions {
   constructor() {
     this.generateActions(
       'init',
       'welcome',
       'error',
-      'fetchTimelineCompleted',
-      'start',
-      'pause'
+      'fetchTimelineStart',
+      'fetchTimelineCompleted'
     )
   }
 }
 
-module.exports = alt.createActions(PlaybackActions)
+module.exports = alt.createActions(PrismActions)

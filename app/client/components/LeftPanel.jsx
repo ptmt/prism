@@ -11,6 +11,15 @@ var LeftPanel = React.createClass({
     }
   },
 
+  _renderAction(point) {
+    return <span className="accent accent-clickable"
+      onClick={this.handlePoint}>{point.caption}</span>;
+  },
+
+  handlePoint(point) {
+    console.log(point);
+  },
+
   render: function(): any {
     var classes = !this.state.open ? 'left-panel closed': 'left-panel opened';
     var icon = !this.state.open ? 'icon ion-chevron-right': 'icon ion-chevron-left';
@@ -22,7 +31,7 @@ var LeftPanel = React.createClass({
           <h3>Common statistics</h3>
           Avg Distance Between Checkins: <span className="accent">{stats.avgDistancePerCheckin}</span> km
           Most liked: <span className="accent">{stats.mostLikedCheckin && stats.mostLikedCheckin.caption}</span><br/>
-          Most popular place: <span className="accent">{stats.mostPopularCheckin && stats.mostPopularCheckin.caption}</span><br/>
+          Most popular place: {stats.mostPopularCheckin && this._renderAction(stats.mostPopularCheckin)}<br/>
           Hottest place: <span className="accent">{stats.hottestPlace && stats.hottestPlace.caption}</span><br/>
           <h3>Skills</h3>
           Curiosity: <span className="accent">{player.skills.curiosity}</span><br/>
