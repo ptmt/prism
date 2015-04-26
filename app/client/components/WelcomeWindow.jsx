@@ -21,7 +21,7 @@ var WelcomeWindow = React.createClass({
         <div className="signup-services">
           <Providers/>
           <p>or</p>
-          <mui.RaisedButton href="?demo=1" label="try Demo" primary={true} linkButton="true"/>
+          <mui.RaisedButton href="/?demo=1" label="try Demo" primary={true} linkButton="true"/>
         </div>
         <div className="footer">
           <a href="https://github.com/unknownexception/prism">readme.md</a>

@@ -12,11 +12,16 @@ class FoursquareService {
       'secrets': {
         'clientId': CONF.foursquare.clientId,
         'clientSecret': CONF.foursquare.clientSecret,
-        'redirectUrl': CONF.app.host + '/api/v1/auth/foursquare/callback'
+        'redirectUrl': CONF.app.host + '/api/v1/auth/foursquare_callback'
       }
     });
     this.options = options || {};
   }
+
+  getFoursquareUrl(){
+    return this.foursquareApi.getAuthClientRedirectUrl();
+  }
+
   auth(code:string, callback: any):void {
     this.foursquareApi.getAccessToken({
       code: code

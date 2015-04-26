@@ -6,11 +6,16 @@ var Providers = React.createClass({
   render: function(): any {
     return (
       <span>
-        <mui.FontIcon className="ion-social-foursquare" />
+        <mui.IconButton onClick={this.handleFoursquare} iconClassName="ion-social-foursquare" tooltip="Foursquare"/>
         <mui.FontIcon className="ion-social-instagram" />
         <mui.FontIcon className="ion-social-github" />
       </span>
     );
+  },
+
+  handleFoursquare() {
+    // redirect or open the new window?
+    window.location.href="/api/v1/auth/foursquare";
   }
 });
 
