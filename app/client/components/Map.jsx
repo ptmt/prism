@@ -5,6 +5,7 @@ var config = require('../config');
 var mapsLib = require('../map');
 var PointCaption = require('./PointCaption');
 var path = require('../map/path');
+var statsStore = require('../stores/StatsStore');
 
 var Map = React.createClass({
 
@@ -17,8 +18,14 @@ var Map = React.createClass({
       }
     };
   },
-  //
+
+
+  componentWillUnmount() {
+    statsStore.unlisten(this.onStoreChange);
+  },
+
   componentDidMount() {
+    statsStore.listen(this.onStoreChange);
     var map = mapsLib.initMap();
     var layer = mapsLib.initMaskedLayer();
     layer.setData([]);
@@ -101,6 +108,13 @@ var Map = React.createClass({
 
   drawPoints(points: Array<any>) {
     this.state.layer.setData(points);
+  },
+
+  onStoreChange(store) {
+    var p = store.point;
+    console.log('handle point clicked', p);
+    this.state.map.panTo([p.lat, p.lng]);
+
   }
 
 });

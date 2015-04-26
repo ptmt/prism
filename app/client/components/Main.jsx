@@ -11,7 +11,7 @@ var StatPanel = require('./StatPanel');
 var LeftPanel = require('./LeftPanel');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var providersStore = require('../stores/ProvidersStore');
-var timelineStore = require('../stores/timelineStore');
+var timelineStore = require('../stores/TimelineStore');
 var tweenState = require('react-tween-state');
 
 var Main = React.createClass({
@@ -69,7 +69,10 @@ var Main = React.createClass({
           onPlaybackChange={this.onPlaybackChange}/>
         <StatPanel player = {this.state.iteration.player} stat={this.state.iteration.stats}/>
         <NotificationBlock points= {lastPoints} />
-        <LeftPanel stats = {this.state.iteration.stats} player={this.state.iteration.player}/>
+        <LeftPanel
+          stats = {this.state.iteration.stats}
+          player={this.state.iteration.player}
+        />
         <mui.Snackbar ref="loader" message="Loading..."/>
       </div>);
   },

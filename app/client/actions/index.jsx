@@ -7,7 +7,8 @@ class PrismActions {
       'welcome',
       'error',
       'fetchTimelineStart',
-      'fetchTimelineCompleted'
+      'fetchTimelineCompleted',
+      'pointClicked'
     )
   }
 }

@@ -12,7 +12,7 @@ module.exports = alt.createStore(class TimelineStore {
   onFetchTimelineCompleted(data) {
     this.timeline = data;
   }
-
+  
   onError() {
     console.log('error');
   }

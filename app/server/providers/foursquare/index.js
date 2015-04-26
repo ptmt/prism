@@ -70,11 +70,12 @@ class FoursquareProvider extends Provider {
       //console.log(item.posts);
       //return false;
     }
-    var caption = item.venue ? item.venue.name : '';
+    var caption = item.venue ? item.venue.name : '<deleted>';
     if (item.shout) {
       caption += ' // ' + item.shout;
     }
     return {
+      name: item.venue ? item.venue.name : '<deleted>',
       caption: caption,
       lat: item.venue ? item.venue.location.lat : 0,
       lng: item.venue ? item.venue.location.lng : 0,
