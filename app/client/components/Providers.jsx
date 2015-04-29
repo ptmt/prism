@@ -7,8 +7,8 @@ var Providers = React.createClass({
     return (
       <span>
         <mui.IconButton onClick={this.handleFoursquare} iconClassName="ion-social-foursquare" tooltip="Foursquare"/>
-        <mui.FontIcon className="ion-social-instagram" />
-        <mui.FontIcon className="ion-social-github" />
+        <mui.IconButton iconClassName="ion-social-instagram" />
+        <mui.IconButton iconClassName="ion-social-github" />
       </span>
     );
   },

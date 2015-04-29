@@ -9,20 +9,38 @@ class HttpError extends Error {
 }
 
 class AuthController {
+
+  // trying to create Foursquare login url and redirect to it
   static foursquare(req: any, content: any, cb: () => void) {
-    // res.writeHead(302, {
-    //   'Location': f.getFoursquareUrl(),
-    //   'Content-Length': '0'
-    // });
-    // res.end();
-    //
-    console.log(f.getFoursquareUrl());
     return cb(null, 'end', {
       statusCode: 302,
       headers: {
         'Location': f.getFoursquareUrl(),
         'Content-Length': '0'
       }
+    })
+  }
+
+  // return access code to client
+  static foursquare_callback(req: any, content: any, cb: () => void) {
+    return cb(null, 'end', {
+      statusCode: 302,
+      headers: {
+        'Location': '/?foursquareCode=' + req.query.code,
+        'Content-Length': '0'
+      }
+    })
+    // f.auth(req.query.code, (err, accessToken) => {
+    //   console.log(req.query.code, err, accessToken);
+    //   cb(err, accessToken);
+    // })
+  }
+
+  // auth with code
+  static foursquare_auth(req: any, content: any, cb: () => void) {
+    f.auth(req.query.code, (err, accessToken) => {
+      console.log(req.query.code, err, accessToken);
+      cb(err, accessToken);
     })
   }
   // static getTimeline(req: Request, content: any, render: () => void) {

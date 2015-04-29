@@ -17,13 +17,11 @@ class HttpError extends Error {
 }
 
 class MainController {
-  static connected(req: Request, content: any, render: () => void) {
-    render(null, "ok");
-  }
   static getTimeline(req: Request, content: any, render: () => void) {
     // get data from each provider and recalculate timeline
     //console.log('loaded ', providers.length, ' providers');
-    req.timeline = new Timeline(providers);
+    console.log(JSON.parse(req.query.codes));
+    req.timeline = new Timeline(req.query ? JSON.parse(req.query.codes) : {}, providers);
     req.timeline.fetch().then(function(result) {
       render(null, result);
     });

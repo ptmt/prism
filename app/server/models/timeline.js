@@ -24,19 +24,26 @@ class Timeline {
   timestamps: Array<string>;
   iterations: IterationMap;
   providers: Array<any>;
-  constructor(providers: any) {
+  authKeys: { [key:string]: string };
+  constructor(authKeys: any, providers: any) {
     this.providers = providers;
     this.iterations = {};
+    this.authKeys = authKeys;
   };
+
   initAll(): Promise {
     var stats = {};
     return Promise.reduce(this.providers, (s, p) => {
-      return p.init(s);
+      var code = this.authKeys[p.name.toLowerCase()];
+      return p.init(s, code);
     }, stats).then(s => {
       return Promise.resolve(stats);
     });
   };
 
+  /*
+    Fetch and calculate all iterations
+  */
   fetch():any {
     return this.initAll()
       .then(stats => {

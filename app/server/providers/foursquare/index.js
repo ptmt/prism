@@ -13,33 +13,31 @@ var _ = require('lodash');
  * must implements required methods
  */
 class FoursquareProvider extends Provider {
-  name: string;
   checkinsData: any;
   service: FoursquareService;
   calculator: FoursquareCalculator;
+
+  constructor() {
+    this.name = "Foursquare";
+  }
 
   /*
    * Init function which retrieve information from remote endpoint
    * and execute init calculation functions
    */
-  init(stats: any, cb: Function) {
-    this.name = 'Foursquare';
+  init(stats: any, authCode: string) {
     this.service = new FoursquareService({
-      demo: process.NODE_ENV !== 'production'
+      authCode: authCode
     });
     this.calculator = new FoursquareCalculator();
 
     return new Promise((resolve, reject) => {
-      this.service.getCheckins(0, 250, (err, checkins) => {
+      this.service.fetchAllData().then(checkins => {
         this.checkinsData = checkins;
         this.calculator.initFunctions.forEach((initFunc) => {
           initFunc(stats, checkins);
         });
-        if (err) {
-          reject(err);
-        } else {
-          resolve(stats);
-        }
+        resolve(stats);
       });
     });
   }

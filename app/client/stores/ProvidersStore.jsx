@@ -16,7 +16,7 @@ module.exports = alt.createStore(class ProvidersStore {
     if (document.location.href.indexOf('demo') > -1) {
       this.isDemo = true;
       this.isLoading = true;
-      service.fetchTimeline(true, (err, data) => {
+      service.fetchTimeline({}, (err, data) => {
         this.isLoading = false;
         if (err) {
           prismActions.error(err);
@@ -26,9 +26,33 @@ module.exports = alt.createStore(class ProvidersStore {
       });
     } else {
       // do nothing, just welcome screen?
-      // or check if some provider already connected?
+      if (document.location.href.indexOf('foursquareCode') > -1) {
+        this.isDemo = true;
+        this.isLoading = true;
+        var code = document.location.href.split('foursquareCode')[1].split('=')[1];
+        if (supportsStorage) {
+          window.localStorage['foursquare.code'] = code;
+        }
+        // then fetch timeline with code
+        service.fetchTimeline({foursquare: code}, (err, data) => {
+          this.isLoading = false;
+          if (err) {
+            prismActions.error(err);
+          } else {
+            prismActions.fetchTimelineCompleted(data);
+          }
+        });
+      }
     }
   }
 
 
-})
+});
+
+function supportsStorage() {
+  try {
+    return 'localStorage' in window && window['localStorage'] !== null;
+  } catch (e) {
+    return false;
+  }
+}
