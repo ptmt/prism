@@ -14,10 +14,9 @@ There is no databases yet. All data obtained from third-party providers stored i
 
 I love checkins even more than Foursquare do. Blog post coming.
 
-
 # Self-hosted version
 
-To build and run PRISM inside docker container:
+To build and run PRISM inside docker container (ensure you have Docker daemon running):
 ```
 make
 make run

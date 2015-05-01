@@ -59,22 +59,22 @@ describe('Test levels', function () {
   it('last iteration stats should give valid total stats', function () {
     var lastIteration = fetchedTimeline.iterations[fetchedTimeline.timestamps[fetchedTimeline.timestamps.length - 1]];
     console.log(lastIteration);
-    assert.equal(lastIteration.player.exp, 31340);
-    assert.equal(lastIteration.player.level, 9, 'level');
-    assert.equal(lastIteration.player.skills.sociality, 2500, 'skills - sociality');
-    assert.equal(lastIteration.player.skills.curiosity, 28840, 'skills - curiosity');
-    assert.equal(lastIteration.stats.totalDistance, 34368, 'totalDistance');
-    assert.equal(lastIteration.stats.avgDistancePerCheckin, 138, 'avgDistancePerCheckin');
-    assert.equal(lastIteration.stats.topSpeed, 462, 'topSpeed');
-    assert.equal(lastIteration.stats.avgSpeed, 8, 'avgSpeed');
-    assert.equal(lastIteration.stats.lastDistance, 3642);
-    assert.equal(lastIteration.stats.mostLikedCheckin.caption, 'Международный аэропорт Домодедово / Domodedovo International Airport (DME)');
+    assert.equal(lastIteration.player.exp, 120930);
+    assert.equal(lastIteration.player.level, 10, 'level');
+    assert.equal(lastIteration.player.skills.sociality, 8030, 'skills - sociality');
+    assert.equal(lastIteration.player.skills.curiosity, 112900, 'skills - curiosity');
+    assert.equal(lastIteration.stats.totalDistance, 68107, 'totalDistance');
+    assert.equal(lastIteration.stats.avgDistancePerCheckin, 84, 'avgDistancePerCheckin');
+    assert.equal(lastIteration.stats.topSpeed, 1600, 'topSpeed');
+    assert.equal(lastIteration.stats.avgSpeed, 0, 'avgSpeed');
+    assert.equal(lastIteration.stats.lastDistance, 5);
+    assert.equal(lastIteration.stats.mostLikedCheckin.caption, 'Sky Way Панорама');
   });
 
   it('should be calculate client usage', function() {
     var iteration = fetchedTimeline.iterations[fetchedTimeline.timestamps[fetchedTimeline.timestamps.length - 1]];
 
-    assert.equal(iteration.stats.fs.clients, '4th & Mayor(192), Foursquare for WP7(50), foursquare for Android(8)');
+    assert.equal(iteration.stats.fs.clients, '4th & Mayor(661), Foursquare for WP7(50), Swarm for Android(50), Windows Phone 8(20), Swarm for iOS(13), Foursquare for Android(8), Swarm for Windows Phone(1)');
 
 
   })
