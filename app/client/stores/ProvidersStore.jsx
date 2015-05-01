@@ -16,28 +16,36 @@ module.exports = alt.createStore(class ProvidersStore {
     if (document.location.href.indexOf('demo') > -1) {
       this.fetchTimeline({});
     } else {
-      // do nothing, just welcome screen?
-      if (document.location.href.indexOf('foursquareCode') > -1) {
-        var code = document.location.href.split('foursquareCode')[1].split('=')[1];
-        if (supportsStorage()) {
-          window.localStorage['foursquare.code'] = code;
-        }
-        // then fetch timeline with code
-        this.fetchTimeline({foursquare: code});
+      if (supportsStorage() && window.localStorage['foursquare.token']) {
+        return this.fetchTimeline({foursquare: window.localStorage['foursquare.token']});
       }
 
-      if (supportsStorage() && window.localStorage['foursquare.code']) {
-        this.fetchTimeline({foursquare: window.localStorage['foursquare.code']});
+      if (document.location.href.indexOf('foursquareToken') > -1) {
+        var token = document.location.href.split('foursquareToken')[1].split('=')[1];
+        if (token.indexOf('#') > -1) {
+          token = token.split('#')[0];
+        }
+        if (supportsStorage()) {
+          window.localStorage['foursquare.token'] = token;
+        }
+        // then fetch timeline with tokens
+        this.fetchTimeline({foursquare: token});
       }
+
+      if (document.location.href.indexOf('server_error') > -1) {
+        setTimeout(() => {
+          prismActions.error('Error has occured. Please create an issue on github.com/unknownexception/prism');
+        }, 1);
+      }
+
     }
   }
 
-  fetchTimeline(codes) {
+  fetchTimeline(tokens) {
     this.isLoading = true;
     this.isNotStarted = false;
-    service.fetchTimeline(codes, (err, data) => {
+    service.fetchTimeline(tokens, (err, data) => {
       this.isLoading = false;
-      console.log(err, data);
       if (err || !data) {
         prismActions.error(err ? err : 'Error has occured. Please create an issue on github.com/unknownexception/prism');
       } else {

@@ -73,6 +73,9 @@ var PlaybackControls = React.createClass({
         action: 'setStep',
         value: this.refs.slider.getValue()
       });
+      this.props.onChange({
+        action: 'play'
+      });
     }
   }
 });

@@ -35,7 +35,8 @@ type Timeline = {
 
 // TODO: rewrite with promises?
 module.exports = {
-  fetchTimeline: function(codes: any, callback: Function) {
-    cache.setAsync('/api/v1/gettimeline?codes=' + JSON.stringify(codes), callback);
+  fetchTimeline: function(tokens: any, callback: Function) {
+    //console.log(tokens, JSON.stringify(tokens));
+    cache.setAsync('/api/v1/gettimeline?tokens=' + encodeURIComponent(JSON.stringify(tokens)), callback);
   }
 }

@@ -23,17 +23,23 @@ class AuthController {
 
   // return access code to client
   static foursquare_callback(req: any, content: any, cb: () => void) {
-    return cb(null, 'end', {
-      statusCode: 302,
-      headers: {
-        'Location': '/?foursquareCode=' + req.query.code,
-        'Content-Length': '0'
-      }
-    })
-    // f.auth(req.query.code, (err, accessToken) => {
-    //   console.log(req.query.code, err, accessToken);
-    //   cb(err, accessToken);
-    // })
+    f.auth(req.query.code).then(accessToken => {
+      return cb(null, 'end', {
+        statusCode: 302,
+        headers: {
+          'Location': '/?foursquareToken=' + accessToken,
+          'Content-Length': '0'
+        }
+      })
+    }).catch(error => {
+      return cb(null, 'end', {
+        statusCode: 302,
+        headers: {
+          'Location': '/?server_error=' + error,
+          'Content-Length': '0'
+        }
+      })
+    });
   }
 
   // auth with code

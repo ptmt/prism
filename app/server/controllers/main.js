@@ -20,10 +20,12 @@ class MainController {
   static getTimeline(req: Request, content: any, render: () => void) {
     // get data from each provider and recalculate timeline
     //console.log('loaded ', providers.length, ' providers');
-    console.log(JSON.parse(req.query.codes));
-    req.timeline = new Timeline(req.query ? JSON.parse(req.query.codes) : {}, providers);
+    //console.log(req.query.tokens, JSON.parse(decodeURIComponent(req.query.tokens)));
+    req.timeline = new Timeline(req.query ? JSON.parse(decodeURIComponent(req.query.tokens)) : {}, providers);
     req.timeline.fetch().then(function(result) {
       render(null, result);
+    }).catch(error => {
+      render(error);
     });
 
   }

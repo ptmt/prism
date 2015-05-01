@@ -25,9 +25,9 @@ class FoursquareProvider extends Provider {
    * Init function which retrieve information from remote endpoint
    * and execute init calculation functions
    */
-  init(stats: any, authCode: string) {
+  init(stats: any, accessToken: string) {
     this.service = new FoursquareService({
-      authCode: authCode
+      accessToken: accessToken
     });
     this.calculator = new FoursquareCalculator();
 
@@ -44,13 +44,13 @@ class FoursquareProvider extends Provider {
 
   calculateNextIteration(stats: any, player: any): ?PrismIteration {
     //console.log(player);
-    if (this.checkinsData.checkins.items.length > stats.fs.i) {
+    if (this.checkinsData.length > stats.fs.i) {
       stats.fs.i++;
     } else {
       return null;
     }
 
-    var currentCheckin = this.checkinsData.checkins.items[stats.fs.i - 1];
+    var currentCheckin = this.checkinsData[stats.fs.i - 1];
 
     this.calculator.calculationFunctions.forEach((calcFunc) => calcFunc(currentCheckin, stats, player));
 

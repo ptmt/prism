@@ -37,10 +37,10 @@ class FoursquareService {
     return this.foursquareApi.getAuthClientRedirectUrl();
   }
 
-  auth():void {
+  auth(code):void {
     return new Promise((resolve, reject) => {
         this.foursquareApi.getAccessToken({
-        code: this.authCode
+        code: code
       }, (error, accessToken) => {
         this.accessToken = accessToken;
         if (error) {
@@ -56,40 +56,53 @@ class FoursquareService {
   getCheckins(offset: number, limit: number, callback: (err: any, checkins: any) => void): any {
     offset = offset || 0;
     limit = limit || 250;
-    if (!this.options.authCode) {
+    if (!this.options.accessToken) {
       callback(null, JSON.parse(
         fs.readFileSync(__dirname + '/../../../../test/mock/foursquare.' + offset + '-' + limit + '.json')
       )); // TODO: move tests and mocks inside providers
     } else {
-      var accessToken = this.accessToken;
+      var accessToken = this.options.accessToken;
       this.foursquareApi.Users.getCheckins('self', {
         offset: offset,
         limit: limit,
         sort: 'oldestfirst'
       }, accessToken,
       function(err, checkins) {
-        console.log(accessToken, err, checkins);
+        //console.log(accessToken, err, checkins);
+        fs.writeFile(__dirname + '/../../../../test/mock/foursquare.' + offset + '-' + limit + '.json',
+          JSON.stringify(checkins));
         callback(err, checkins);
       });
     }
   }
 
-  getCheckinsWrapper() {
-    return new Promise((resolve, reject) => {
-      return this.getCheckins(0, 250, (err, checkins) => {
-        if (err) {
-          console.log('err', err);
-          reject(err);
+  getCheckinsWrapper(i, allCheckins, cb) {
+    this.getCheckins(i, 250, (err, checkins) => {
+      if (err) {
+        console.log('err', err);
+        cb(err);
+      } else {
+        if (checkins.checkins.items.length < 250) {
+          cb(null, allCheckins.concat(checkins.checkins.items));
         } else {
-          resolve(checkins);
+          this.getCheckinsWrapper(i + 250, allCheckins.concat(checkins.checkins.items), cb)
         }
-      });
+
+      }
     });
   }
 
   fetchAllData() {
-    return this.auth()
-        .then(this.getCheckinsWrapper);
+    return new Promise((resolve, reject) => {
+      return this.getCheckinsWrapper(0, [], (err, allCheckins) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log('fetched', allCheckins.length, 'checkins');
+          resolve(allCheckins);
+        }
+      });
+    });
   }
 
 }

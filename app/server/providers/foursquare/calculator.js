@@ -20,7 +20,7 @@ class FoursquareCalculator  {
         stats.fs = stats.fs || {};
         stats.fs.i = 0;
         stats.processedCheckins = 0;
-        stats.checkinsSize = checkinsData.checkins.items.length;
+        stats.checkinsSize = checkinsData.length;
         stats.topSpeed = 0;
         stats.avgSpeed = 0;
         stats.avgDistancePerCheckin = 0;

@@ -33,9 +33,10 @@ class Timeline {
 
   initAll(): Promise {
     var stats = {};
-    return Promise.reduce(this.providers, (s, p) => {
-      var code = this.authKeys[p.name.toLowerCase()];
-      return p.init(s, code);
+    return Promise.reduce(this.providers, (stat, p) => {
+      //console.log('search accessTokens', p.name, this.authKeys);
+      var token = this.authKeys[p.name.toLowerCase()];
+      return p.init(stat, token);
     }, stats).then(s => {
       return Promise.resolve(stats);
     });
