@@ -31,7 +31,7 @@ var WelcomeWindow = React.createClass({
   },
 
   onChange: function() {
-    if (!providersStore.getState().isDemo) {
+    if (providersStore.getState().isNotStarted) {
       this.refs.dialog.show();
     }
   }

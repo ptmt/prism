@@ -74,6 +74,7 @@ var Main = React.createClass({
           player={this.state.iteration.player}
         />
         <mui.Snackbar ref="loader" message="Loading..."/>
+        <mui.Snackbar ref="error" message={this.state.error}/>
       </div>);
   },
 
@@ -84,6 +85,14 @@ var Main = React.createClass({
   },
 
   onChange(data) {
+    if (!data.timeline) {
+      this.refs.loader.dismiss();
+      this.setState({
+        error: data
+      })
+      this.refs.error.show();
+      return;
+    }
     this.refs.loader.dismiss();
     this.setState({
       loading: false,

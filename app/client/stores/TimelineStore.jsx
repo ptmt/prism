@@ -12,8 +12,8 @@ module.exports = alt.createStore(class TimelineStore {
   onFetchTimelineCompleted(data) {
     this.timeline = data;
   }
-  
-  onError() {
-    console.log('error');
+
+  onError(error) {
+    this.error = error;//console.log('error');
   }
 });

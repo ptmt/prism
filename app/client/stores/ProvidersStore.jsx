@@ -6,7 +6,7 @@ var prismActions = require('../actions')
 module.exports = alt.createStore(class ProvidersStore {
   constructor() {
     this.bindActions(prismActions)
-    this.isDemo = false;
+    this.isNotStarted = true;
     this.isLoading = false;
   }
 
@@ -14,36 +14,36 @@ module.exports = alt.createStore(class ProvidersStore {
     // if this is demo scenario or user already logged in
     // then call fetchPrismTimeline() action
     if (document.location.href.indexOf('demo') > -1) {
-      this.isDemo = true;
-      this.isLoading = true;
-      service.fetchTimeline({}, (err, data) => {
-        this.isLoading = false;
-        if (err) {
-          prismActions.error(err);
-        } else {
-          prismActions.fetchTimelineCompleted(data);
-        }
-      });
+      this.fetchTimeline({});
     } else {
       // do nothing, just welcome screen?
       if (document.location.href.indexOf('foursquareCode') > -1) {
-        this.isDemo = true;
-        this.isLoading = true;
         var code = document.location.href.split('foursquareCode')[1].split('=')[1];
-        if (supportsStorage) {
+        if (supportsStorage()) {
           window.localStorage['foursquare.code'] = code;
         }
         // then fetch timeline with code
-        service.fetchTimeline({foursquare: code}, (err, data) => {
-          this.isLoading = false;
-          if (err) {
-            prismActions.error(err);
-          } else {
-            prismActions.fetchTimelineCompleted(data);
-          }
-        });
+        this.fetchTimeline({foursquare: code});
+      }
+
+      if (supportsStorage() && window.localStorage['foursquare.code']) {
+        this.fetchTimeline({foursquare: window.localStorage['foursquare.code']});
       }
     }
+  }
+
+  fetchTimeline(codes) {
+    this.isLoading = true;
+    this.isNotStarted = false;
+    service.fetchTimeline(codes, (err, data) => {
+      this.isLoading = false;
+      console.log(err, data);
+      if (err || !data) {
+        prismActions.error(err ? err : 'Error has occured. Please create an issue on github.com/unknownexception/prism');
+      } else {
+        prismActions.fetchTimelineCompleted(data);
+      }
+    });
   }
 
 

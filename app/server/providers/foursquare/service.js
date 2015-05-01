@@ -44,7 +44,7 @@ class FoursquareService {
       }, (error, accessToken) => {
         this.accessToken = accessToken;
         if (error) {
-          console.log('err', error);
+          console.log('auth error', error);
           reject(error.message);
         } else {
           resolve(accessToken);
