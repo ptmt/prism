@@ -5,7 +5,7 @@
   "repository": "https://github.com/unknownexceptin/prism",
   "scripts": {
     "test": "mocha",
-    "postinstall": "./node_modules/.bin/gulp build"
+    "postinstall": "./node_modules/.bin/gulp build &&  ./node_modules/.bin/webpack --config config/webpack.config.prod.js"
   },
   "jest": {
     "rootDir": "app/client/components",

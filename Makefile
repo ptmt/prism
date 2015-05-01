@@ -6,9 +6,8 @@ build:
 	docker build -t unknownexception/prism .
 
 init:
+	boot2docker init
 	boot2docker up
-	port=`boot2docker info | awk -F=":" -v RS="," '$1~/"DockerPort"/ {print}' | sed 's/\"//g' | sed 's/DockerPort://'`
-	export DOCKER_HOST="tcp://:${port}"
 
 start:
 	echo "Starting image..."

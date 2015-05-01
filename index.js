@@ -1,1 +1,1 @@
-var server = require('app/server.compiled');
+var server = require('./app/server.compiled');

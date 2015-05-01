@@ -5,3 +5,4 @@ config/default.json
 app/server.compiled/
 app/bower_components
 npm-debug.log
+server.log
