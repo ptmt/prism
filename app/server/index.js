@@ -41,6 +41,8 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 rest.get('/connected', mainController.connected);
 rest.get('/gettimeline', mainController.getTimeline);
 rest.get('/auth/foursquare', authController.foursquare);
+rest.get('/auth/instagram', authController.instagram);
 rest.get('/auth/foursquare_callback', authController.foursquare_callback);
+rest.get('/auth/instagram_callback', authController.instagram_callback);
 var port = process.env.NODE_PORT || 9000;
 http.createServer(app).listen(port);

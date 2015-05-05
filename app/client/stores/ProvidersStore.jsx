@@ -16,20 +16,25 @@ module.exports = alt.createStore(class ProvidersStore {
     if (document.location.href.indexOf('demo') > -1) {
       this.fetchTimeline({});
     } else {
-      if (supportsStorage() && window.localStorage['foursquare.token']) {
-        return this.fetchTimeline({foursquare: window.localStorage['foursquare.token']});
+      if (supportsStorage() && window.localStorage['tokens']) {
+        tokens = JSON.parse(window.localStorage['tokens']);
+        return this.fetchTimeline(tokens);
       }
 
-      if (document.location.href.indexOf('foursquareToken') > -1) {
-        var token = document.location.href.split('foursquareToken')[1].split('=')[1];
-        if (token.indexOf('#') > -1) {
-          token = token.split('#')[0];
+      if (document.location.href.indexOf('setToken') > -1) {
+        var token = getParameterByName('setToken');//document.location.href.split('Token')[1].split('=')[1];
+        // if (token.indexOf('#') > -1) {
+        //   token = token.split('#')[0];
+        // }
+        if (!supportsStorage()) {
+          alert('Prism needs localStorage support, could you please enable cookie?');
         }
-        if (supportsStorage()) {
-          window.localStorage['foursquare.token'] = token;
-        }
+        var tokens = window.localStorage['tokens'] ? JSON.parse(window.localStorage['tokens']) : {};
+        tokens[getParameterByName('provider')] = token;
+        window.localStorage['tokens'] = JSON.stringify(tokens);
+
         // then fetch timeline with tokens
-        this.fetchTimeline({foursquare: token});
+        this.fetchTimeline(tokens);
       }
 
       if (document.location.href.indexOf('server_error') > -1) {
@@ -63,4 +68,11 @@ function supportsStorage() {
   } catch (e) {
     return false;
   }
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }

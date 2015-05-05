@@ -20,7 +20,7 @@ type PrismIteration = {
 
 type IterationMap = { [key:string]: PrismIteration };
 
-class Timeline {
+module.exports.Timeline = class Timeline {
   timestamps: Array<string>;
   iterations: IterationMap;
   providers: Array<any>;
@@ -34,7 +34,7 @@ class Timeline {
   initAll(): Promise {
     var stats = {};
     return Promise.reduce(this.providers, (stat, p) => {
-      //console.log('search accessTokens', p.name, this.authKeys);
+      console.log('search accessTokens', p.name, this.authKeys);
       var token = this.authKeys[p.name.toLowerCase()];
       return p.init(stat, token);
     }, stats).then(s => {
@@ -72,5 +72,3 @@ class Timeline {
       });
   }
 }
-
-module.exports.Timeline = Timeline;

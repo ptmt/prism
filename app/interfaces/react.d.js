@@ -1,3 +1,3 @@
-declare module "react.js" {
-  
+declare module "react" {
+
 }

@@ -3,7 +3,7 @@
 var Player = require('../../models/player').Player;
 var Provider = require('../../models/provider');
 var Promise = require('bluebird');
-var FoursquareService = require('./service.js');
+var FoursquareClient = require('./client.js');
 var FoursquareCalculator = require('./calculator');
 var _ = require('lodash');
 //var moment = require('moment');
@@ -14,7 +14,7 @@ var _ = require('lodash');
  */
 class FoursquareProvider extends Provider {
   checkinsData: any;
-  service: FoursquareService;
+  client: FoursquareClient;
   calculator: FoursquareCalculator;
 
   constructor() {
@@ -26,13 +26,13 @@ class FoursquareProvider extends Provider {
    * and execute init calculation functions
    */
   init(stats: any, accessToken: string) {
-    this.service = new FoursquareService({
+    this.client = new FoursquareClient({
       accessToken: accessToken
     });
     this.calculator = new FoursquareCalculator();
 
     return new Promise((resolve, reject) => {
-      this.service.fetchAllData().then(checkins => {
+      this.client.fetchAllData().then(checkins => {
         this.checkinsData = checkins;
         this.calculator.initFunctions.forEach((initFunc) => {
           initFunc(stats, checkins);

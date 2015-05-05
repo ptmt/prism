@@ -2,18 +2,18 @@
 'use strict';
 
 var assert = require('assert');
-var FoursquareClient = require('../app/server.compiled/providers/foursquare/client');
+var InstagramClient = require('../app/server.compiled/providers/instagram/client');
 
-describe('Foursquare Client', function () {
+describe('Instagram Client', function () {
 
-  var foursquareClient;
+  var instagramClient;
 
   before(function () {
-    foursquareClient = new FoursquareClient();
+    instagramClient = new InstagramClient();
   });
 
   it('able to get first 250 checkins', function (done) {
-    foursquareClient.getCheckins(0, 250, function(err, checkinsData) {
+    instagramClient.getCheckins(0, 250, function(err, checkinsData) {
       assert.equal(err, null);
       assert.equal(checkinsData.checkins.items.length === 250, true);
       done();

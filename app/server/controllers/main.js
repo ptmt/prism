@@ -1,7 +1,7 @@
 /* @flow */
 
 var providers = require('../providers');
-var Timeline = require('../models/timeline').Timeline;
+var { Timeline } = require('../models/timeline');
 
 // TODO: add dependency injection
 // like CacheManager or something to make it testable
@@ -25,6 +25,7 @@ class MainController {
     req.timeline.fetch().then(function(result) {
       render(null, result);
     }).catch(error => {
+      console.log(error)
       render(error);
     });
 

@@ -4,52 +4,37 @@ var CONF = require('config');
 var fs = require('fs');
 var Promise = require('bluebird');
 
-class FoursquareService {
-  foursquareApi: any;
+module.exports = class InstagramClient {
+  instagramApi: any;
   accessToken: string;
   options: any;
   constructor(options?: any) {
-    this.foursquareApi = require('node-foursquare')({
-      'secrets': {
-        'clientId': CONF.foursquare.clientId,
-        'clientSecret': CONF.foursquare.clientSecret,
-        'redirectUrl': CONF.app.host + '/api/v1/auth/foursquare_callback'
-      },
-      'winston' : {
-        'loggers': {
-           'core': {
-             'console': {
-               'level': 'warn'
-             }
-           },
-           'venues': {
-             'console': {
-               'level': 'debug'
-             }
-           }
-         }
-      }
+
+    this.instagramApi = require('instagram-node').instagram();
+    this.instagramApi.use({
+      client_id: CONF.instagram.clientId,
+      client_secret: CONF.instagram.clientSecret,
+      redirect_uri: CONF.app.host + '/api/v1/auth/instagram_callback'
     });
     this.options = options || {};
   }
 
-  getFoursquareUrl(){
-    return this.foursquareApi.getAuthClientRedirectUrl();
+  getInstagramUrl(){
+    return this.instagramApi.get_authorization_url(CONF.app.host + '/api/v1/auth/instagram_callback');
   }
 
   auth(code):void {
     return new Promise((resolve, reject) => {
-        this.foursquareApi.getAccessToken({
-        code: code
-      }, (error, accessToken) => {
-        this.accessToken = accessToken;
-        if (error) {
-          console.log('auth error', error);
-          reject(error.message);
-        } else {
-          resolve(accessToken);
-        }
-      });
+        this.instagramApi.authorize_user(code, CONF.app.host + '/api/v1/auth/instagram_callback',
+         (error, result) => {
+            if (error) {
+              console.log('auth error', error);
+              reject(error.message);
+            } else {
+              this.accessToken = result.access_token;
+              resolve(this.accessToken);
+            }
+          });
     });
   }
 
@@ -69,8 +54,8 @@ class FoursquareService {
       }, accessToken,
       function(err, checkins) {
         //console.log(accessToken, err, checkins);
-        fs.writeFile(__dirname + '/../../../../test/mock/foursquare.' + offset + '-' + limit + '.json',
-          JSON.stringify(checkins));
+        // fs.writeFile(__dirname + '/../../../../test/mock/foursquare.' + offset + '-' + limit + '.json',
+        //   JSON.stringify(checkins));
         callback(err, checkins);
       });
     }
@@ -106,5 +91,3 @@ class FoursquareService {
   }
 
 }
-
-module.exports = FoursquareService;

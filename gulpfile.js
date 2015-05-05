@@ -58,9 +58,7 @@ gulp.task('server-compile', function() {
   return gulp.src([
     'app/server/**/**.js',
     ])
-    // .pipe($.flowtype({
-    //   declarations: './app/interfaces'
-    // }))
+    //.pipe($.flowtype())
     .pipe($.react({
       stripTypes: true,
       harmony: true

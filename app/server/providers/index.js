@@ -7,7 +7,7 @@ var providers = [];
 fs
 .readdirSync(__dirname)
 .filter(function (file) {
-  return (file.indexOf('.') === -1);
+  return (file.indexOf('.') === -1 && file.indexOf('skip') === -1);
 })
 .forEach(function (file) {
   var Provider = require(path.join(__dirname, file));

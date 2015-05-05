@@ -1,12 +1,17 @@
 /* @flow */
-var React = require('react/addons');
+var React = require('react');
 var mui = require('material-ui');
 
 var Providers = React.createClass({
 
   getInitialState() {
+    var tokens = window.localStorage['tokens'];
+    if (tokens) {
+      tokens = JSON.parse(tokens);
+    }
     return {
-      foursquare: window.localStorage && window.localStorage['foursquare.token']
+      foursquare: tokens && tokens.foursquare,
+      instagram: tokens && tokens.instagram
     }
   },
 
@@ -14,17 +19,20 @@ var Providers = React.createClass({
     return (
       <span>
         {!this.state.foursquare &&
-          <mui.IconButton onClick={this.handleFoursquare} iconClassName="ion-social-foursquare" tooltip="Foursquare"/>
+          <mui.IconButton onClick={this.handleAuth.bind(this, 'foursquare')} iconClassName="ion-social-foursquare" tooltip="Foursquare"/>
         }
-        <mui.IconButton iconClassName="ion-social-instagram" />
+        {!this.state.instagram &&
+          <mui.IconButton onClick={this.handleAuth.bind(this, 'instagram')} iconClassName="ion-social-instagram" tooltip="Instagram"/>
+        }
         <mui.IconButton iconClassName="ion-social-github" />
+        <mui.IconButton iconClassName="ion-social-twitter" />
       </span>
     );
   },
 
-  handleFoursquare() {
+  handleAuth(provider) {
     // redirect or open the new window?
-    window.location.href="/api/v1/auth/foursquare";
+    window.location.href="/api/v1/auth/" + provider;
   }
 });
 

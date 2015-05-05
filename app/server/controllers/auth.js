@@ -1,7 +1,7 @@
 /* @flow */
 
-var FoursquareService = require('../providers/foursquare/service');
-var f = new FoursquareService();
+var foursquareClient = new (require('../providers/foursquare/client'))();
+var instagramClient = new (require('../providers/instagram/client'))();
 
 // because core.js Error
 class HttpError extends Error {
@@ -15,7 +15,7 @@ class AuthController {
     return cb(null, 'end', {
       statusCode: 302,
       headers: {
-        'Location': f.getFoursquareUrl(),
+        'Location': foursquareClient.getFoursquareUrl(),
         'Content-Length': '0'
       }
     })
@@ -23,11 +23,11 @@ class AuthController {
 
   // return access code to client
   static foursquare_callback(req: any, content: any, cb: () => void) {
-    f.auth(req.query.code).then(accessToken => {
+    foursquareClient.auth(req.query.code).then(accessToken => {
       return cb(null, 'end', {
         statusCode: 302,
         headers: {
-          'Location': '/?foursquareToken=' + accessToken,
+          'Location': '/?provider=foursquare&setToken=' + accessToken,
           'Content-Length': '0'
         }
       })
@@ -42,21 +42,39 @@ class AuthController {
     });
   }
 
-  // auth with code
-  static foursquare_auth(req: any, content: any, cb: () => void) {
-    f.auth(req.query.code, (err, accessToken) => {
-      console.log(req.query.code, err, accessToken);
-      cb(err, accessToken);
+  static instagram(req: any, content: any, cb: () => void) {
+    return cb(null, 'end', {
+      statusCode: 302,
+      headers: {
+        'Location': instagramClient.getInstagramUrl(),
+        'Content-Length': '0'
+      }
     })
   }
-  // static getTimeline(req: Request, content: any, render: () => void) {
-  //   // get data from each provider and recalculate timeline
-  //   //console.log('loaded ', providers.length, ' providers');
-  //   req.timeline = new Timeline(providers);
-  //   req.timeline.fetch().then(function(result) {
-  //     render(null, result);
-  //   });
-  // }
+
+  static instagram_callback(req: any, content: any, cb: () => void) {
+    instagramClient.auth(req.query.code).then(accessToken => {
+      return cb(null, 'end', {
+        statusCode: 302,
+        headers: {
+          'Location': '/?provider=instagram&setToken=' + accessToken,
+          'Content-Length': '0'
+        }
+      })
+    }).catch(error => {
+      return cb(null, 'end', {
+        statusCode: 302,
+        headers: {
+          'Location': '/?server_error=' + error,
+          'Content-Length': '0'
+        }
+      })
+    });
+  }
+
+
+
+
 }
 
 module.exports = AuthController;
