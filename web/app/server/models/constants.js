@@ -1,0 +1,33 @@
+/* @flow */
+
+var FoursquareConst = function() {
+  var constants = {};
+  var BASE_CHECKIN = constants.BASE_CHECKIN = 10;
+  constants.ONE_KILOMETER_PASSED = 1;
+  constants.ONE_LIKE_TO_CHECKIN = BASE_CHECKIN * 2;
+  constants.CHECKIN_WITH_PHOTO = BASE_CHECKIN * 2;
+  constants.ONE_COMMENT_TO_CHECKIN = BASE_CHECKIN * 3;
+  constants.NEW_PLACE_CHECKIN = BASE_CHECKIN * 5;
+  constants.MAYORSHIP_CHECKIN = BASE_CHECKIN * 5;
+  constants.CHECKIN_WITH_NEW_FOURSQUARE_CLIENT = BASE_CHECKIN * 5;
+  constants.CHECKIN_AT_PLACE_WITH_MORE_THAN_100_CHECKINS = BASE_CHECKIN * 2;
+  constants.CHECKIN_AT_PLACE_WITH_MORE_THAN_1000_CHECKINS = BASE_CHECKIN * 4;
+  constants.CHECKIN_AT_PLACE_WITH_MORE_THAN_10000_CHECKINS = BASE_CHECKIN * 6;
+  constants.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_1000KM = BASE_CHECKIN * 5;
+  constants.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_5000KM = BASE_CHECKIN * 10;
+  constants.CHECKIN_AT_PLACE_REMOTE_FROM_LAST_AT_10000KM = BASE_CHECKIN * 100;
+
+  constants.CHECKIN_AT_JUST_CREATED_PLACE = BASE_CHECKIN * 10; // curiosity
+  constants.CHECKIN_AT_NEW_CATEGORY = BASE_CHECKIN * 5; // curiosity
+  constants.CHECKIN_WITH_ONE_FRIEND = BASE_CHECKIN * 5; // sociality
+  constants.CHECKIN_WITH_TOP_SPEED_MORE_THAN_100KMH = BASE_CHECKIN * 5; // curiosity
+  constants.CHECKIN_WITH_TOP_SPEED_MORE_THAN_500KMH = BASE_CHECKIN * 10; // curiosity
+
+  constants.EACH_FRIEND = 100; // sociality
+  constants.EACH_YOUR_FOLLOWER_WITHOUT_MUTUALITY = 10; //charisma
+  return constants;
+}
+module.exports = {
+  LEVELFX_LOGARITHM_BASE : 10,
+  Foursquare: FoursquareConst()
+}
