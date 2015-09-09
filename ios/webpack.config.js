@@ -1,4 +1,3 @@
-var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
 
@@ -9,7 +8,7 @@ var config = {
   devtool: 'source-map',
 
   entry: {
-    'index.ios': ['./components/App.js'],
+    'index.ios': ['./components/App.js']
   },
 
   output: {
@@ -21,7 +20,7 @@ var config = {
     loaders: [
       {test: /\.js$/, include: [
         path.resolve(__dirname, 'components'),
-        path.resolve(__dirname, "node_modules/react-native-linear-gradient"),
+      //  path.resolve(__dirname, "node_modules/react-native-linear-gradient"),
         path.resolve(__dirname, "node_modules/react-native")
       ], loaders: ['babel?stage=0&blacklist=validation.react']},
     ],

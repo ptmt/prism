@@ -31,7 +31,7 @@
    * on the same Wi-Fi network.
    */
 
-  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8080/index.ios.bundle"];
+  jsCodeLocation = [NSURL URLWithString:@"http://192.168.1.188:8080/index.ios.bundle"];
 
   /**
    * OPTION 2
@@ -47,7 +47,17 @@
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"prism"
+                                               initialProperties:nil
                                                    launchOptions:launchOptions];
+
+  //
+  //  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+  //                                                      moduleName:@"Hashley"
+  //                                                   launchOptions:launchOptions];
+
+//  UIView *launchView = [[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil][0];
+ // rootView.loadingView = launchView;
+ //                                                launchOptions:launchOptions];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [[UIViewController alloc] init];
